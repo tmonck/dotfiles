@@ -1,6 +1,7 @@
 #+TITLE: Literate Configuration
 
 * Me
+
 It's nice to know who you are especially for git commits and such. It's recommended to fill out this section
 
 #+BEGIN_SRC emacs-lisp
@@ -16,6 +17,7 @@ It's nice to know who you are especially for git commits and such. It's recommen
 #+END_SRC
 
 * Fonts
+
 For customizing the fonts in the display
 #+BEGIN_SRC emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -33,6 +35,7 @@ For customizing the fonts in the display
 #+END_SRC
 
 * Theme
+
 Let's make the theme look like we want and we like it dark!
 #+BEGIN_SRC emacs-lisp
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -41,8 +44,35 @@ Let's make the theme look like we want and we like it dark!
 (setq doom-theme 'doom-one)
 #+END_SRC
 
+* Fullscreen
+
+#+BEGIN_SRC emacs-lisp
+(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
+    (toggle-frame-maximized)
+  (toggle-frame-fullscreen))
+#+END_SRC
+
+* Magit
+
+Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
+
+#+BEGIN_SRC emacs-lisp
+;; Set magit to full screen
+(setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
+#+END_SRC
+
+* Line numbers
+
+Line numbers are helpful and relative line numbers are even better.
+#+BEGIN_SRC emacs-lisp
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type `relative)
+#+END_SRC
+
 * Org Mode Configuration
 ** Default directory
+
 We want a default file location for our org files. Let's define that here.
 
 #+BEGIN_SRC emacs-lisp
@@ -58,6 +88,7 @@ A couple of UI tweaks to make things a little more friendly in org-mode.
 #+end_src
 
 ** Org-Journal
+
 Lets start by defining the directory where we want to store our journals
 #+begin_src emacs-lisp
 (setq org-journal-dir "~/org/journal/")
@@ -138,32 +169,8 @@ Adding some handy structure templates to save a few keystrokes when adding code 
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 #+end_src
 
-
-* Line numbers
-Line numbers are helpful and relative line numbers are even better.
-#+BEGIN_SRC emacs-lisp
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type `relative)
-#+END_SRC
-
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings
-
-* Magit
-Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
-
-#+BEGIN_SRC emacs-lisp
-;; Set magit to full screen
-(setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
-#+END_SRC
-
-* Fullscreen
-#+BEGIN_SRC emacs-lisp
-(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
-    (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
-#+END_SRC
 
 * Calendar
 # TODO: This is something i want to make work with outlook work calendar

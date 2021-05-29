@@ -26,6 +26,17 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
+(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
+    (toggle-frame-maximized)
+  (toggle-frame-fullscreen))
+
+;; Set magit to full screen
+(setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
+
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type `relative)
+
 (setq org-directory "~/org/")
 
 (after! org
@@ -67,17 +78,6 @@
   (add-to-list 'org-structure-template-alist '("js" . "src js"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type `relative)
-
-;; Set magit to full screen
-(setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
-
-(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
-    (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
 
 (use-package dap-mode)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
