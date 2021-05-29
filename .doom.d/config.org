@@ -1,4 +1,5 @@
 #+TITLE: Literate Configuration
+#+OPTIONS: toc:2
 
 * Me
 
@@ -15,8 +16,8 @@ It's nice to know who you are especially for git commits and such. It's recommen
 (setq user-full-name "Tom Monck"
       user-mail-address "tom.monck@dudesolutions.com")
 #+END_SRC
-
-* Fonts
+* Customize the look and feel
+** Fonts
 
 For customizing the fonts in the display
 #+BEGIN_SRC emacs-lisp
@@ -34,7 +35,7 @@ For customizing the fonts in the display
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 #+END_SRC
 
-* Theme
+** Theme
 
 Let's make the theme look like we want and we like it dark!
 #+BEGIN_SRC emacs-lisp
@@ -44,7 +45,7 @@ Let's make the theme look like we want and we like it dark!
 (setq doom-theme 'doom-acario-dark)
 #+END_SRC
 
-* Fullscreen
+** Fullscreen
 
 #+BEGIN_SRC emacs-lisp
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
