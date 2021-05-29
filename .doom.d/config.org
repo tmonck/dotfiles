@@ -40,8 +40,8 @@ Let's make the theme look like we want and we like it dark!
 #+BEGIN_SRC emacs-lisp
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;; `load-theme' function. The is the default: doom-one
+(setq doom-theme 'doom-acario-dark)
 #+END_SRC
 
 * Fullscreen
@@ -184,24 +184,26 @@ Let's configure dap-mode and get to stepping through some code.
 #+end_src
 
 ** Launching the debugger
+To launch the debugger using dap mode the following commands are available.
+
 - dap-debug: Select a template to execute
 - dap-debug-last: Run most recent template
 - dap-debug-recent: Select a recent template to run
 - dap-disconnect: Disconnect from existing sessions
-- dap-delete-session
-- dap-delete-all-sessions
+- dap-delete-session: Remove DEBUG-SESSION
+- dap-delete-all-sessions: Terminate/Remove all sessions
 
 ** Adding breakpoints
-- dap-breakpoint-add
-- dap-breakpoint-toggle
+- dap-breakpoint-add: dd breakpoint opn current line.
+- dap-breakpoint-toggle: Toggle breakpoint on current line.
 
 Some other breakpoint commands which may come in handy as time goes on.
 
-- dap-breakpoint-hit-condtion
-- dap-breakpoint-condtion
-- dap-breakpoint-log-message
-- dap-breakpoint-delete
-- dap-breakpoint-delete-all
+- dap-breakpoint-hit-condtion: Set breakpoint hit condition for the breakpoint at point.
+- dap-breakpoint-condtion: Set breakpoint condition for the breakpoint at point.
+- dap-breakpoint-log-message: Set breakpoint log message for the breakpoint at point.
+- dap-breakpoint-delete: Delete breakpoint on the current line.
+- dap-breakpoint-delete-all: Delete all breakpoints.
 
 Lets put these useful commands in easy to use keybindings. SPC d
 #+begin_src emacs-lisp
@@ -229,7 +231,9 @@ Lets put these useful commands in easy to use keybindings. SPC d
 
 ** Customizing debug template
 We can change our debug templates manually by way of `dap-debug-edit-template`. These are globally defined which may not be helpful in most cases. The below is an example of how to configure a template. It would be best if you added a debug.el file to your project root and define the custom templates there.
-Look at the [[https://emacs-lsp.github.io/dap-mode/page/configuration/#dap-mode-configuration][dap-mode documentation]] for further information regaarding configuration as this changes based upon language.
+
+Look at the [[https://emacs-lsp.github.io/dap-mode/page/configuration/#dap-mode-configuration][dap-mode documentation]] for further information regarding configuration as this changes based upon language.
+
 #+begin_src emacs-lisp
 ;; (dap-register-debug-template
 ;;  "Debug Server"
@@ -303,7 +307,7 @@ Configure javascript and enable debugging for it.
 #+end_src
 
 ** Vue
-Configue vue
+Configure Vue.js
 #+begin_src emacs-lisp
 (use-package! vue-mode
   :mode "\\.vue\\'"
