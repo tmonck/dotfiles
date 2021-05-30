@@ -173,9 +173,16 @@ Adding some handy structure templates to save a few keystrokes when adding code 
 
 *** Pandoc
 
+`org-pandoc-import` has a dependency of `pandoc`. This is available via `brew` and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
+
 #+begin_src emacs-lisp
 (use-package! org-pandoc-import :after org)
 #+end_src
+
+Some helpful functions to know
+# TODO: Need to add keybindings in a future commit
+- org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
+- org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
 
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings
