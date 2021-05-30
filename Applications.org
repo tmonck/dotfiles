@@ -2,14 +2,8 @@
 #+AUTHOR: Tom Monck
 #+PROPERTY: header-args :tangle-mode (identity #o755)
 
-* Table of Contents :TOC:
-- [[#os-specific-prerequisites][OS Specific prerequisites]]
-  - [[#setup-the-package-manager][Setup the package manager]]
-- [[#development-environment][Development Environment]]
-  - [[#applications-that-i-find-helpful][Applications that I find helpful]]
-- [[#communication][Communication]]
-  - [[#slack][Slack]]
-
+* Table of Contents
+#+TOC: headlines 3
 * OS Specific prerequisites
 Each OS has a specific package manager that can be used for installing applications.
 ** Setup the package manager
@@ -63,7 +57,6 @@ Add the shebang to the top of the script for ubuntu as that is the only thing we
 Nothing to setup
 **** [[https://snapcraft.io][Snap]]
 Nothing to setup
-
 * Development Environment
 Depending on the operating system there is some programs that I find useful to have to complete my development environment.
 
