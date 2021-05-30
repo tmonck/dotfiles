@@ -1,5 +1,33 @@
 #+TITLE: Literate Configuration
-#+OPTIONS: toc:2
+#+AUTHOR: Tom Monck
+
+* Table Of Contents :TOC:
+- [[#me][Me]]
+- [[#customize-the-look-and-feel][Customize the look and feel]]
+  - [[#fonts][Fonts]]
+  - [[#theme][Theme]]
+  - [[#fullscreen][Fullscreen]]
+- [[#magit][Magit]]
+- [[#line-numbers][Line numbers]]
+- [[#org-mode-configuration][Org Mode Configuration]]
+  - [[#default-directory][Default directory]]
+  - [[#org-mode-styling][Org mode styling]]
+  - [[#org-journal][Org-Journal]]
+  - [[#org-agenda][Org-Agenda]]
+  - [[#after-org-loads][After org loads]]
+- [[#custom-keybindings][Custom keybindings]]
+- [[#calendar][Calendar]]
+- [[#debugging][Debugging]]
+  - [[#launching-the-debugger][Launching the debugger]]
+  - [[#adding-breakpoints][Adding breakpoints]]
+  - [[#customizing-debug-template][Customizing debug template]]
+- [[#languages][Languages]]
+  - [[#lsp-mode][lsp-mode]]
+  - [[#lsp-ui][lsp-ui]]
+  - [[#typescript][Typescript]]
+  - [[#javascript][Javascript]]
+  - [[#vue][Vue]]
+- [[#just-some-helpful-things-that-were-in-the-default-configel][Just some helpful things that were in the default config.el]]
 
 * Me
 
