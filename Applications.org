@@ -1,0 +1,166 @@
+#+TITLE: Applications
+#+AUTHOR: Tom Monck
+#+PROPERTY: header-args :tangle-mode (identity #o755)
+
+* OS Specific prerequisites
+Each OS has a specific package manager that can be used for installing applications.
+** Setup the package manager
+*** Windows
+**** [[https://chocolatey.org][Chocolatey]]
+Need to figure out how to configure this for ps1. This might take some work.
+#+begin_src sh :tangle windows.ps1 :comments 'no'
+If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
+  [Security.Principal.WindowsBuiltInRole]::Administrator))
+{
+    Write-Warning "You do not have Administrator rights to run this script!`nPlease re-run this script as an Administrator!"
+    exit 1
+}
+
+$executionPolicy = Get-ExecutionPolicy
+if ($executionPolicy -ne "Unrestricted")
+{
+    Write-Host "Not Equal"
+    Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+}
+
+if(-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall"))
+{
+    Write-Output "Chocolatey Not Found, Installing..."
+    if($PSVersionTable.PSVersion.Major -gt 2)
+    {
+        Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
+    }
+    else
+    {
+        Invoke-Expression ((new-object net.webclient).DownloadString('http://chocolatey.org/install.ps1'))
+    }
+}
+#+end_src
+*** MacOS
+**** [[https://brew.sh][Homebrew]]
+Setup homebrew so we can install the applications we want.
+
+#+begin_src sh :tangle mac.sh :shebang #!/usr/bin/env bash :comments 'no'
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew upgrade
+brew tap caskroom/cask 2> /dev/null
+brew cask upgrade
+#+end_src
+*** Ubuntu
+Add the shebang to the top of the script for ubuntu as that is the only thing we need to configure programmatically for package management to work.
+
+#+begin_src sh :tangle ubuntu.sh :shebang #!/usr/bin/env bash
+#+end_src
+
+**** [[https://linux.die.net/man/apt-get][apt-get]]
+Nothing to setup
+**** [[https://snapcraft.io][Snap]]
+Nothing to setup
+
+* Development Environment
+Depending on the operating system there is some programs that I find useful to have to complete my development environment.
+
+** Applications that I find helpful
+*** Emacs
+**** Chemacs2
+Chemacs2 is useful for creating multiple emacs profiles. This allows you to have a `default` configuration that you know works and have others that you want to try out or tweak. I keep one profile for modifying my configuration prior to placing in my default. This allows me to see if it fits into my workflow or if I am missing packages.
+
+For more information regarding configuration and usage see the [[https://github.com/plexus/chemacs2][repo]].
+**** Doom
+I personally use Doom Emacs as it provides a lot of nice defaults out of the box.
+
+Straight from the [[https://github.com/hlissner/doom-emacs][Doom Emacs]] repository.
+#+begin_quote
+Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy veterans who want less framework in their frameworks, a modicum of stability (and reproducibility) from their package manager, and the performance of a hand rolled config (or better). It can be a foundation for your own config or a resource for Emacs enthusiasts to learn more about our favorite operating system.
+#+end_quote
+***** Install
+Installation is pretty straight forward. The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#install][docs]] do a great job of going into detail of how to install.
+****** MacOS
+There is some specific dependencies mentioned in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#on-macos][MacOS installation]] docs which we are setting up here.
+#+begin_src sh :tangle mac.sh
+# required dependencies
+brew install git ripgrep
+# optional dependencies
+brew install coreutils fd
+# Installs clang
+xcode-select --install
+#+end_src
+****** Ubuntu
+There a few challenges documented in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#ubuntu][Ubuntu installation]] docs. We are going to work around those now.
+******* Git
+Doom requires git 2.28+
+#+begin_src sh :tangle ubuntu.sh
+add-apt-repository ppa:git-core/ppa
+apt update
+apt install git
+#+end_src
+******* Emacs
+Out of the box Ubuntu only provide Emacs 25.3. So we need to use snap to install the latest version.
+#+begin_src sh :tangle ubuntu.sh
+snap install emacs --classic
+#+end_src
+
+***** Configure
+It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
+
+*** Docker
+I use this specifically for creating OCI compliant images for running containerized applications.
+More information about docker can be [[https://docker.com][here]].
+
+#+begin_src sh :tangle windows.ps1
+choco install docker-desktop
+#+end_src
+
+#+begin_src sh :tangle mac.sh
+brew cask install docker
+#+end_src
+*** VS Code
+This is a language agnostic IDE that is easily extensible with plugins.
+You can find their documentation [[https://code.visualstudio.com][here]].
+
+#+begin_src sh :tangle windows.ps1 :padline 'no'
+choco install vscode
+#+end_src
+
+#+begin_src sh :tangle mac.sh :padline 'no'
+brew install vscode
+#+end_src
+*** Visual Studio
+Microsoft's .NET IDE. More information is [[https://visualstudio.microsoft.com][here]].
+*** Jetbrains
+**** Rider
+Another .NET specific IDE. This IDE is cross-platform and has some of the helpful plugins for Visual Studio built in. For more information about Rider go [[https://jetbrains.com/rider][here]].
+**** Resharper
+A tool for enforcing coding standards, assists with finding code smells, and some helpful editing features. For more information about Resharper go [[https://jetbrains.com/resharper][here]]. I use this when I have Visual Studio installed.
+**** DotCover
+*** Slack
+[[https://slack.com][Slack]]
+*** Firefox
+A modern web browser that is better than the rest. Their site is [[https://mozilla.org][here]].
+
+#+begin_src sh :tangle windows.ps1 :padline 'no'
+choco install firefox
+#+end_src
+
+#+begin_src sh :tangle mac.sh :padline 'no'
+brew install firefox
+#+end_src
+*** Chrome
+Another modern web browser which is Chromium based. Their site is [[https://google.com/chrome][here]]. I use this specifically for ensuring functionality works across the different browsers.
+
+#+begin_src sh :tangle windows.ps1 :padline 'no'
+choco install googlechrome
+#+end_src
+
+#+begin_src sh :tangle mac.sh :padline 'no'
+brew install chrome
+#+end_src
+*** Postman
+This one is up for debate but it's a helpful GUI for making API calls.
+
+* Communication
+** Slack
+I use slack to chat with friends and family.
+
+#+begin_src sh
+# Check os to determine if we are using choco, brew, or apt-get
+#+end_src
