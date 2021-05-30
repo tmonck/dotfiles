@@ -79,6 +79,8 @@
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
+(use-package! org-pandoc-import :after org)
+
 (use-package dap-mode)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 

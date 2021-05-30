@@ -16,6 +16,7 @@ It's nice to know who you are especially for git commits and such. It's recommen
 (setq user-full-name "Tom Monck"
       user-mail-address "tom.monck@dudesolutions.com")
 #+END_SRC
+
 * Customize the look and feel
 ** Fonts
 
@@ -168,6 +169,12 @@ Adding some handy structure templates to save a few keystrokes when adding code 
   (add-to-list 'org-structure-template-alist '("js" . "src js"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
+#+end_src
+
+*** Pandoc
+
+#+begin_src emacs-lisp
+(use-package! org-pandoc-import :after org)
 #+end_src
 
 * Custom keybindings
