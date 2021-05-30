@@ -1,0 +1,10 @@
+#+TITLE: dotfiles
+#+AUTHOR: Tom Monck
+
+* Goals
+This is an attempt to organize my dotfiles for sharing across multiple machines. This should allow me to have a consistent experience across different machines when I use the same application.
+
+I can manage the dotfiles easily with [[https://www.gnu.org/software/stow][GNU Stow]]
+#+begin_src sh
+stow .
+#+end_src
