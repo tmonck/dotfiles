@@ -1,14 +1,19 @@
 #+TITLE: Applications
 #+AUTHOR: Tom Monck
 #+PROPERTY: header-args :tangle-mode (identity #o755)
+#+startup: fold
 
-* Table of Contents :TOC_3:
+* Table of Contents :TOC_3:noexport:
 - [[#os-specific-prerequisites][OS Specific prerequisites]]
   - [[#setup-the-package-manager][Setup the package manager]]
     - [[#windows][Windows]]
     - [[#macos][MacOS]]
     - [[#ubuntu][Ubuntu]]
 - [[#development-environment][Development Environment]]
+  - [[#programming-languages][Programming Languages]]
+    - [[#c][C#]]
+    - [[#jsts][JS/TS]]
+    - [[#python][Python]]
   - [[#ides][IDEs]]
     - [[#emacs][Emacs]]
     - [[#vs-code][VS Code]]
@@ -79,6 +84,23 @@ Nothing to setup
 * Development Environment
 Depending on the operating system there is some programs that I find useful to have to complete my development environment.
 
+** Programming Languages
+I have some experience in the following languages. These are the ones I use the most so they will be setup on each computer in anticipation of doing some level of development in each.
+*** C#
+To develop C# there is some SDK's that need to be installed. Depending on if we are developing .Net Framework or .Net Core will determine the necessary SDK's. These scripts assume .Net Core 3.1.
+**** Windows
+**** MacOS
+**** Ubuntu
+*** JS/TS
+To develop JS there is a few things that will be needed. `node` and `npm` are the starting points we will install. Any other necessary items will be setup on a per project basis.
+**** Windows
+**** MacOS
+**** Ubuntu
+*** Python
+Python3 needs to be installed. This isn't my main language so not much is done here.
+**** Windows
+**** MacOS
+**** Ubuntu
 ** IDEs
 *** Emacs
 **** Chemacs2
@@ -125,6 +147,47 @@ snap install emacs --classic
 
 ***** Configure
 It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
+****** Customizations
+My doom configuration adds a few required things to be available on the OS which may not be installed by default.
+******* aspell
+Used for spellchecking
+******** Windows
+******** MacOS
+#+begin_src sh :tangle mac.sh
+brew install aspell
+#+end_src
+******** Ubuntu
+******* editorconfig
+Used for enforcing code formatting when not using something like Resharper
+******** Windows
+******** MacOS
+#+begin_src sh :tangle mac.sh
+brew install aspell
+#+end_src
+******** Ubuntu
+******* markdown compiler
+I use the `npm` package `marked` for markdown compiler which enables markdown preview.
+******** Windows
+******** MacOS
+#+begin_src sh :tangle mac.sh
+npm install -g marked
+#+end_src
+******** Ubuntu
+******* jq
+******** Windows
+******** MacOS
+#+begin_src sh :tangle mac.sh
+brew install jq
+#+end_src
+******** Ubuntu
+******* shellcheck
+This is used for shell script linting inside of emacs.
+******** Windows
+******** MacOS
+#+begin_src sh :tangle mac.sh
+brew install shellcheck
+#+end_src
+******** Ubuntu
 
 *** VS Code
 This is a language agnostic IDE that is easily extensible with plugins.
