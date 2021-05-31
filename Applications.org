@@ -22,7 +22,7 @@
   - [[#additional-applications-that-assist-with-development][Additional applications that assist with development]]
     - [[#docker][Docker]]
     - [[#postman][Postman]]
--  [[#browsers][Browsers]]
+- [[#browsers][Browsers]]
   - [[#firefox][Firefox]]
   - [[#chrome][Chrome]]
 - [[#communication][Communication]]
@@ -118,10 +118,12 @@ Python3 needs to be installed. This isn't my main language so not much is done h
 Chemacs2 is useful for creating multiple emacs profiles. This allows you to have a `default` configuration that you know works and have others that you want to try out or tweak. I keep one profile for modifying my configuration prior to placing in my default. This allows me to see if it fits into my workflow or if I am missing packages.
 
 For more information regarding configuration and usage see the [[https://github.com/plexus/chemacs2][repo]].
+#+name: clone_chemacs2
 #+begin_src sh
 # Check for ~/.emacs.d if exists move it before cloning the code
 git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
 #+end_src
+#+end
 **** Doom
 I personally use Doom Emacs as it provides a lot of nice defaults out of the box.
 
@@ -131,20 +133,46 @@ Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy ve
 #+end_quote
 ***** Install
 Installation is pretty straight forward. The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#install][docs]] do a great job of going into detail of how to install.
+#+name: clone_doom
+#+begin_src sh
+git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+#+end_src
 ****** MacOS
 There is some specific dependencies mentioned in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#on-macos][MacOS installation]] docs which we are setting up here.
-#+begin_src sh :tangle mac.sh
+#+begin_src sh :tangle mac.sh :noweb yes
 # required dependencies
 brew install git ripgrep
 # optional dependencies
 brew install coreutils fd
 # Installs clang
 xcode-select --install
+# Clone doome into it's specific location
+<<clone_doom>>
+#+end_src
+
+Now lets install Emacs itself
+
+#+begin_src sh :tangle mac.sh :noweb yes
+brew tap d12frosted/emacs-plus
+# brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
+# brew install emacs-plus@26 [options] # install Emacs 26
+# brew install emacs-plus@27 [options] # install Emacs 27
+brew install emacs-plus@28 # install Emacs 28
+
+ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+
+if [ -d "$HOME/.emacs.d" ]
+   then
+       mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
+fi
+
+<<clone_chemacs2>>
 #+end_src
 ****** Ubuntu
 There a few challenges documented in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#ubuntu][Ubuntu installation]] docs. We are going to work around those now.
 ******* Git
 Doom requires git 2.28+
+
 #+begin_src sh :tangle ubuntu.sh
 add-apt-repository ppa:git-core/ppa
 apt update
@@ -152,8 +180,18 @@ apt install git
 #+end_src
 ******* Emacs
 Out of the box Ubuntu only provide Emacs 25.3. So we need to use snap to install the latest version.
-#+begin_src sh :tangle ubuntu.sh
+
+#+begin_src sh :tangle ubuntu.sh :noweb yes
 snap install emacs --classic
+
+if [ -d "$HOME/.emacs.d" ]
+   then
+       mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
+fi
+
+<<clone_chemacs2>>
+
+<<clone_doom>>
 #+end_src
 
 ***** Configure
@@ -217,6 +255,7 @@ Another .NET specific IDE. This IDE is cross-platform and has some of the helpfu
 **** Resharper
 A tool for enforcing coding standards, assists with finding code smells, and some helpful editing features. For more information about Resharper go [[https://jetbrains.com/resharper][here]]. I use this when I have Visual Studio installed.
 **** DotCover
+A tool for measuring unit test coverage in .NET Applications.
 ** Additional applications that assist with development
 *** Docker
 I use this specifically for creating OCI compliant images for running containerized applications.
@@ -232,7 +271,7 @@ brew cask install docker
 **** Ubuntu
 *** Postman
 This one is up for debate but it's a helpful GUI for making API calls.
-*  Browsers
+* Browsers
 ** Firefox
 A modern web browser that is better than the rest. Their site is [[https://mozilla.org][here]].
 **** WIndows
@@ -247,7 +286,6 @@ brew install firefox
 Comes with firefox out the box so don't have to do anything YAY!
 ** Chrome
 Another modern web browser which is Chromium based. Their site is [[https://google.com/chrome][here]]. I use this specifically for ensuring functionality works across the different browsers.
-
 **** Windows
 #+begin_src sh :tangle windows.ps1 :padline 'no'
 choco install googlechrome
@@ -262,6 +300,7 @@ brew install chrome
 I use slack to chat with friends and family.
 [[https://slack.com][Slack]]
 
-#+begin_src sh
+#+begin_src sh :tangle mac.sh
 # Check os to determine if we are using choco, brew, or apt-get
+# install slack
 #+end_src
