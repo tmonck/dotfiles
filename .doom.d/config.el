@@ -64,6 +64,12 @@
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t))
+
 ;; (after! org (setq org-hide-emphasis-markers t))
 
 ;; (after! org

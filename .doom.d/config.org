@@ -14,6 +14,7 @@
   - [[#org-mode-styling][Org mode styling]]
   - [[#org-journal][Org-Journal]]
   - [[#org-agenda][Org-Agenda]]
+  - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
   - [[#after-org-loads][After org loads]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#calendar][Calendar]]
@@ -153,6 +154,19 @@ Lets add some keybindings to make creation of journal entries a little easier. Y
 #+END_SRC
 
 ** Org-Agenda
+** Auto tangle org mode files
+While it's easy to use the `org-babel-tangle` function or it's keybinding `C-c C-v t`. This requires me to remember to do this each time I make a modification to my org file. It would be nice if it was done on save automatically. There is useful package specifically designed for this purpose [[https://github.com/yilkalargaw/org-auto-tangle][org-auto-tangle]].
+
+#+begin_src emacs-lisp
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t))
+#+end_src
+
+To disable auto tangle on specific files just place `#+auto_tangle: nil` at the top of the org file
+
 ** After org loads
 *** Hide the Org mark up indicators
 
