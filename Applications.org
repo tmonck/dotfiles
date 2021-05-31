@@ -115,6 +115,23 @@ Python3 needs to be installed. This isn't my main language so not much is done h
 **** Ubuntu
 ** IDEs
 *** Emacs
+Lets install Emacs itself
+
+#+begin_src sh :tangle mac.sh :noweb yes
+brew tap d12frosted/emacs-plus
+# brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
+# brew install emacs-plus@26 [options] # install Emacs 26
+# brew install emacs-plus@27 [options] # install Emacs 27
+brew install emacs-plus@28 # install Emacs 28
+
+ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
+
+if [ -d "$HOME/.emacs.d" ]
+   then
+       mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
+fi
+#+end_src
+
 **** Chemacs2
 Chemacs2 is useful for creating multiple emacs profiles. This allows you to have a `default` configuration that you know works and have others that you want to try out or tweak. I keep one profile for modifying my configuration prior to placing in my default. This allows me to see if it fits into my workflow or if I am missing packages.
 
@@ -132,12 +149,8 @@ Straight from the [[https://github.com/hlissner/doom-emacs][Doom Emacs]] reposit
 #+begin_quote
 Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy veterans who want less framework in their frameworks, a modicum of stability (and reproducibility) from their package manager, and the performance of a hand rolled config (or better). It can be a foundation for your own config or a resource for Emacs enthusiasts to learn more about our favorite operating system.
 #+end_quote
-***** Install
+***** Dependencies
 Installation is pretty straight forward. The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#install][docs]] do a great job of going into detail of how to install.
-#+name: clone_doom
-#+begin_src sh
-git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
-#+end_src
 ****** Windows
 It is known that emacs is slower when running on Windows. I currently do not use emacs on Windows machines. This is partly due to me not having a windows machine. This will be updated once I have a windows machine to setup. If you are interested in setting up Doom Emacs on Windows please see the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#on-windows][documentation]].
 ****** MacOS
@@ -151,26 +164,9 @@ brew install coreutils fd
 xcode-select --install
 # Clone doome into it's specific location
 <<clone_doom>>
-#+end_src
-
-Now lets install Emacs itself
-
-#+begin_src sh :tangle mac.sh :noweb yes
-brew tap d12frosted/emacs-plus
-# brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
-# brew install emacs-plus@26 [options] # install Emacs 26
-# brew install emacs-plus@27 [options] # install Emacs 27
-brew install emacs-plus@28 # install Emacs 28
-
-ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
-
-if [ -d "$HOME/.emacs.d" ]
-   then
-       mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
-fi
-
 <<clone_chemacs2>>
 #+end_src
+
 ****** Ubuntu
 There a few challenges documented in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#ubuntu][Ubuntu installation]] docs. We are going to work around those now.
 ******* Git
@@ -196,11 +192,29 @@ fi
 
 <<clone_doom>>
 #+end_src
+***** Clone
+Clone the doom configuration to my own custom directory. This allows me provide this in my chemacs2 configurations.
 
+#+name: clone_doom
+#+begin_src sh
+git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+#+end_src
+
+#+begin_src sh :tangle windows.ps1 :noweb yes
+<<clone_doom>>
+#+end_src
+
+#+begin_src sh :tangle mac.sh :noweb yes
+<<clone_doom>>
+#+end_src
+
+#+begin_src sh :tangle ubuntu.sh :noweb yes
+<<clone_doom>>
+#+end_src
 ***** Configure
 It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
 ****** Customizations
-My doom configuration adds a few required things to be available on the OS which may not be installed by default.
+My doom configuration enables some modules that requires a few programs to be installed on the OS.
 ******* aspell
 Used for spellchecking
 ******** Windows
@@ -238,15 +252,42 @@ brew install shellcheck
 #+end_src
 ******** Ubuntu
 
+***** Installation
+Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
+
+#+name: install_doom
+#+begin_src sh
+~/mydoom/bin/doom install
+# once I have added ~/mydoom/bin to the PATH we can execute
+# doom install
+#+end_src
+#+end
+****** Windows
+****** MacOS
+This needs to be validated before using
+#+begin_src sh :tangle mac.sh :noweb yes
+# export PATH="$HOME/mydoom/bin:$PATH"
+<<install_doom>>
+#+end_src
+****** Ubuntu
+
+***** Doom utility
+The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#the-bindoom-utility][doom utility]] is extremely helpful as well as required for somethings to work. Some of the items I use on a regular basis are documented below.
+****** Sync
+`doom sync`: This synchronizes your config with Doom Emacs. It ensures that needed packages are installed, orphaned packages are removed and necessary metadata correctly generated. Run this whenever you modify your doom! block or packages.el file. You’ll need doom sync -u if you override the recipe of package installed by another module.
+****** Upgrade
+`doom upgrade`: Updates Doom Emacs (if available) and all its packages.
+****** Doctor
+`doom doctor`: If Doom misbehaves, the doc will diagnose common issues with your installation, system and environment.
 *** VS Code
 This is a language agnostic IDE that is easily extensible with plugins.
 You can find their documentation [[https://code.visualstudio.com][here]].
 **** Windows
-#+begin_src sh :tangle windows.ps1 :padline 'no'
+#+begin_src sh :tangle windows.ps1
 choco install vscode
 #+end_src
 **** MacOS
-#+begin_src sh :tangle mac.sh :padline 'no'
+#+begin_src sh :tangle mac.sh
 brew install vscode
 #+end_src
 **** Ubuntu
