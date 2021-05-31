@@ -2,11 +2,24 @@
 #+AUTHOR: Tom Monck
 #+PROPERTY: header-args :tangle-mode (identity #o755)
 
-* Table of Contents :TOC:
+* Table of Contents :TOC_3:
 - [[#os-specific-prerequisites][OS Specific prerequisites]]
   - [[#setup-the-package-manager][Setup the package manager]]
+    - [[#windows][Windows]]
+    - [[#macos][MacOS]]
+    - [[#ubuntu][Ubuntu]]
 - [[#development-environment][Development Environment]]
-  - [[#applications-that-i-find-helpful][Applications that I find helpful]]
+  - [[#ides][IDEs]]
+    - [[#emacs][Emacs]]
+    - [[#vs-code][VS Code]]
+    - [[#visual-studio][Visual Studio]]
+    - [[#jetbrains][Jetbrains]]
+  - [[#additional-applications-that-assist-with-development][Additional applications that assist with development]]
+    - [[#docker][Docker]]
+    - [[#postman][Postman]]
+-  [[#browsers][Browsers]]
+  - [[#firefox][Firefox]]
+  - [[#chrome][Chrome]]
 - [[#communication][Communication]]
   - [[#slack][Slack]]
 
@@ -66,12 +79,16 @@ Nothing to setup
 * Development Environment
 Depending on the operating system there is some programs that I find useful to have to complete my development environment.
 
-** Applications that I find helpful
+** IDEs
 *** Emacs
 **** Chemacs2
 Chemacs2 is useful for creating multiple emacs profiles. This allows you to have a `default` configuration that you know works and have others that you want to try out or tweak. I keep one profile for modifying my configuration prior to placing in my default. This allows me to see if it fits into my workflow or if I am missing packages.
 
 For more information regarding configuration and usage see the [[https://github.com/plexus/chemacs2][repo]].
+#+begin_src sh
+# Check for ~/.emacs.d if exists move it before cloning the code
+git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+#+end_src
 **** Doom
 I personally use Doom Emacs as it provides a lot of nice defaults out of the box.
 
@@ -109,28 +126,18 @@ snap install emacs --classic
 ***** Configure
 It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
 
-*** Docker
-I use this specifically for creating OCI compliant images for running containerized applications.
-More information about docker can be [[https://docker.com][here]].
-
-#+begin_src sh :tangle windows.ps1
-choco install docker-desktop
-#+end_src
-
-#+begin_src sh :tangle mac.sh
-brew cask install docker
-#+end_src
 *** VS Code
 This is a language agnostic IDE that is easily extensible with plugins.
 You can find their documentation [[https://code.visualstudio.com][here]].
-
+**** Windows
 #+begin_src sh :tangle windows.ps1 :padline 'no'
 choco install vscode
 #+end_src
-
+**** MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install vscode
 #+end_src
+**** Ubuntu
 *** Visual Studio
 Microsoft's .NET IDE. More information is [[https://visualstudio.microsoft.com][here]].
 *** Jetbrains
@@ -139,34 +146,50 @@ Another .NET specific IDE. This IDE is cross-platform and has some of the helpfu
 **** Resharper
 A tool for enforcing coding standards, assists with finding code smells, and some helpful editing features. For more information about Resharper go [[https://jetbrains.com/resharper][here]]. I use this when I have Visual Studio installed.
 **** DotCover
-*** Slack
-[[https://slack.com][Slack]]
-*** Firefox
+** Additional applications that assist with development
+*** Docker
+I use this specifically for creating OCI compliant images for running containerized applications.
+More information about docker can be [[https://docker.com][here]].
+**** Windows
+#+begin_src sh :tangle windows.ps1
+choco install docker-desktop
+#+end_src
+**** MacOS
+#+begin_src sh :tangle mac.sh
+brew cask install docker
+#+end_src
+**** Ubuntu
+*** Postman
+This one is up for debate but it's a helpful GUI for making API calls.
+*  Browsers
+** Firefox
 A modern web browser that is better than the rest. Their site is [[https://mozilla.org][here]].
-
+**** WIndows
 #+begin_src sh :tangle windows.ps1 :padline 'no'
 choco install firefox
 #+end_src
-
+**** MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install firefox
 #+end_src
-*** Chrome
+**** Ubuntu
+Comes with firefox out the box so don't have to do anything YAY!
+** Chrome
 Another modern web browser which is Chromium based. Their site is [[https://google.com/chrome][here]]. I use this specifically for ensuring functionality works across the different browsers.
 
+**** Windows
 #+begin_src sh :tangle windows.ps1 :padline 'no'
 choco install googlechrome
 #+end_src
-
+**** MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install chrome
 #+end_src
-*** Postman
-This one is up for debate but it's a helpful GUI for making API calls.
-
+**** Ubuntu
 * Communication
 ** Slack
 I use slack to chat with friends and family.
+[[https://slack.com][Slack]]
 
 #+begin_src sh
 # Check os to determine if we are using choco, brew, or apt-get
