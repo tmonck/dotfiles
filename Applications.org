@@ -19,6 +19,7 @@
     - [[#python][Python]]
   - [[#ides][IDEs]]
     - [[#emacs][Emacs]]
+    - [[#doom][Doom]]
     - [[#vs-code][VS Code]]
     - [[#visual-studio][Visual Studio]]
     - [[#jetbrains][Jetbrains]]
@@ -142,14 +143,14 @@ For more information regarding configuration and usage see the [[https://github.
 git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
 #+end_src
 
-**** Doom
+*** Doom
 I personally use Doom Emacs as it provides a lot of nice defaults out of the box.
 
 Straight from the [[https://github.com/hlissner/doom-emacs][Doom Emacs]] repository.
 #+begin_quote
 Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy veterans who want less framework in their frameworks, a modicum of stability (and reproducibility) from their package manager, and the performance of a hand rolled config (or better). It can be a foundation for your own config or a resource for Emacs enthusiasts to learn more about our favorite operating system.
 #+end_quote
-***** Dependencies
+**** Dependencies
 Installation is pretty straight forward. The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#install][docs]] do a great job of going into detail of how to install.
 ****** Windows
 It is known that emacs is slower when running on Windows. I currently do not use emacs on Windows machines. This is partly due to me not having a windows machine. This will be updated once I have a windows machine to setup. If you are interested in setting up Doom Emacs on Windows please see the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#on-windows][documentation]].
@@ -192,7 +193,7 @@ fi
 
 #+RESULTS:
 
-***** Clone
+**** Clone
 Clone the doom configuration to my own custom directory. This allows me provide this in my chemacs2 configurations.
 
 #+name: clone_doom
@@ -211,46 +212,46 @@ git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
 #+begin_src sh :tangle ubuntu.sh :noweb yes
 <<clone_doom>>
 #+end_src
-***** Configure
+**** Configure
 It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
-***** Additional dependencies
+**** Additional dependencies
 My doom configuration enables some modules that requires a few programs to be installed on the OS.
-******* aspell
+****** aspell
 Used for spellchecking
-******** Windows
-******** MacOS
+******* Windows
+******* MacOS
 #+begin_src sh :tangle mac.sh
 brew install aspell
 #+end_src
-******** Ubuntu
-******* editorconfig
+******* Ubuntu
+****** editorconfig
 Used for enforcing code formatting when not using something like Resharper
-******** Windows
-******** MacOS
-******** Ubuntu
-******* markdown compiler
+******* Windows
+******* MacOS
+******* Ubuntu
+****** markdown compiler
 I use the `npm` package `marked` for markdown compiler which enables markdown preview.
-******** Windows
-******** MacOS
+******* Windows
+******* MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 npm install -g marked
 #+end_src
-******** Ubuntu
-******* jq
-******** Windows
-******** MacOS
+******* Ubuntu
+****** jq
+******* Windows
+******* MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install jq
 #+end_src
-******** Ubuntu
-******* shellcheck
+******* Ubuntu
+****** shellcheck
 This is used for shell script linting inside of emacs.
-******** Windows
-******** MacOS
+******* Windows
+******* MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install shellcheck
 #+end_src
-******** Ubuntu
+******* Ubuntu
 
 ***** Installation
 Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
