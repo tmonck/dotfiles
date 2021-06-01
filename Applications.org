@@ -117,7 +117,7 @@ Python3 needs to be installed. This isn't my main language so not much is done h
 *** Emacs
 Lets install Emacs itself
 
-#+begin_src sh :tangle mac.sh :noweb yes
+#+begin_src sh :tangle mac.sh
 brew tap d12frosted/emacs-plus
 # brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
 # brew install emacs-plus@26 [options] # install Emacs 26
@@ -141,7 +141,7 @@ For more information regarding configuration and usage see the [[https://github.
 # Check for ~/.emacs.d if exists move it before cloning the code
 git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
 #+end_src
-#+end
+
 **** Doom
 I personally use Doom Emacs as it provides a lot of nice defaults out of the box.
 
@@ -162,8 +162,7 @@ brew install git ripgrep
 brew install coreutils fd
 # Installs clang
 xcode-select --install
-# Clone doome into it's specific location
-<<clone_doom>>
+
 <<clone_chemacs2>>
 #+end_src
 
@@ -189,8 +188,6 @@ if [ -d "$HOME/.emacs.d" ]
 fi
 
 <<clone_chemacs2>>
-
-<<clone_doom>>
 #+end_src
 ***** Clone
 Clone the doom configuration to my own custom directory. This allows me provide this in my chemacs2 configurations.
@@ -261,7 +258,7 @@ Now that we have all of the dependencies installed and doom cloned lets go ahead
 # once I have added ~/mydoom/bin to the PATH we can execute
 # doom install
 #+end_src
-#+end
+
 ****** Windows
 ****** MacOS
 This needs to be validated before using
