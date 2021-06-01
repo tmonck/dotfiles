@@ -87,7 +87,7 @@ brew cask upgrade
 # This file is generated from a literate program source file Applications.org
 #+end_src
 
-**** [[https://linux.die.net/man/apt-get][apt-get]]
+**** [[https://linux.die.net/man/apt][apt-get]]
 Nothing to setup
 **** [[https://snapcraft.io][Snap]]
 Nothing to setup
@@ -109,15 +109,23 @@ To develop JS there is a few things that will be needed. `node` and `npm` are th
 brew install node # This will install npm as well
 #+end_src
 **** Ubuntu
+#+begin_src sh :tangle ubuntu.sh
+apt install node
+#+end_src
 *** Python
 Python3 needs to be installed. This isn't my main language so not much is done here.
 **** Windows
 **** MacOS
 **** Ubuntu
+#+begin_src sh :tangle ubuntu.sh
+alias python=python3
+#+end_src
 ** IDEs
 *** Emacs
 Lets install Emacs itself
-
+**** Windows
+TODO
+**** MacOS
 #+begin_src sh :tangle mac.sh
 brew tap d12frosted/emacs-plus
 # brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
@@ -133,14 +141,30 @@ if [ -d "$HOME/.emacs.d" ]
        mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
 fi
 #+end_src
+**** Ubuntu
+TODO
 
-**** Chemacs2
+*** Chemacs2
 Chemacs2 is useful for creating multiple emacs profiles. This allows you to have a `default` configuration that you know works and have others that you want to try out or tweak. I keep one profile for modifying my configuration prior to placing in my default. This allows me to see if it fits into my workflow or if I am missing packages.
 
 For more information regarding configuration and usage see the [[https://github.com/plexus/chemacs2][repo]].
 #+name: clone_chemacs2
 #+begin_src sh
 git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+#+end_src
+
+**** Windows
+#+begin_src sh :tangle windows.ps1 :noweb yes
+<<clone_chemacs2>>
+#+end_src
+
+**** MacOS
+#+begin_src sh :tangle mac.sh :noweb yes
+<<clone_chemacs2>>
+#+end_src
+**** Ubuntu
+#+begin_src sh :tangle ubuntu.sh :noweb yes
+<<clone_chemacs2>>
 #+end_src
 
 *** Doom
@@ -163,8 +187,6 @@ brew install git ripgrep
 brew install coreutils fd
 # Installs clang
 xcode-select --install
-
-<<clone_chemacs2>>
 #+end_src
 
 ***** Ubuntu
@@ -187,11 +209,14 @@ if [ -d "$HOME/.emacs.d" ]
    then
        mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
 fi
-
-<<clone_chemacs2>>
 #+end_src
 
 #+RESULTS:
+******* Other dependencies
+
+#+begin_src sh :tangle ubuntu.sh
+apt install ripgrep fd-find
+#+end_src
 
 **** Clone
 Clone the doom configuration to my own custom directory. This allows me provide this in my chemacs2 configurations.
@@ -226,7 +251,7 @@ TODO
 brew install aspell
 #+end_src
 ****** Ubuntu
-TODO
+My last install on Ubuntu didn't require anything special for aspell 
 ***** editorconfig
 Used for enforcing code formatting when not using something like Resharper
 ****** Windows
@@ -234,17 +259,27 @@ TODO
 ****** MacOS
 TODO
 ****** Ubuntu
-TODO
+#+begin_src sh :tangle ubuntu.sh
+apt install editorconfig
+#+end_src
 ***** markdown compiler
 I use the `npm` package `marked` for markdown compiler which enables markdown preview.
-****** Windows
-TODO
-****** MacOS
-#+begin_src sh :tangle mac.sh :padline 'no'
+#+name:install_marked
+#+begin_src sh
 npm install -g marked
 #+end_src
+****** Windows
+#+begin_src sh :tangle windows.ps1 :padline 'no' :noweb yes
+<<install_marked>>
+#+end_src
+****** MacOS
+#+begin_src sh :tangle mac.sh :padline 'no' :noweb yes
+<<install_marked>>
+#+end_src
 ****** Ubuntu
-TODO
+#+begin_src sh :tangle ubuntu.sh :padline 'no' :noweb yes
+<<install_marked>>
+#+end_src
 ***** jq
 ****** Windows
 TODO
@@ -253,7 +288,9 @@ TODO
 brew install jq
 #+end_src
 ****** Ubuntu
-TODO
+#+begin_src sh :tangle ubuntu.sh :padline 'no'
+apt install jq
+#+end_src
 ***** shellcheck
 This is used for shell script linting inside of emacs.
 ****** Windows
@@ -263,33 +300,31 @@ TODO
 brew install shellcheck
 #+end_src
 ****** Ubuntu
-TODO
-***** Installation
+#+begin_src sh :tangle ubuntu.sh :padline 'no'
+apt install shellcheck
+#+end_src
+**** Installation
 Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
 
-#+name: install_doom
-#+begin_src sh
-~/mydoom/bin/doom install
-# once I have added ~/mydoom/bin to the PATH we can execute
-# doom install
-#+end_src
-
-****** Windows
-****** MacOS
+***** Windows
+***** MacOS
 This needs to be validated before using
 #+begin_src sh :tangle mac.sh :noweb yes
-# export PATH="$HOME/mydoom/bin:$PATH"
-<<install_doom>>
+export PATH="$HOME/mydoom/bin:$PATH"
+doom install
 #+end_src
-****** Ubuntu
-
-***** Doom utility
+***** Ubuntu
+#+begin_src sh :tangle ubuntu.sh :noweb yes
+export PATH="$HOME/mydoom/bin:$PATH"
+doom install
+#+end_src
+**** Doom utility
 The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#the-bindoom-utility][doom utility]] is extremely helpful as well as required for somethings to work. Some of the items I use on a regular basis are documented below.
-****** Sync
+***** Sync
 `doom sync`: This synchronizes your config with Doom Emacs. It ensures that needed packages are installed, orphaned packages are removed and necessary metadata correctly generated. Run this whenever you modify your doom! block or packages.el file. You’ll need doom sync -u if you override the recipe of package installed by another module.
-****** Upgrade
+***** Upgrade
 `doom upgrade`: Updates Doom Emacs (if available) and all its packages.
-****** Doctor
+***** Doctor
 `doom doctor`: If Doom misbehaves, the doc will diagnose common issues with your installation, system and environment.
 *** VS Code
 This is a language agnostic IDE that is easily extensible with plugins.
@@ -338,7 +373,7 @@ This one is up for debate but it's a helpful GUI for making API calls.
 * Browsers
 ** Firefox
 A modern web browser that is better than the rest. Their site is [[https://mozilla.org][here]].
-**** WIndows
+**** Windows
 #+begin_src sh :tangle windows.ps1 :padline 'no'
 choco install firefox
 #+end_src
@@ -359,12 +394,18 @@ choco install googlechrome
 brew install chrome
 #+end_src
 **** Ubuntu
+I don't use chrome browser here.
 * Communication
 ** Slack
-I use slack to chat with friends and family.
-[[https://slack.com][Slack]]
+I use slack to chat with friends and family. You can use slack in the browser or view it's documentation [[https://slack.com][here]].
 
+*** Windows
+TODO
+*** MacOS
 #+begin_src sh :tangle mac.sh
-# Check os to determine if we are using choco, brew, or apt-get
-# install slack
+brew install slack
+#+end_src
+*** Ubuntu
+#+begin_src sh :tangle ubuntu.sh
+snap install slack --classic
 #+end_src
