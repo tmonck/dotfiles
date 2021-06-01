@@ -219,40 +219,50 @@ My doom configuration enables some modules that requires a few programs to be in
 ****** aspell
 Used for spellchecking
 ******* Windows
+TODO
 ******* MacOS
 #+begin_src sh :tangle mac.sh
 brew install aspell
 #+end_src
 ******* Ubuntu
+TODO
 ****** editorconfig
 Used for enforcing code formatting when not using something like Resharper
 ******* Windows
+TODO
 ******* MacOS
+TODO
 ******* Ubuntu
+TODO
 ****** markdown compiler
 I use the `npm` package `marked` for markdown compiler which enables markdown preview.
 ******* Windows
+TODO
 ******* MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 npm install -g marked
 #+end_src
 ******* Ubuntu
+TODO
 ****** jq
 ******* Windows
+TODO
 ******* MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install jq
 #+end_src
 ******* Ubuntu
+TODO
 ****** shellcheck
 This is used for shell script linting inside of emacs.
 ******* Windows
+TODO
 ******* MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install shellcheck
 #+end_src
 ******* Ubuntu
-
+TODO
 ***** Installation
 Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
 
