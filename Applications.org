@@ -152,9 +152,9 @@ Doom is a configuration framework for GNU Emacs tailored for Emacs bankruptcy ve
 #+end_quote
 **** Dependencies
 Installation is pretty straight forward. The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#install][docs]] do a great job of going into detail of how to install.
-****** Windows
+***** Windows
 It is known that emacs is slower when running on Windows. I currently do not use emacs on Windows machines. This is partly due to me not having a windows machine. This will be updated once I have a windows machine to setup. If you are interested in setting up Doom Emacs on Windows please see the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#on-windows][documentation]].
-****** MacOS
+***** MacOS
 There is some specific dependencies mentioned in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#on-macos][MacOS installation]] docs which we are setting up here.
 #+begin_src sh :tangle mac.sh :noweb yes
 # required dependencies
@@ -167,7 +167,7 @@ xcode-select --install
 <<clone_chemacs2>>
 #+end_src
 
-****** Ubuntu
+***** Ubuntu
 There a few challenges documented in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#ubuntu][Ubuntu installation]] docs. We are going to work around those now.
 ******* Git
 Doom requires git 2.28+
