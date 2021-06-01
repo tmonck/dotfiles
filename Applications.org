@@ -216,52 +216,53 @@ git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
 It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
 **** Additional dependencies
 My doom configuration enables some modules that requires a few programs to be installed on the OS.
-****** aspell
+***** aspell
 Used for spellchecking
-******* Windows
+****** Windows
 TODO
-******* MacOS
+
+****** MacOS
 #+begin_src sh :tangle mac.sh
 brew install aspell
 #+end_src
-******* Ubuntu
+****** Ubuntu
 TODO
-****** editorconfig
+***** editorconfig
 Used for enforcing code formatting when not using something like Resharper
-******* Windows
+****** Windows
 TODO
-******* MacOS
+****** MacOS
 TODO
-******* Ubuntu
+****** Ubuntu
 TODO
-****** markdown compiler
+***** markdown compiler
 I use the `npm` package `marked` for markdown compiler which enables markdown preview.
-******* Windows
+****** Windows
 TODO
-******* MacOS
+****** MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 npm install -g marked
 #+end_src
-******* Ubuntu
+****** Ubuntu
 TODO
-****** jq
-******* Windows
+***** jq
+****** Windows
 TODO
-******* MacOS
+****** MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install jq
 #+end_src
-******* Ubuntu
+****** Ubuntu
 TODO
-****** shellcheck
+***** shellcheck
 This is used for shell script linting inside of emacs.
-******* Windows
+****** Windows
 TODO
-******* MacOS
+****** MacOS
 #+begin_src sh :tangle mac.sh :padline 'no'
 brew install shellcheck
 #+end_src
-******* Ubuntu
+****** Ubuntu
 TODO
 ***** Installation
 Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
