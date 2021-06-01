@@ -338,6 +338,7 @@ choco install vscode
 brew install vscode
 #+end_src
 **** Ubuntu
+I do not use vs code at home
 **** Plugins that are useful
 There are many others which are helpful but these are the basics that I use. The others are framework and language specific which varies based upon what I am developing, as such they are not included in this list.
 ***** Vim
