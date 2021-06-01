@@ -126,6 +126,7 @@ brew install emacs-plus@28 # install Emacs 28
 
 ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
 
+# Check for ~/.emacs.d if exists move it before cloning the code
 if [ -d "$HOME/.emacs.d" ]
    then
        mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
@@ -138,7 +139,6 @@ Chemacs2 is useful for creating multiple emacs profiles. This allows you to have
 For more information regarding configuration and usage see the [[https://github.com/plexus/chemacs2][repo]].
 #+name: clone_chemacs2
 #+begin_src sh
-# Check for ~/.emacs.d if exists move it before cloning the code
 git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
 #+end_src
 
@@ -189,6 +189,9 @@ fi
 
 <<clone_chemacs2>>
 #+end_src
+
+#+RESULTS:
+
 ***** Clone
 Clone the doom configuration to my own custom directory. This allows me provide this in my chemacs2 configurations.
 
@@ -210,7 +213,7 @@ git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
 #+end_src
 ***** Configure
 It is easily configurable by modifying the `config.el`, `init.el`, and `packages.el` files which by default are stored in `~/.doom.d`. For further configuration information with doom checkout the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#configure][configure docs]]
-****** Customizations
+***** Additional dependencies
 My doom configuration enables some modules that requires a few programs to be installed on the OS.
 ******* aspell
 Used for spellchecking
