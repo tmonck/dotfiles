@@ -1,0 +1,7 @@
+#+TITLE: dotfiles
+#+AUTHOR: Tom Monck
+
+* Goals
+This is an attempt to organize my dotfiles for sharing across multiple machines. This should allow me to have a consistent experience across different machines when I use the same application.
+
+There will also be a repeatable process for setting up each type of machine I use. There should be scripts for machine setup generated from an org file.
