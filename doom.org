@@ -78,6 +78,7 @@ We start by simply defining the standard headers used by the three files. These 
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
 #+end_src
+#+html: </details>
 
 #+html: <details><summary>packages.el</summary>
 #+begin_src emacs-lisp :tangle testingThings/packages.el
@@ -133,6 +134,7 @@ We start by simply defining the standard headers used by the three files. These 
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 #+end_src
+#+html: </details>
 
 #+html: <details><summary>config.el</summary>
 #+begin_src emacs-lisp
@@ -200,6 +202,7 @@ We start by simply defining the standard headers used by the three files. These 
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 #+end_src
+#+html: </details>
 ** Doom Modules
 Doom ships with a lot of modules out of the box and these are configured in the =init.el=. The setup is clear and concise.
 #+begin_src emacs-lisp :tangle testingThings/init.el
