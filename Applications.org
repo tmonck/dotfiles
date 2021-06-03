@@ -142,7 +142,16 @@ if [ -d "$HOME/.emacs.d" ]
 fi
 #+end_src
 **** Ubuntu
-TODO
+Out of the box Ubuntu only provide Emacs 25.3. So we need to use snap to install the latest version.
+
+#+begin_src sh :tangle ubuntu.sh :noweb yes
+snap install emacs --classic
+
+if [ -d "$HOME/.emacs.d" ]
+   then
+       mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
+fi
+#+end_src
 
 *** Chemacs2
 Chemacs2 is useful for creating multiple emacs profiles. This allows you to have a `default` configuration that you know works and have others that you want to try out or tweak. I keep one profile for modifying my configuration prior to placing in my default. This allows me to see if it fits into my workflow or if I am missing packages.
@@ -191,7 +200,7 @@ xcode-select --install
 
 ***** Ubuntu
 There a few challenges documented in the [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#ubuntu][Ubuntu installation]] docs. We are going to work around those now.
-******* Git
+****** Git
 Doom requires git 2.28+
 
 #+begin_src sh :tangle ubuntu.sh
@@ -199,20 +208,9 @@ add-apt-repository ppa:git-core/ppa
 apt update
 apt install git
 #+end_src
-******* Emacs
-Out of the box Ubuntu only provide Emacs 25.3. So we need to use snap to install the latest version.
-
-#+begin_src sh :tangle ubuntu.sh :noweb yes
-snap install emacs --classic
-
-if [ -d "$HOME/.emacs.d" ]
-   then
-       mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
-fi
-#+end_src
-
-#+RESULTS:
-******* Other dependencies
+****** Emacs
+This one was handle above when we installed emacs itself.
+****** Other dependencies
 
 #+begin_src sh :tangle ubuntu.sh
 apt install ripgrep fd-find
@@ -321,11 +319,11 @@ doom install
 **** Doom utility
 The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#the-bindoom-utility][doom utility]] is extremely helpful as well as required for somethings to work. Some of the items I use on a regular basis are documented below.
 ***** Sync
-`doom sync`: This synchronizes your config with Doom Emacs. It ensures that needed packages are installed, orphaned packages are removed and necessary metadata correctly generated. Run this whenever you modify your doom! block or packages.el file. You’ll need doom sync -u if you override the recipe of package installed by another module.
+=doom sync=: This synchronizes your config with Doom Emacs. It ensures that needed packages are installed, orphaned packages are removed and necessary metadata correctly generated. Run this whenever you modify your doom! block or packages.el file. You’ll need doom sync -u if you override the recipe of package installed by another module.
 ***** Upgrade
-`doom upgrade`: Updates Doom Emacs (if available) and all its packages.
+=doom upgrade=: Updates Doom Emacs (if available) and all its packages.
 ***** Doctor
-`doom doctor`: If Doom misbehaves, the doc will diagnose common issues with your installation, system and environment.
+=doom doctor=: If Doom misbehaves, the doc will diagnose common issues with your installation, system and environment.
 *** VS Code
 This is a language agnostic IDE that is easily extensible with plugins.
 You can find their documentation [[https://code.visualstudio.com][here]].
