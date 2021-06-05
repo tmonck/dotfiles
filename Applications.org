@@ -92,7 +92,7 @@ Nothing to setup
 **** [[https://snapcraft.io][Snap]]
 Nothing to setup
 * Development Environment
-Depending on the operating system there is some programs that I find useful to have to complete my development environment.
+As most any developer I my own personal preferences when it comes to my development environment. Some of this preferences have been shaped by the programming languages I do/have written. In this section I setup any language specific needs, install some IDE's, and document some useful tools and plugins.
 
 ** Programming Languages
 I have some experience in the following languages. These are the ones I use the most so they will be setup on each computer in anticipation of doing some level of development in each.
