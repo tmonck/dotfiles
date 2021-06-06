@@ -153,6 +153,14 @@
   (require 'dap-node)
   (dap-node-setup))
 
+(after! js2-mode
+  (use-package! jest
+    :hook (js2-mode . jest-minor-mode)))
+
+;; (after! js2-mode
+;;   (use-package! jest-test-mode
+;;     :hook (js2-mode . jest-test-mode)))
+
 (use-package! vue-mode
   :mode "\\.vue\\'"
   :hook (vue-mode . lsp-deferred)

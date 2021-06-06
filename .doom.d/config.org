@@ -363,6 +363,49 @@ Configure javascript and enable debugging for it.
   (dap-node-setup))
 #+end_src
 
+*** Jest
+Jest is a test runner which I use frequently in JS/TS applications. Lets configure it for now with JS.
+
+Thus far I have found 2 packages [[https://github.com/Emiller88/emacs-jest][emacs-jest]] and [[https://github.com/rymndhng/jest-test-mode][jest-test-mode]]. We will be evaluating both to see which one fits in best with my workflow and configuration. One requirement is that it allows for debugging with =dap-mode=.
+
+**** emacs-jest
+#+begin_src emacs-lisp
+(after! js2-mode
+  (use-package! jest
+    :hook (js2-mode . jest-minor-mode)))
+#+end_src
+
+***** Functions for Jest minor mode
+I am currently unsure if these have keybindings. If they do I will update this with proper keybindings for doom. If not we will bind some of the more useful ones.
+
+- =jest= run all tests
+- =jest-file= run all tests in current file
+- =jest-file-dwim= do what i mean for the current file???
+- =jest-function= run the test where the pointer is, falls back to the current file
+- =jest-last-failed= rerun previous failures
+- =jest-repeat= repeat the last invocation.
+**** jest-test-mode
+This package is not yet installed so when the time comes need to add to =packages.el=
+=(package! jest-test-mode)=
+
+This is an attempt convert the example from the repo into the format like the other setups I have this may not work and would need to copy the use-package block from the repo.
+
+#+begin_src emacs-lisp
+;; (after! js2-mode
+;;   (use-package! jest-test-mode
+;;     :hook (js2-mode . jest-test-mode)))
+#+end_src
+***** Keybindings
+
+   | Binding     | Action                                                           |
+   |-------------+------------------------------------------------------------------|
+   | ~C-c C-t n~   | Runs tests in the current buffer.                                |
+   | ~C-c C-t p~   | Runs all tests in the project.                                   |
+   | ~C-c C-t t~   | Runs the describe block at the current point.                    |
+   | ~C-c C-t a~   | Re-runs the previous test command.                               |
+   | ~C-c C-t d n~ | Runs tests in the current buffer with node debugger.             |
+   | ~C-c C-t d t~ | Runs the describe block at the current point with node debugger. |
+   | ~C-c C-t d a~ | Re-runs the previous test command with node debugger.            |
 ** Vue
 Configure Vue.js
 #+begin_src emacs-lisp
