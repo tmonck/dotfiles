@@ -553,9 +553,18 @@ Just in case I need some short cuts to a actions that don't already have binding
 One thing that is great is the ability to step through some code when encountering an issue. In order for this to work in emacs there is some configuration required. Lets go ahead and do that now.
 
 First up is =dap-mode=. =dap-mode= does need =lsp-mode= running in order to work but we will configure =lsp= in a later section when we get to programming languages.
+
+Let's install the package this will be placed into the packages.el file.
 #+begin_src emacs-lisp :tangle testingThings/packages.el
 (package! dap-mode)
 #+end_src
+
+Now let's configure it some. I use the default configurations while I am playing around with =dap-mode= but you can customize the items you want to see.
+
+- sessions - adds the sessions buffer to the window layout on the right hand side.
+- locals - adds the locals buffer to the window layout on the right hand side.
+- controls - adds a floating control bar that provides you buttons you can click to perform actions like step into, step over, continue, and stop /NOTE this requires emacs 26+/
+- tooltip - adds tooltips on mouse hover.
 
 #+begin_src emacs-lisp
 (use-package! dap-mode)
