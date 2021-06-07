@@ -25,11 +25,9 @@
   - [[#default-directory][Default directory]]
   - [[#org-mode-styling][Org mode styling]]
   - [[#org-journal][Org-Journal]]
-  - [[#org-agenda][Org-Agenda]]
   - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
   - [[#after-org-loads][After org loads]]
 - [[#custom-keybindings][Custom keybindings]]
-- [[#calendar][Calendar]]
 - [[#debugging][Debugging]]
   - [[#launching-the-debugger][Launching the debugger]]
   - [[#adding-breakpoints][Adding breakpoints]]
@@ -465,7 +463,7 @@ Lets add some keybindings to make creation of journal entries a little easier. Y
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 #+END_SRC
-** Org-Agenda
+# ** Org-Agenda
 ** Auto tangle org mode files
 While it's easy to use the `org-babel-tangle` function or it's keybinding `C-c C-v t`. This requires me to remember to do this each time I make a modification to my org file. It would be nice if it was done on save automatically. There is useful package specifically designed for this purpose [[https://github.com/yilkalargaw/org-auto-tangle][org-auto-tangle]].
 
@@ -547,8 +545,8 @@ Some helpful functions to know
 
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings and don't belong any other areas. Most of the keybindings should be defined by their corresponding modes.
-* Calendar
-# TODO: This is something i want to make work with outlook work calendar
+# * Calendar
+# # TODO: This is something i want to make work with outlook work calendar
 * Debugging
 One thing that is great is the ability to step through some code when encountering an issue. In order for this to work in emacs there is some configuration required. Lets go ahead and do that now.
 
