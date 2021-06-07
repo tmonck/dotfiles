@@ -33,6 +33,8 @@
 - [[#debugging][Debugging]]
   - [[#launching-the-debugger][Launching the debugger]]
   - [[#adding-breakpoints][Adding breakpoints]]
+  - [[#dap-hydra][dap-hydra]]
+  - [[#keybindings][Keybindings]]
   - [[#customizing-debug-template][Customizing debug template]]
 - [[#languages][Languages]]
   - [[#lsp-mode][lsp-mode]]
@@ -544,7 +546,7 @@ Some helpful functions to know
 - org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
 
 * Custom keybindings
-Just in case I need some short cuts to a actions that don't already have bindings
+Just in case I need some short cuts to a actions that don't already have bindings and don't belong any other areas. Most of the keybindings should be defined by their corresponding modes.
 * Calendar
 # TODO: This is something i want to make work with outlook work calendar
 * Debugging
@@ -560,28 +562,48 @@ First up is =dap-mode=. =dap-mode= does need =lsp-mode= running in order to work
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 #+end_src
 ** Launching the debugger
-To launch the debugger using dap mode the following commands are available.
+To launch the debugger using dap mode the following commands are available. Descriptions of the functions can be found in the table below where I specific the keybindings I'm going to setup.
 
-- dap-debug: Select a template to execute
-- dap-debug-last: Run most recent template
-- dap-debug-recent: Select a recent template to run
-- dap-disconnect: Disconnect from existing sessions
-- dap-delete-session: Remove DEBUG-SESSION
-- dap-delete-all-sessions: Terminate/Remove all sessions
+- dap-debug
+- dap-debug-last
+- dap-debug-recent
+- dap-disconnect
+- dap-delete-session
+- dap-delete-all-sessions
 ** Adding breakpoints
-- dap-breakpoint-add: dd breakpoint opn current line.
-- dap-breakpoint-toggle: Toggle breakpoint on current line.
+- dap-breakpoint-add
+- dap-breakpoint-toggle
 
 Some other breakpoint commands which may come in handy as time goes on.
 
-- dap-breakpoint-hit-condtion: Set breakpoint hit condition for the breakpoint at point.
-- dap-breakpoint-condtion: Set breakpoint condition for the breakpoint at point.
-- dap-breakpoint-log-message: Set breakpoint log message for the breakpoint at point.
-- dap-breakpoint-delete: Delete breakpoint on the current line.
-- dap-breakpoint-delete-all: Delete all breakpoints.
+- dap-breakpoint-hit-condtion
+- dap-breakpoint-condtion
+- dap-breakpoint-log-message
+- dap-breakpoint-delete
+- dap-breakpoint-delete-all
 
+** dap-hydra
+Running =dap-hydra= allows you to use keys to perform several of the normal debugging actions you would take in most IDEs like step in, step over (next), continue, etc. It will pop open a menu in the modeline showing you all the commands and their corresponding keys. This is extremely useful.
+
+When =dap-hydra= is running it will receive all keystrokes so make sure when you are done with it you press =q= this will quit =dap-hydra=.
+** Keybindings
 Lets put these useful commands in easy to use keybindings. =SPC d=
 
+| Function                     | Description                                               | Keybinding  |
+| dap-debug                    | Select a template to execute                              | =SPC d d n= |
+| dap-debug-last               | Run last executed template                                | =SPC d d l= |
+| dap-debug-recent             | Select a template from the most recently ran templates    | =SPC d d r= |
+| dap-disconnect               | Disconnect the current debug session                      | =SPC d d d= |
+| dap-delete-session           | Remove the current debug session buffer                   | =SPC d s d= |
+| dap-delete-all-sessions      | Terminate/Remove all the sessions and buffers             | =SPC d s D= |
+| dap-breakpoint-add           | Add a breakpoint on the current line                      | =SPC d b a= |
+| dap-breakpoint-toggle        | Toggle breakpoint on current line                         | =SPC d b t= |
+| dap-breakpoint-condition     | Set breakpoint condition for the breakpoint at cursor     | =SPC d b c= |
+| dap-breakpoint-hit-condition | Set breakpoint hit condition for the breakpoint at point. | =SPC d b h= |
+| dap-breakpoint-log-message   | Set breakpoint log message for the breakpoint at point.   | =SPC d b l= |
+| dap-breakpoint-delete        | Delete breakpoint on the current line.                    | =SPC d b d= |
+| dap-breakpoint-delete-all    | Delete all breakpoints.                                   | =SPC d b D= |
+| dap-hydra                    | Runs dap-hydra                                            | =SPC d h=   |
 #+begin_src emacs-lisp
 (after! dap-mode
   (map! :leader
