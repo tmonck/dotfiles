@@ -72,7 +72,7 @@ Let's make the theme look like we want and we like it dark!
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
-(setq doom-theme 'doom-acario-dark)
+(setq doom-theme 'doom-dark+)
 #+END_SRC
 
 ** Fullscreen
@@ -384,6 +384,16 @@ I am currently unsure if these have keybindings. If they do I will update this w
 - =jest-function= run the test where the pointer is, falls back to the current file
 - =jest-last-failed= rerun previous failures
 - =jest-repeat= repeat the last invocation.
+***** Findings of usage
+It looks like =emacs-jest= executes =npm test --= with a few different parameters which means that you would need to ensure in your package.json you have =test= script.
+
+There is the custom variable =jest-executable= which we can use to override the command. Perhaps we adjust this to execute the jest binary in =node_modules= of the current project. If we do this what happens to the other parameters the module generates?
+
+#+begin_src emacs-lisp
+;; (setq jest-executable "/usr/local/bin/node ./node_modules/.bin/jest ")
+#+end_src
+The jest plugin for vs code executes =/usr/local/bin/node ./node_modules/.bin/jest <filename> -c <path to jest config> -t <test name> -- runInBand=. I wonder if we can make =emacs-jest= generate something like that
+
 **** jest-test-mode
 This package is not yet installed so when the time comes need to add to =packages.el=
 =(package! jest-test-mode)=
@@ -397,8 +407,8 @@ This is an attempt convert the example from the repo into the format like the ot
 #+end_src
 ***** Keybindings
 
-   | Binding     | Action                                                           |
-   |-------------+------------------------------------------------------------------|
+   | Binding       | Action                                                           |
+   |---------------+------------------------------------------------------------------|
    | ~C-c C-t n~   | Runs tests in the current buffer.                                |
    | ~C-c C-t p~   | Runs all tests in the project.                                   |
    | ~C-c C-t t~   | Runs the describe block at the current point.                    |
