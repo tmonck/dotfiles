@@ -14,7 +14,10 @@
   - [[#org-mode-styling][Org mode styling]]
   - [[#org-journal][Org-Journal]]
   - [[#org-agenda][Org-Agenda]]
+  - [[#org-roam][org-roam]]
   - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
+  - [[#export-to-confluence][Export to confluence]]
+  - [[#org-jira][org-jira]]
   - [[#after-org-loads][After org loads]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#calendar][Calendar]]
@@ -28,6 +31,7 @@
   - [[#typescript][Typescript]]
   - [[#javascript][Javascript]]
   - [[#vue][Vue]]
+- [[#workspaces-and-projects][Workspaces and Projects]]
 - [[#just-some-helpful-things-that-were-in-the-default-configel][Just some helpful things that were in the default config.el]]
 
 * Me
@@ -154,6 +158,65 @@ Lets add some keybindings to make creation of journal entries a little easier. Y
 #+END_SRC
 
 ** Org-Agenda
+** org-roam
+org-roam enchances org capture and allows you to quickly and efficiently search and find notes. It also allows linking an finding what a note is linked to much faster.
+
+Depending on your flavor of Emacs there is a few different ways to install this org-roam and I would point you the repo [[https://github.com/org-roam/org-roam][to the repository]] for information on how to install.
+
+
+First thing to do is to set the org-roam directory.
+#+begin_src emacs-lisp
+(use-package! org-roam
+  :ensure t
+  :init
+  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-v2-ack 't)
+  )
+#+end_src
+
+*** Capture templates
+To make life easier we are going to make some custom templates that will allow us to work a little faster.
+#+begin_src emacs-lisp
+(setq org-roam-capture-templates
+'(("d" "default" plain
+   "%?"
+   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+  :unnarrowed t)
+ ("l" "programing languages" plain
+   "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n*Reference:\n\n"
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+  :unnarrowed t)
+ ("p" "project" plain
+  "* Goals\n\n%?\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates"
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+  :unnarrowed t)
+ ))
+#+end_src
+
+*** Dailies (Replacing org-journals)
+Lets setup org-roam-dailies
+#+begin_src emacs-lisp
+(setq org-roam-dailies-directory "journals/")
+#+end_src
+
+*** Lets setup some keybindings for org-roam that will make life easier.
+#+begin_src emacs-lisp
+(after! org-roam
+  (map! :leader
+        (:prefix-map ("r" . "org-roam")
+         (:prefix-map ("n" . "new")
+          (:prefix-map ("d" . "dailies")
+           :desc "Today" "c" #'org-roam-dailies-capture-today
+           :desc "Tomorrow" "t" #'org-roam-dailies-capture-tomorrow
+           :desc "Yesterday" "y" #'org-roam-dailies-capture-yesterday)
+          (:prefix-map ("n" . "notes")
+           :desc "Find" "f" #'org-roam-node-find
+           :desc "Insert" "i" #'org-roam-node-insert)
+          ))))
+#+end_src
+
+#+RESULTS:
+
 ** Auto tangle org mode files
 While it's easy to use the `org-babel-tangle` function or it's keybinding `C-c C-v t`. This requires me to remember to do this each time I make a modification to my org file. It would be nice if it was done on save automatically. There is useful package specifically designed for this purpose [[https://github.com/yilkalargaw/org-auto-tangle][org-auto-tangle]].
 
@@ -166,6 +229,25 @@ While it's easy to use the `org-babel-tangle` function or it's keybinding `C-c C
 #+end_src
 
 To disable auto tangle on specific files just place `#+auto_tangle: nil` at the top of the org file
+** Export to confluence
+Since we all know Atlassian products, while good, just don't support org files nor do they really like markdown in Confluence. Thank to https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el there is an option to now write your Confluence pages in org and have limited formating issues.
+
+#+begin_src emacs-lisp
+(require 'ox-confluence)
+#+end_src
+** org-jira
+This seems like it might be useful but need to play around with it some before determining that.
+#+begin_src emacs-lisp
+(use-package! org-jira)
+(setq org-jira-working-dir "~/org/jira")
+(setq jiralib-url "https://work.dudesoln.com/")
+#+end_src
+
+#+begin_src emacs-lisp
+(after! auth-source
+  (setq auth-sources (nreverse auth-sources)))
+#+end_src
+
 
 ** After org loads
 *** Hide the Org mark up indicators
@@ -425,6 +507,11 @@ Configure Vue.js
   :config
   (require 'dap-node)
   (dap-node-setup))
+#+end_src
+* Workspaces and Projects
+Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.
+#+begin_src emacs-lisp
+(setq workspaces-on-switch-project-behavior 't)
 #+end_src
 
 * Just some helpful things that were in the default config.el

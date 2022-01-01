@@ -26,6 +26,7 @@
   - [[#org-mode-styling][Org mode styling]]
   - [[#org-journal][Org-Journal]]
   - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
+  - [[#org-roam][org-roam]]
   - [[#after-org-loads][After org loads]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#debugging][Debugging]]
@@ -338,7 +339,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       (org +pretty +journal +pandoc)               ; organize your plain life in plain text
+       (org +pretty +journal +pandoc +roam2)               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -480,6 +481,8 @@ While it's easy to use the `org-babel-tangle` function or it's keybinding `C-c C
 #+end_src
 
 To disable auto tangle on specific files just place `#+auto_tangle: nil` at the top of the org file
+** org-roam
+
 ** After org loads
 *** Hide the Org mark up indicators
 I like seeing the emphasis markers but if you don't just uncomment this block. This will hide the prefix and suffix characters used when making items bold, italic, etc

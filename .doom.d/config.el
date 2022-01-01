@@ -64,11 +64,57 @@
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
+(use-package! org-roam
+  :ensure t
+  :init
+  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-v2-ack 't)
+  )
+
+(setq org-roam-capture-templates
+'(("d" "default" plain
+   "%?"
+   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+  :unnarrowed t)
+ ("l" "programing languages" plain
+   "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n*Reference:\n\n"
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+  :unnarrowed t)
+ ("p" "project" plain
+  "* Goals\n\n%?\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates"
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+  :unnarrowed t)
+ ))
+
+(setq org-roam-dailies-directory "journals/")
+
+(after! org-roam
+  (map! :leader
+        (:prefix-map ("r" . "org-roam")
+         (:prefix-map ("n" . "new")
+          (:prefix-map ("d" . "dailies")
+           :desc "Today" "c" #'org-roam-dailies-capture-today
+           :desc "Tomorrow" "t" #'org-roam-dailies-capture-tomorrow
+           :desc "Yesterday" "y" #'org-roam-dailies-capture-yesterday)
+          (:prefix-map ("n" . "notes")
+           :desc "Find" "f" #'org-roam-node-find
+           :desc "Insert" "i" #'org-roam-node-insert)
+          ))))
+
 (use-package! org-auto-tangle
   :defer t
   :hook (org-mode . org-auto-tangle-mode)
   :config
   (setq org-auto-tangle-default t))
+
+(require 'ox-confluence)
+
+(use-package! org-jira)
+(setq org-jira-working-dir "~/org/jira")
+(setq jiralib-url "https://work.dudesoln.com/")
+
+(after! auth-source
+  (setq auth-sources (nreverse auth-sources)))
 
 ;; (after! org (setq org-hide-emphasis-markers t))
 
@@ -169,6 +215,8 @@
   :config
   (require 'dap-node)
   (dap-node-setup))
+
+(setq workspaces-on-switch-project-behavior 't)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
