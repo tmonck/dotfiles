@@ -5,7 +5,6 @@
 #+property: header-args :mkdirp yes :comments no
 #+startup: fold
 :END:
-
 #+TITLE: Literate Configuration
 #+AUTHOR: Tom Monck
 
