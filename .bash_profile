@@ -1,3 +1,5 @@
+[[ "$(uname -s)" == "Darwin" && -s ~/.bashrc ]] && source ~/.bashrc
+
 infiniteCurl() {
     while true; do curl $1; done
 }
@@ -13,15 +15,6 @@ setTabTitle() {
 minidocker() {
   eval $(minikube docker-env)
 }
-
-case $(uname -s) in
-Darwin)
-  if [ -f /usr/local/opt/coreutils/libexec/gnubin/ls ];
-  then
-    alias ls="/usr/local/opt/coreutils/libexec/gnubin/ls"
-  fi
-  ;;
-esac
 
 if [ -f ~/.trapd00r_colors ]; then
   if command -v gdircolors;

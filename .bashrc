@@ -1,4 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bashrc: executed by bash(1) for nn-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -85,9 +85,13 @@ if [ -f ~/.bash_colors ]; then
   . ~/.bash_colors
 fi
 
-# Set colors for bash (pretty!!)
-if [ -f ~/.bash_profile ]; then
-  . ~/.bash_profile
+if [ -f ~/.trapd00r_colors ]; then
+  if command -v gdircolors;
+  then
+    eval `gdircolors ~/.trapd00r_colors`
+  else
+    eval `dircolors ~/.trapd00r_colors`
+  fi
 fi
 
 # enable programmable completion features (you don't need to enable
