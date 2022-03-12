@@ -22,4 +22,4 @@ jobs:
           branch: setupScripts
           force_orphan: true
           files: '**/Applications.org'
-          keep_files: mac.sh, ubuntu.sh, windows.ps1
+          keep_files: false
