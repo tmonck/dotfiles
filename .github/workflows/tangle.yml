@@ -2,7 +2,7 @@ name: Generate Helper Scripts
 on:
   push:
     branches-ignore:
-      - 'doomorgfile'
+      - 'master'
 jobs:
   tangle:
     runs-on: ubuntu-latest
