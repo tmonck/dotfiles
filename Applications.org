@@ -520,6 +520,6 @@ snap install slack --classic
 Nope
 *** MacOS
 *** Ubuntu
-#+begin_src sh
+#+begin_src sh :tangle setupScripts/ubuntu.sh
 sudo snap install discord
 #+end_src

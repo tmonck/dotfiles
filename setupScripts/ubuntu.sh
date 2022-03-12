@@ -50,3 +50,5 @@ cp -a $HOME/mydoom $HOME/backupdoom
 sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
 
 snap install slack --classic
+
+sudo snap install discord
