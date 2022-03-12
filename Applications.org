@@ -127,8 +127,8 @@ Seems kind of redundant to talk about but we first need to install dotnet sdk an
 #+begin_src sh :tangle ubuntu.sh
 wget https://dot.net/v1/dotnet-install.sh -P ./bin
 export PATH=$PATH:$PWD/bin
-# dotnet-install.sh -c 6.0
-dotnet-install.sh -c 5.0
+dotnet-install.sh -c 6.0
+#dotnet-install.sh -c 5.0
 #+end_src
 
 ***** Mono
@@ -420,15 +420,14 @@ Microsoft's .NET IDE. More information is [[https://visualstudio.microsoft.com][
 **** Rider
 Another .NET specific IDE. This IDE is cross-platform and has some of the helpful plugins for Visual Studio built in. For more information about Rider go [[https://jetbrains.com/rider][here]].
 
-#+begin_src sh
-# TODO: This is the url
-# https://data.services.jetbrains.com/products/releases?code=RD&latest=true
-# Thiat url will tell us what version is the latest and we can download for each OS .
+It's recommended to install things from the toolbox from JetBrains so let's install that.
+#+begin_src sh :tangle ubuntu.sh
+sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
 #+end_src
 **** Resharper
 A tool for enforcing coding standards, assists with finding code smells, and some helpful editing features. For more information about Resharper go [[https://jetbrains.com/resharper][here]]. I use this when I have Visual Studio installed.
 **** DotCover
-A tool for measuring unit test coverage in .NET Applications.
+A tool for measuring unit test coverage in .NET Applications. This can be installed from the toolbox
 ** Additional applications that assist with development
 *** Docker
 I use this specifically for creating OCI compliant images for running containerized applications.
