@@ -1,0 +1,535 @@
+#+TITLE: Literate Configuration
+#+AUTHOR: Tom Monck
+
+* Table Of Contents :TOC:
+- [[#me][Me]]
+- [[#customize-the-look-and-feel][Customize the look and feel]]
+  - [[#fonts][Fonts]]
+  - [[#theme][Theme]]
+  - [[#fullscreen][Fullscreen]]
+- [[#magit][Magit]]
+- [[#line-numbers][Line numbers]]
+- [[#org-mode-configuration][Org Mode Configuration]]
+  - [[#default-directory][Default directory]]
+  - [[#org-mode-styling][Org mode styling]]
+  - [[#org-journal][Org-Journal]]
+  - [[#org-agenda][Org-Agenda]]
+  - [[#org-roam][org-roam]]
+  - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
+  - [[#export-to-confluence][Export to confluence]]
+  - [[#org-jira][org-jira]]
+  - [[#after-org-loads][After org loads]]
+- [[#custom-keybindings][Custom keybindings]]
+- [[#calendar][Calendar]]
+- [[#debugging][Debugging]]
+  - [[#launching-the-debugger][Launching the debugger]]
+  - [[#adding-breakpoints][Adding breakpoints]]
+  - [[#customizing-debug-template][Customizing debug template]]
+- [[#languages][Languages]]
+  - [[#lsp-mode][lsp-mode]]
+  - [[#lsp-ui][lsp-ui]]
+  - [[#typescript][Typescript]]
+  - [[#javascript][Javascript]]
+  - [[#vue][Vue]]
+- [[#workspaces-and-projects][Workspaces and Projects]]
+- [[#just-some-helpful-things-that-were-in-the-default-configel][Just some helpful things that were in the default config.el]]
+
+* Me
+
+It's nice to know who you are especially for git commits and such. It's recommended to fill out this section
+
+#+BEGIN_SRC emacs-lisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+;; Place your private configuration here! Remember, you do not need to run 'doom
+;; sync' after modifying this file!
+
+;; Some functionality uses this to identify you, e.g. GPG configuration, email
+;; clients, file templates and snippets.
+(setq user-full-name "Tom Monck"
+      user-mail-address "tom.monck@dudesolutions.com")
+#+END_SRC
+
+* Customize the look and feel
+** Fonts
+
+For customizing the fonts in the display
+#+BEGIN_SRC emacs-lisp
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;; are the three important ones:
+;;
+;; + `doom-font'
+;; + `doom-variable-pitch-font'
+;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;;
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string. You generally only need these two:
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+#+END_SRC
+
+** Theme
+
+Let's make the theme look like we want and we like it dark!
+#+BEGIN_SRC emacs-lisp
+;; There are two ways to load a theme. Both assume the theme is installed and
+;; available. You can either set `doom-theme' or manually load a theme with the
+;; `load-theme' function. The is the default: doom-one
+(setq doom-theme 'doom-dark+)
+#+END_SRC
+
+** Fullscreen
+
+#+BEGIN_SRC emacs-lisp
+(if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
+    (toggle-frame-maximized)
+  (toggle-frame-fullscreen))
+#+END_SRC
+
+* Magit
+
+Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
+
+#+BEGIN_SRC emacs-lisp
+;; Set magit to full screen
+(setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
+#+END_SRC
+
+* Line numbers
+
+Line numbers are helpful and relative line numbers are even better.
+#+BEGIN_SRC emacs-lisp
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type `relative)
+#+END_SRC
+
+* Org Mode Configuration
+** Default directory
+
+We want a default file location for our org files. Let's define that here.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-directory "~/org/")
+#+END_SRC
+
+** Org mode styling
+
+A couple of UI tweaks to make things a little more friendly in org-mode.
+#+begin_src emacs-lisp
+(after! org
+  (setq org-fontify-done-headline nil))
+#+end_src
+
+** Org-Journal
+
+Lets start by defining the directory where we want to store our journals
+#+begin_src emacs-lisp
+(setq org-journal-dir "~/org/journal/")
+#+end_src
+
+Now we can start modifying some of the org journal variables. Some of the variables are using in the journal templates as such I recommend looking at what each variable means.
+
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (setq org-journal-file-format "%Y%m%d"
+      org-journal-date-format "%A, %d %B %Y"
+      org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
+      org-journal-file-header "#+TITLE: Daily Journal\n"
+      org-journal-enable-agenda-integration 't))
+#+END_SRC
+
+Lets add some keybindings to make creation of journal entries a little easier. You can go full bore with this and add all org-journal commands you frequently use below.
+
+#+BEGIN_SRC emacs-lisp
+(after! org
+  (map! :leader
+        (:prefix-map ("j" . "org-journal")
+         (:prefix-map ("n" . "new entries")
+          :desc "New journal entry" "n" #'org-journal-new-entry
+          :desc "New date journal entry" "d" #'org-journal-new-date-entry
+          :desc "New scheduled journal entry" "s" #'org-journal-new-scheduled-entry)
+         (:prefix-map ("o" . "open entries")
+          :desc "Current journal entry" "c" #'org-journal-open-current-journal-file
+          :desc "Previous journal entry" "p" #'org-journal-open-previous-entry
+          :desc "Next journal entry" "n" #'org-journal-open-next-entry)
+         :desc "Search journal entry" "s" #'org-journal-search-entry)))
+#+END_SRC
+
+** Org-Agenda
+** org-roam
+org-roam enchances org capture and allows you to quickly and efficiently search and find notes. It also allows linking an finding what a note is linked to much faster.
+
+Depending on your flavor of Emacs there is a few different ways to install this org-roam and I would point you the repo [[https://github.com/org-roam/org-roam][to the repository]] for information on how to install.
+
+
+First thing to do is to set the org-roam directory.
+#+begin_src emacs-lisp
+(use-package! org-roam
+  :ensure t
+  :init
+  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-v2-ack 't)
+  )
+#+end_src
+
+*** Capture templates
+To make life easier we are going to make some custom templates that will allow us to work a little faster.
+#+begin_src emacs-lisp
+(setq org-roam-capture-templates
+'(("d" "default" plain
+   "%?"
+   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+  :unnarrowed t)
+ ("l" "programing languages" plain
+   "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n*Reference:\n\n"
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+  :unnarrowed t)
+ ("p" "project" plain
+  "* Goals\n\n%?\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates"
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+  :unnarrowed t)
+ ))
+#+end_src
+
+*** Dailies (Replacing org-journals)
+Lets setup org-roam-dailies
+#+begin_src emacs-lisp
+(setq org-roam-dailies-directory "journals/")
+#+end_src
+
+*** Lets setup some keybindings for org-roam that will make life easier.
+#+begin_src emacs-lisp
+(after! org-roam
+  (map! :leader
+        (:prefix-map ("r" . "org-roam")
+         (:prefix-map ("n" . "new")
+          (:prefix-map ("d" . "dailies")
+           :desc "Today" "c" #'org-roam-dailies-capture-today
+           :desc "Tomorrow" "t" #'org-roam-dailies-capture-tomorrow
+           :desc "Yesterday" "y" #'org-roam-dailies-capture-yesterday)
+          (:prefix-map ("n" . "notes")
+           :desc "Find" "f" #'org-roam-node-find
+           :desc "Insert" "i" #'org-roam-node-insert)
+          ))))
+#+end_src
+
+#+RESULTS:
+
+** Auto tangle org mode files
+While it's easy to use the `org-babel-tangle` function or it's keybinding `C-c C-v t`. This requires me to remember to do this each time I make a modification to my org file. It would be nice if it was done on save automatically. There is useful package specifically designed for this purpose [[https://github.com/yilkalargaw/org-auto-tangle][org-auto-tangle]].
+
+#+begin_src emacs-lisp
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t))
+#+end_src
+
+To disable auto tangle on specific files just place `#+auto_tangle: nil` at the top of the org file
+** Export to confluence
+Since we all know Atlassian products, while good, just don't support org files nor do they really like markdown in Confluence. Thank to https://github.com/aspiers/orgmode/blob/master/contrib/lisp/ox-confluence.el there is an option to now write your Confluence pages in org and have limited formating issues.
+
+#+begin_src emacs-lisp
+(require 'ox-confluence)
+#+end_src
+** org-jira
+This seems like it might be useful but need to play around with it some before determining that.
+#+begin_src emacs-lisp
+(use-package! org-jira)
+(setq org-jira-working-dir "~/org/jira")
+(setq jiralib-url "https://work.dudesoln.com/")
+#+end_src
+
+#+begin_src emacs-lisp
+(after! auth-source
+  (setq auth-sources (nreverse auth-sources)))
+#+end_src
+
+
+** After org loads
+*** Hide the Org mark up indicators
+
+I like seeing the emphasis markers but if you don't just uncomment this block. This will hide the prefix and suffix characters used when making items bold, italic, etc
+
+#+BEGIN_SRC emacs-lisp
+;; (after! org (setq org-hide-emphasis-markers t))
+#+END_SRC
+
+*** Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
+
+#+BEGIN_SRC emacs-lisp
+;; (after! org
+  ;; (setq org-log-done t)
+  ;; (setq org-log-into-drawer t)0
+#+END_SRC
+
+*** Custom structure templates
+
+In order to work around the update with org-version 9.2 change to the structure template expansion
+
+#+begin_quote
+Change in the structure template expansion
+
+Org 9.2 comes with a new template expansion mechanism, combining org-insert-structure-template bound to C-c C-,.
+
+If you customized the org-structure-template-alist option manually, you probably need to udpate it, see the docstring for accepted values.
+
+If you prefer using previous patterns, e.g. <s, you can activate them again by requiring Org Tempo library:
+#+end_quote
+
+#+begin_src emacs-lisp
+(when (version<= "9.2" (org-version))
+    (require 'org-tempo))
+#+end_src
+
+Adding some handy structure templates to save a few keystrokes when adding code blocks in org mode.
+
+#+begin_src emacs-lisp
+(after! org
+  (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
+  (add-to-list 'org-structure-template-alist '("js" . "src js"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python")))
+#+end_src
+
+*** Pandoc
+
+`org-pandoc-import` has a dependency of `pandoc`. This is available via `brew` and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
+
+#+begin_src emacs-lisp
+(use-package! org-pandoc-import :after org)
+#+end_src
+
+Some helpful functions to know
+# TODO: Need to add keybindings in a future commit
+- org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
+- org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
+
+* Custom keybindings
+Just in case I need some short cuts to a actions that don't already have bindings
+
+* Calendar
+# TODO: This is something i want to make work with outlook work calendar
+
+* Debugging
+Let's configure dap-mode and get to stepping through some code.
+
+#+begin_src emacs-lisp
+(use-package dap-mode)
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+#+end_src
+
+** Launching the debugger
+To launch the debugger using dap mode the following commands are available.
+
+- dap-debug: Select a template to execute
+- dap-debug-last: Run most recent template
+- dap-debug-recent: Select a recent template to run
+- dap-disconnect: Disconnect from existing sessions
+- dap-delete-session: Remove DEBUG-SESSION
+- dap-delete-all-sessions: Terminate/Remove all sessions
+
+** Adding breakpoints
+- dap-breakpoint-add: dd breakpoint opn current line.
+- dap-breakpoint-toggle: Toggle breakpoint on current line.
+
+Some other breakpoint commands which may come in handy as time goes on.
+
+- dap-breakpoint-hit-condtion: Set breakpoint hit condition for the breakpoint at point.
+- dap-breakpoint-condtion: Set breakpoint condition for the breakpoint at point.
+- dap-breakpoint-log-message: Set breakpoint log message for the breakpoint at point.
+- dap-breakpoint-delete: Delete breakpoint on the current line.
+- dap-breakpoint-delete-all: Delete all breakpoints.
+
+Lets put these useful commands in easy to use keybindings. SPC d
+#+begin_src emacs-lisp
+(after! dap-mode
+  (map! :leader
+        (:prefix-map ("d" . "dap commands")
+        (:prefix-map ("d" . "dap-debug commands")
+         :desc "Select a debug template to execute" "n" #'dap-debug
+         :desc "Run most recently executed templated" "l" #'dap-debug-last
+         :desc "Select a recent template to run" "r" #'dap-debug-recent
+         :desc "Disconnect from current session" "d" #'dap-disconnect)
+        (:prefix-map ("s" . "dap-debug session commands")
+         :desc "Delete current session bufer" "d" #'dap-delete-session
+         :desc "Delete all session buffers" "D" #'dap-delete-all-sessions)
+        (:prefix-map ("b" . "dap-breakpoint commands")
+         :desc "Add breakpoint" "a" #'dap-breakpoint-added
+         :desc "Toggle breakpoint" "t" #'dap-breakpoint-toggle
+         :desc "Add breakpoint condition" "c" #'dap-breakpoint-condition
+         :desc "Add breakpoint hit condition" "h" #'dap-breakpoint-hit-condition
+         :desc "Add breadkpoint log message" "l" #'dap-breakpoint-log-message
+         :desc "Delete breakpoint" "d" #'dap-breakpoint-delete
+         :desc "Delete all breakpoints" "D" #'dap-breakpoint-delete-all)
+        :desc "dap-hydra" "h" #'dap-hydra)))
+#+end_src
+
+** Customizing debug template
+We can change our debug templates manually by way of `dap-debug-edit-template`. These are globally defined which may not be helpful in most cases. The below is an example of how to configure a template. It would be best if you added a debug.el file to your project root and define the custom templates there.
+
+Look at the [[https://emacs-lsp.github.io/dap-mode/page/configuration/#dap-mode-configuration][dap-mode documentation]] for further information regarding configuration as this changes based upon language.
+
+#+begin_src emacs-lisp
+;; (dap-register-debug-template
+;;  "Debug Server"
+;;  (list :type "node"
+;;        :request "launch"
+;;        :program "${workspaceFolder}/path/to/program"
+;;        :outFiles ["${workspaceFolder/path/to/out/files}"]
+;;        :name "Debug Server")
+;;  )
+#+end_src
+
+*** VSCode launch.json
+If you have already have a .vscode directory with existing launch.json files which contain run commands. These will automatically be visiable in the list of templates when you run dap-debug.
+
+* Languages
+** lsp-mode
+/Text description borrowed from [[https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org][daviwil/emacs-from-scratch]]/
+
+We use the excellent lsp-mode to enable IDE-like functionality for many different programming languages via “language servers” that speak the Language Server Protocol. Before trying to set up lsp-mode for a particular language, check out the documentation for your language so that you can learn which language servers are available and how to install them.
+
+The lsp-keymap-prefix setting enables you to define a prefix for where lsp-mode’s default keybindings will be added. I highly recommend using the prefix to find out what you can do with lsp-mode in a buffer.
+
+The which-key integration adds helpful descriptions of the various keys so you should be able to learn a lot just by pressing C-c l in a lsp-mode buffer and trying different things that you find there.
+
+#+begin_src emacs-lisp
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode 't))
+
+(use-package! lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t))
+#+end_src
+** lsp-ui
+Is this something we want? More than likely the answer is yes. This is adds some ui compliments on top of lsp-mode
+#+begin_src emacs-lisp
+(use-package! lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+#+end_src
+
+** Typescript
+Configure typescript mode to make things better
+
+#+begin_src emacs-lisp
+(use-package! typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2)
+  (require 'dap-node)
+  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+)
+#+end_src
+
+** Javascript
+Configure javascript and enable debugging for it.
+#+begin_src emacs-lisp
+(use-package! js2-mode
+  :mode "\\.js\\'"
+  :hook (js2-mode . lsp-deferred)
+  :config
+  (require 'dap-node)
+  (dap-node-setup))
+#+end_src
+
+*** Jest
+Jest is a test runner which I use frequently in JS/TS applications. Lets configure it for now with JS.
+
+Thus far I have found 2 packages [[https://github.com/Emiller88/emacs-jest][emacs-jest]] and [[https://github.com/rymndhng/jest-test-mode][jest-test-mode]]. We will be evaluating both to see which one fits in best with my workflow and configuration. One requirement is that it allows for debugging with =dap-mode=.
+
+**** emacs-jest
+#+begin_src emacs-lisp
+(after! js2-mode
+  (use-package! jest
+    :hook (js2-mode . jest-minor-mode)))
+#+end_src
+
+***** Functions for Jest minor mode
+I am currently unsure if these have keybindings. If they do I will update this with proper keybindings for doom. If not we will bind some of the more useful ones.
+
+- =jest= run all tests
+- =jest-file= run all tests in current file
+- =jest-file-dwim= do what i mean for the current file???
+- =jest-function= run the test where the pointer is, falls back to the current file
+- =jest-last-failed= rerun previous failures
+- =jest-repeat= repeat the last invocation.
+***** Findings of usage
+It looks like =emacs-jest= executes =npm test --= with a few different parameters which means that you would need to ensure in your package.json you have =test= script.
+
+There is the custom variable =jest-executable= which we can use to override the command. Perhaps we adjust this to execute the jest binary in =node_modules= of the current project. If we do this what happens to the other parameters the module generates?
+
+#+begin_src emacs-lisp
+;; (setq jest-executable "/usr/local/bin/node ./node_modules/.bin/jest ")
+#+end_src
+The jest plugin for vs code executes =/usr/local/bin/node ./node_modules/.bin/jest <filename> -c <path to jest config> -t <test name> -- runInBand=. I wonder if we can make =emacs-jest= generate something like that
+
+**** jest-test-mode
+This package is not yet installed so when the time comes need to add to =packages.el=
+=(package! jest-test-mode)=
+
+This is an attempt convert the example from the repo into the format like the other setups I have this may not work and would need to copy the use-package block from the repo.
+
+#+begin_src emacs-lisp
+;; (after! js2-mode
+;;   (use-package! jest-test-mode
+;;     :hook (js2-mode . jest-test-mode)))
+#+end_src
+***** Keybindings
+
+   | Binding       | Action                                                           |
+   |---------------+------------------------------------------------------------------|
+   | ~C-c C-t n~   | Runs tests in the current buffer.                                |
+   | ~C-c C-t p~   | Runs all tests in the project.                                   |
+   | ~C-c C-t t~   | Runs the describe block at the current point.                    |
+   | ~C-c C-t a~   | Re-runs the previous test command.                               |
+   | ~C-c C-t d n~ | Runs tests in the current buffer with node debugger.             |
+   | ~C-c C-t d t~ | Runs the describe block at the current point with node debugger. |
+   | ~C-c C-t d a~ | Re-runs the previous test command with node debugger.            |
+** Vue
+Configure Vue.js
+#+begin_src emacs-lisp
+(use-package! vue-mode
+  :mode "\\.vue\\'"
+  :hook (vue-mode . lsp-deferred)
+  :config
+  (require 'dap-node)
+  (dap-node-setup))
+#+end_src
+* Workspaces and Projects
+Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.
+#+begin_src emacs-lisp
+(setq workspaces-on-switch-project-behavior 't)
+#+end_src
+
+* Just some helpful things that were in the default config.el
+#+BEGIN_SRC emacs-lisp
+;; Here are some additional functions/macros that could help you configure Doom:
+;;
+;; - `load!' for loading external *.el files relative to this one
+;; - `use-package!' for configuring packages
+;; - `after!' for running code after a package has loaded
+;; - `add-load-path!' for adding directories to the `load-path', relative to
+;;   this file. Emacs searches the `load-path' when you load packages with
+;;   `require' or `use-package'.
+;; - `map!' for binding new keys
+;;
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+;; This will open documentation for it, including demos of how they are used.
+;;
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+;; they are implemented.
+#+END_SRC
