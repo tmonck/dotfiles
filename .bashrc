@@ -86,7 +86,7 @@ if [ -f ~/.bash_colors ]; then
 fi
 
 if [ -f ~/.trapd00r_colors ]; then
-  if command -v gdircolors;
+  if command -v gdircolors &> /dev/null;
   then
     eval `gdircolors ~/.trapd00r_colors`
   else

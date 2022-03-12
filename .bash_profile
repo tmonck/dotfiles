@@ -16,18 +16,10 @@ minidocker() {
   eval $(minikube docker-env)
 }
 
-if [ -f ~/.trapd00r_colors ]; then
-  if command -v gdircolors;
-  then
-    eval `gdircolors ~/.trapd00r_colors`
-  else
-    eval `dircolors ~/.trapd00r_colors`
-  fi
-fi
-
 if [ -f ~/git-prompt.sh ];
 then
   source ~/git-prompt.sh
+  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$";'$PROMPT_COMMAND
 fi
 
 if command -v kubectl > /dev/null;
