@@ -13,6 +13,11 @@
     - [[#macos][MacOS]]
     - [[#ubuntu][Ubuntu]]
 - [[#development-environment][Development Environment]]
+  - [[#vcs][VCS]]
+    - [[#windows-1][Windows]]
+    - [[#macos-1][MacOS]]
+    - [[#ubuntu-1][Ubuntu]]
+    - [[#git-promptsh][git-prompt.sh]]
   - [[#programming-languages][Programming Languages]]
     - [[#c][C#]]
     - [[#jsts][JS/TS]]
@@ -34,13 +39,13 @@
     - [[#first-impressions][First impressions]]
 - [[#communication][Communication]]
   - [[#slack][Slack]]
-    - [[#windows-1][Windows]]
-    - [[#macos-1][MacOS]]
-    - [[#ubuntu-1][Ubuntu]]
-  - [[#discord][Discord]]
     - [[#windows-2][Windows]]
     - [[#macos-2][MacOS]]
     - [[#ubuntu-2][Ubuntu]]
+  - [[#discord][Discord]]
+    - [[#windows-3][Windows]]
+    - [[#macos-3][MacOS]]
+    - [[#ubuntu-3][Ubuntu]]
 
 * OS Specific prerequisites
 We know that were are going to need separate setup files based upon the operating system so let's configure some default headers for these files.
@@ -118,6 +123,41 @@ Nothing to setup
 * Development Environment
 As most any developer I my own personal preferences when it comes to my development environment. Some of this preferences have been shaped by the programming languages I do/have written. In this section I setup any language specific needs, install some IDE's, and document some useful tools and plugins.
 
+** VCS
+Let's setup some version control systems. There really is only one =git=, haha just kidding. That's the only one I use though so this section is dedicated to making it like I want.
+*** Windows
+#+begin_src sh :tangle setupScripts/windows.ps1
+choco install git
+#+end_src
+*** MacOS
+#+begin_src sh :tangle setupScripts/mac.sh
+brew install git
+#+end_src
+*** Ubuntu
+#+begin_src sh :tangle setupScripts/ubuntu.sh
+sudo apt install git
+#+end_src
+*** git-prompt.sh
+I really like how =posh_git.ps1= modifies the terminal to show status, so let's put that in place that our =.bashrc= can source it from.
+
+Shout out to the maintainer of the =posh-git-sh= version of =posh_git=
+#+NAME: git-prompt
+#+begin_src sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
+#+end_src
+
+#+RESULTS: git-prompt
+
+**** Windows
+Probably not going to use this os :D
+**** MacOS
+#+begin_src sh :tangle setupScripts/mac.sh :noweb yes
+<<git-prompt>>
+#+end_src
+**** Ubuntu
+#+begin_src sh :tangle setupScripts/ubuntu.sh :noweb yes
+<<git-prompt>>
+#+end_src
 ** Programming Languages
 I have some experience in the following languages. These are the ones I use the most so they will be setup on each computer in anticipation of doing some level of development in each.
 *** C#

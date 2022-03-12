@@ -6,6 +6,10 @@
 brew tap caskroom/cask 2> /dev/null
 brew cask upgrade
 
+brew install git
+
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
+
 brew install node # This will install npm as well
 
 brew tap d12frosted/emacs-plus
