@@ -237,7 +237,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        grammar           ; tasing grammar mistake every you make
 
        :tools
-       ;;ansible
+       ansible
        ;; debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
