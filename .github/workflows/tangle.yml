@@ -1,0 +1,22 @@
+name: Generate Helper Scripts
+on:
+  push:
+    branches-ignore:
+      - 'doomorgfile'
+jobs:
+  tangle:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Need to use the special token since we will update github workflows from the org files
+          token: ${{ secrets.ORG_TANGLE }}
+      - name: Org Tangle
+        uses: tecosaur/org-tangle-action@v0.1.1
+        with:
+          github_token: ${{ secrets.ORG_TANGLE }}
+          # Update the branch with the newly tangled scripts
+          branch: setupScripts
+          keep_files: false
