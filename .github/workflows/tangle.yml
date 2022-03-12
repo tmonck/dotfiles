@@ -20,3 +20,4 @@ jobs:
           # Update the branch with the newly tangled scripts
           branch: setupScripts
           force_orphan: true
+          keep_files: false
