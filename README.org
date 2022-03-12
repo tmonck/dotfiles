@@ -1,7 +1,10 @@
 #+TITLE: dotfiles
 #+AUTHOR: Tom Monck
-
 * Goals
-This is an attempt to organize my dotfiles for sharing across multiple machines. This should allow me to have a consistent experience across different machines when I use the same application.
-
-There will also be a repeatable process for setting up each type of machine I use. There should be scripts for machine setup generated from an org file.
+I have a few goals for this project. I want to oraganize my configuration files so I can share them across my machines, create a repeatable process for setting up my development environment, and generate my own personal FAQ surrounding tools and problems I run into for future reference.
+* Dotfile organization
+My dotfiles should be able to be cloned and symlinked to the home directory easily. This can either be via a tool like =stow= or my executing commands to create the symlink.
+* Development Environment
+This should be configured and maintained in the =Applications.org= file
+* Tooling selection guidelines
+I prefer to not use a mouse if I can help it, as such most of the tools I choose will probably have some for of =vim= emulation or keybindings. This is by no means a requirement but does enable me to have a consistent feel through my applications.
