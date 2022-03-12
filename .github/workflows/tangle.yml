@@ -3,7 +3,6 @@ on:
   push:
     branches-ignore:
       - 'master'
-      - 'setupScripts'
 jobs:
   tangle:
     runs-on: ubuntu-latest
@@ -19,7 +18,5 @@ jobs:
         with:
           github_token: ${{ secrets.ORG_TANGLE }}
           # Update the branch with the newly tangled scripts
-          branch: setupScripts
-          force_orphan: true
+          branch: ${{ github.ref_name }}
           files: '**/Applications.org'
-          keep_files: false

@@ -42,6 +42,7 @@
   - [[#typescript][Typescript]]
   - [[#javascript][Javascript]]
   - [[#vue][Vue]]
+- [[#workspaces-and-projects][Workspaces and Projects]]
 
 * Acknowledgements
 As the dwarfs can see further on the shoulders of giants. I am where I am because of those who came before me. There is some pieces borrowed and other inspired from many sources. Here is a few of them, this is by no means a comprehensive list.
@@ -793,4 +794,9 @@ Configure Vue.js
   :config
   (require 'dap-node)
   (dap-node-setup))
+#+end_src
+* Workspaces and Projects
+Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.
+#+begin_src emacs-lisp
+(setq workspaces-on-switch-project-behavior 't)
 #+end_src

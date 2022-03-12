@@ -226,3 +226,5 @@
   :config
   (require 'dap-node)
   (dap-node-setup))
+
+(setq workspaces-on-switch-project-behavior 't)
