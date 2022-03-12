@@ -3,5 +3,7 @@
 
 (("default" . ((user-emacs-directory . "~/mydoom")
                (env . (("DOOMDIR" . "~/.doom.d")))))
+ ("lab" . ((user-emacs-directory . "~/backupdoom")
+               (env . (("DOOMDIR" . "~/lab")))))
  ("backup" . ((user-emacs-directory . "~/backupdoom")
                (env . (("DOOMDIR" . "~/testingThings"))))))

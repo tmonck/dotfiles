@@ -374,6 +374,14 @@ doom install
 export PATH="$HOME/mydoom/bin:$PATH"
 doom install
 #+end_src
+**** Make a backup
+This allows me to have a testing ground and a known working backup.
+***** Window
+***** MacOS
+***** Ubuntu
+#+begin_src sh :tangle ubuntu.sh
+cp -a $HOME/mydoom $HOME/backupdoom
+#+end_src
 **** Doom utility
 The [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org#the-bindoom-utility][doom utility]] is extremely helpful as well as required for somethings to work. Some of the items I use on a regular basis are documented below.
 ***** Sync
@@ -388,6 +396,8 @@ Now that we have doom installed and all ready to go let's add it to our =.emacs-
 #+begin_src emacs-lisp :tangle .emacs-profiles.el
 (("default" . ((user-emacs-directory . "~/mydoom")
                (env . (("DOOMDIR" . "~/.doom.d")))))
+ ("lab" . ((user-emacs-directory . "~/backupdoom")
+               (env . (("DOOMDIR" . "~/lab")))))
  ("backup" . ((user-emacs-directory . "~/backupdoom")
                (env . (("DOOMDIR" . "~/testingThings"))))))
 #+end_src
