@@ -21,4 +21,4 @@ jobs:
           # Update the branch with the newly tangled scripts
           branch: setupScripts
           force_orphan: true
-          files: [ 'Applications.org' ]
+          files: '**/*/Applications.org'
