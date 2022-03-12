@@ -19,6 +19,7 @@ case $(uname -s) in
     alias la='/usr/local/opt/coreutils/libexec/gnubin/ls -A'
     alias l='/usr/local/opt/coreutils/libexec/gnubin/ls -CF'
     ;;
+esac
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
