@@ -26,7 +26,7 @@ if [ -d "$HOME/.emacs.d" ]
        mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
 fi
 
-git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 
 # required dependencies
 brew install git ripgrep
@@ -35,7 +35,7 @@ brew install coreutils fd
 # Installs clang
 xcode-select --install
 
-git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
 
 brew install aspell
 npm install -g marked

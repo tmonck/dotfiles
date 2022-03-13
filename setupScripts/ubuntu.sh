@@ -31,7 +31,7 @@ if [ -d "$HOME/.emacs.d" ]
        mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
 fi
 
-git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 
 add-apt-repository ppa:git-core/ppa
 apt update
@@ -39,7 +39,7 @@ apt install git
 
 apt install ripgrep fd-find
 
-git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
 
 apt install editorconfig
 npm install -g marked
@@ -51,7 +51,9 @@ doom install
 
 cp -a $HOME/mydoom $HOME/backupdoom
 
-sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
+curl https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/master/jetbrains-toolbox.sh > jetbrains-toolbox.sh
+
+./jetbrains-toolbox.sh
 
 snap install slack --classic
 
