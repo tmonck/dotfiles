@@ -30,9 +30,9 @@ if(-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall"))
 
 choco install git
 
-git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 
-git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
 npm install -g marked
 
 choco install vscode
