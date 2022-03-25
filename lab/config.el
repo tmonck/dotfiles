@@ -86,7 +86,6 @@
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
 (use-package! org-roam
-  :ensure t
   :init
   (setq org-roam-directory "~/org/roamNotes")
   (setq org-roam-v2-ack 't)
@@ -136,6 +135,43 @@
 
 (after! auth-source
   (setq auth-sources (nreverse auth-sources)))
+
+(defun efs/presentation-setup ()
+  ;; Hide the mode line
+  ;; (hide-mode-line-mode 1)
+
+  ;; Display images inline
+  (org-display-inline-images) ;; Can also use org-startup-with-inline-images
+
+  ;; Scale the text.  The next line is for basic scaling:
+  (setq text-scale-mode-amount 3)
+  (text-scale-mode 1))
+(defun efs/presentation-end ()
+  ;; Show the mode line again
+  ;; (hide-mode-line-mode 0)
+
+  ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
+  (text-scale-mode 0))
+
+  ;; If you use face-remapping-alist, this clears the scaling:
+  ;; (setq-local face-remapping-alist '((default variable-pitch default))))
+(use-package! org-tree-slide
+  :hook ((org-tree-slide-play . efs/presentation-setup)
+         (org-tree-slide-stop . efs/presentation-end))
+  ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
+  :config
+  (when (featurep! :editor evil)
+    (map! :map org-tree-slide-mode-map
+          :n [C-right] #'org-tree-slide-move-next-tree
+          :n [C-left]  #'org-tree-slide-move-previous-tree)
+    (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
+  :custom
+  (org-tree-slide-slide-in-effect t)
+  (org-tree-slide-activate-message "Presentation started!")
+  (org-tree-slide-deactivate-message "Presentation finished!")
+  (org-tree-slide-header t)
+  (org-tree-slide-breadcrumbs " > ")
+  (org-image-actual-width nil))
 
 ;; (after! org (setq org-hide-emphasis-markers t))
 
