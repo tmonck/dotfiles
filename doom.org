@@ -19,6 +19,7 @@
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
 - [[#magit][Magit]]
+  - [[#forge][Forge]]
 - [[#line-numbers][Line numbers]]
 - [[#org-mode-configuration][Org Mode Configuration]]
   - [[#default-directory][Default directory]]
@@ -248,7 +249,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
        lsp
-       magit             ; a git porcelain for Emacs
+       (magit +forge)             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        ;;pdf               ; pdf enhancements
@@ -282,7 +283,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ;;(go +lsp)         ; the hipster dialect
+       (go +lsp)         ; the hipster dialect
        ;;(haskell +dante)  ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
@@ -396,6 +397,8 @@ Let's do some magit. I prefer it to be in fullscreen to make things easier to re
 ;; Set magit to full screen
 (setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
 #+END_SRC
+
+** Forge
 * Line numbers
 Line numbers are helpful and relative line numbers are even better.
 

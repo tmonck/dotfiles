@@ -12,6 +12,17 @@ curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~
 
 brew install node # This will install npm as well
 
+brew install go
+
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
+
 brew tap d12frosted/emacs-plus
 # brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
 # brew install emacs-plus@26 [options] # install Emacs 26
@@ -48,7 +59,12 @@ doom install
 cp -a $HOME/mydoom $HOME/backupdoom
 
 brew install vscode
-brew cask install docker
+# brew cask install docker
+brew install docker
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+
 brew install firefox
 brew install chrome
 

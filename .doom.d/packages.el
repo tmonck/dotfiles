@@ -56,6 +56,8 @@
 
 (package! org-jira)
 
+(package! org-tree-slide)
+
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"

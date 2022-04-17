@@ -22,6 +22,7 @@
     - [[#c][C#]]
     - [[#jsts][JS/TS]]
     - [[#python][Python]]
+    - [[#golang][GoLang]]
   - [[#ides][IDEs]]
     - [[#emacs][Emacs]]
     - [[#chemacs2][Chemacs2]]
@@ -31,6 +32,8 @@
     - [[#jetbrains][Jetbrains]]
   - [[#additional-applications-that-assist-with-development][Additional applications that assist with development]]
     - [[#docker][Docker]]
+    - [[#minikube][Minikube]]
+    - [[#podman][Podman]]
     - [[#postman][Postman]]
 - [[#browsers][Browsers]]
   - [[#firefox][Firefox]]
@@ -46,6 +49,7 @@
     - [[#windows-3][Windows]]
     - [[#macos-3][MacOS]]
     - [[#ubuntu-3][Ubuntu]]
+- [[#items-to-look-at][Items to look at]]
 
 * OS Specific prerequisites
 We know that were are going to need separate setup files based upon the operating system so let's configure some default headers for these files.
@@ -208,6 +212,40 @@ Python is a fun language with many uses. I mainly use it for developing my home 
 **** Ubuntu
 #+begin_src sh :tangle setupScripts/ubuntu.sh
 alias python=python3
+#+end_src
+*** GoLang
+**** Mac
+#+begin_src sh :tangle setupScripts/mac.sh
+brew install go
+#+end_src
+
+To make doom happy we need to ensure that a few packages are installed. This should install the items in the bin directory of =go=.
+#+begin_src sh :tangle setupScripts/mac.sh
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
+#+end_src
+**** Ubuntu
+Installing go is as simple as
+#+begin_src sh :tangle setupScripts/ubuntu.sh
+sudo snap install go --classic
+#+end_src
+
+To make doom happy we need to ensure that a few packages are installed. This should install the items in the bin directory of =go=.
+#+begin_src sh :tangle setupScripts/ubuntu.sh
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
 #+end_src
 ** IDEs
 *** Emacs
@@ -493,11 +531,42 @@ More information about docker can be [[https://docker.com][here]].
 choco install docker-desktop
 #+end_src
 **** MacOS
+Since docker now costs money for docker desktop I am transitioning away from this particular flavor of docker.
 #+begin_src sh :tangle setupScripts/mac.sh :padline 'no'
-brew cask install docker
+# brew cask install docker
+#+end_src
+This should install only the daemon which remains free to use.
+#+begin_src sh :tangle setupScripts/mac.sh :padline 'no'
+brew install docker
 #+end_src
 **** Ubuntu
 TODO
+*** Minikube
+Minikube allows you to run a Kubernetes cluster on your local machine quickly and without much configuration.
+**** Machine Requirements
+Minikube does have a few requirements in order to run on the machine so make sure you are at least at the minimum specs (ideal much higher).
+- 2 CPUs or more
+- 2GB of free memory
+- 20GB of free disk space
+- Interwebs
+- Container or virtual machine manager, such as Docker, Hyperkit, Hyper-V, KVM, Parallels, Podman, VirtualBox, or VMWare Fusion/Workstation
+**** Windows
+Don't use windows please.
+**** Mac
+#+begin_src sh :tangle setupScripts/mac.sh
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+#+end_src
+**** Ubuntu
+#+begin_src sh :tangle setupScripts/ubuntu.sh :noweb yes
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+#+end_src
+
+#+RESULTS:
+
+*** Podman
+Still working through this and if I can integrate it into my workflow
 *** Postman
 This one is up for debate but it's a helpful GUI for making API calls.
 * Browsers
@@ -508,7 +577,7 @@ A modern web browser that is better than the rest. Their site is [[https://mozil
 choco install firefox
 #+end_src
 **** MacOS
-#+begin_src sh :tangle setupScripts/mac.sh :padline 'no'
+#+begin_src sh :tangle setupScripts/mac.sh
 brew install firefox
 #+end_src
 **** Ubuntu
@@ -563,3 +632,5 @@ Nope
 #+begin_src sh :tangle setupScripts/ubuntu.sh
 sudo snap install discord
 #+end_src
+* Items to look at
+- MermaidJs
