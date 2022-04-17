@@ -50,7 +50,11 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
+(package! org-roam)
+
 (package! org-auto-tangle)
+
+(package! org-jira)
 
 (package! org-pandoc-import
   :recipe (:host github

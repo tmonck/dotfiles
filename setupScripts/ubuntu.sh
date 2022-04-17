@@ -23,6 +23,17 @@ apt install nodejs
 
 alias python=python3
 
+sudo snap install go --classic
+
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
+
 snap install emacs --classic
 
 # The default location of the .emacs.d directory should only exist if you open emacs after installation.
@@ -54,6 +65,9 @@ cp -a $HOME/mydoom $HOME/backupdoom
 curl https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/master/jetbrains-toolbox.sh > jetbrains-toolbox.sh
 
 ./jetbrains-toolbox.sh
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 snap install slack --classic
 
