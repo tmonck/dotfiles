@@ -12,10 +12,12 @@
     - [[#windows][Windows]]
     - [[#macos][MacOS]]
     - [[#ubuntu][Ubuntu]]
+  - [[#terminal][Terminal]]
+    - [[#macos-1][MacOS]]
 - [[#development-environment][Development Environment]]
   - [[#vcs][VCS]]
     - [[#windows-1][Windows]]
-    - [[#macos-1][MacOS]]
+    - [[#macos-2][MacOS]]
     - [[#ubuntu-1][Ubuntu]]
     - [[#git-promptsh][git-prompt.sh]]
   - [[#programming-languages][Programming Languages]]
@@ -43,11 +45,11 @@
 - [[#communication][Communication]]
   - [[#slack][Slack]]
     - [[#windows-2][Windows]]
-    - [[#macos-2][MacOS]]
+    - [[#macos-3][MacOS]]
     - [[#ubuntu-2][Ubuntu]]
   - [[#discord][Discord]]
     - [[#windows-3][Windows]]
-    - [[#macos-3][MacOS]]
+    - [[#macos-4][MacOS]]
     - [[#ubuntu-3][Ubuntu]]
 - [[#items-to-look-at][Items to look at]]
 
@@ -124,6 +126,26 @@ Ubuntu has built in package managers which we can utilize.
 Nothing to setup
 **** [[https://snapcraft.io][Snap]]
 Nothing to setup
+** Terminal
+On some OS's they don't install the latest and greatest by default. I'm looking at you MacOS
+
+*** MacOS
+Let's upgrade terminal to run the latest version of bash.
+#+begin_src sh :tangle mac.sh
+brew install bash
+#+end_src
+
+Now that we've install the latest version of bash let's make the computer actually use this as the default terminal
+#+begin_src sh :tangle mac.sh
+echo $(brew --prefix)/bin/bash | sudo tee -a /private/etc/shells
+sudo chpass -s /usr/local/bin/bash $(whoami)
+#+end_src
+
+Now that we have the latest bash and I dislike not being able to have tab completion let's install bash-completion
+#+begin_src sh :tangle mac.sh
+brew install bash-completion@2
+#+end_src
+
 * Development Environment
 As most any developer I my own personal preferences when it comes to my development environment. Some of this preferences have been shaped by the programming languages I do/have written. In this section I setup any language specific needs, install some IDE's, and document some useful tools and plugins.
 
