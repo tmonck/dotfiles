@@ -94,6 +94,12 @@ if [ -f ~/.trapd00r_colors ]; then
   fi
 fi
 
+if [ -f ~/git-prompt.sh ];
+then
+  source ~/git-prompt.sh
+  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$";'$PROMPT_COMMAND
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).

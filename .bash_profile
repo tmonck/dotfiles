@@ -16,11 +16,11 @@ minidocker() {
   eval $(minikube docker-env)
 }
 
-if [ -f ~/git-prompt.sh ];
-then
-  source ~/git-prompt.sh
-  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$";'$PROMPT_COMMAND
-fi
+# if [ -f ~/git-prompt.sh ];
+# then
+#   source ~/git-prompt.sh
+#   PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$";'$PROMPT_COMMAND
+# fi
 
 if command -v kubectl > /dev/null;
 then
