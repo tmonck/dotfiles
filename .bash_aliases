@@ -4,6 +4,9 @@
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias docker=podman
+alias emacs-lab='emacs --with-profile=lab'
+alias emacs-backup='emacs --with-profile=backup'
 
 # ls alias
 case $(uname -s) in
@@ -14,10 +17,10 @@ case $(uname -s) in
     alias l='ls -CF'
     ;;
   Darwin)
-    alias ls='/usr/local/opt/coreutils/libexec/gnubin/ls --color=auto'
-    alias ll='/usr/local/opt/coreutils/libexec/gnubin/ls -alF'
-    alias la='/usr/local/opt/coreutils/libexec/gnubin/ls -A'
-    alias l='/usr/local/opt/coreutils/libexec/gnubin/ls -CF'
+    alias ls='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto'
+    alias ll='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls -alF'
+    alias la='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls -A'
+    alias l='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls -CF'
     ;;
 esac
 

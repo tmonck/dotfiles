@@ -23,6 +23,7 @@
 - [[#line-numbers][Line numbers]]
 - [[#org-mode-configuration][Org Mode Configuration]]
   - [[#default-directory][Default directory]]
+  - [[#org-agenda][Org-Agenda]]
   - [[#org-mode-styling][Org mode styling]]
   - [[#org-journal][Org-Journal]]
   - [[#org-roam][org-roam]]
@@ -414,6 +415,13 @@ We want a default file location for our org files. Let's define that here.
 #+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/")
 #+END_SRC
+** Org-Agenda
+#+begin_src emacs-lisp
+(setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-file-regexp "\\.org$")
+#+end_src
+
+
 ** Org mode styling
 A couple of UI tweaks to make things a little more friendly in org-mode.
 
@@ -435,8 +443,9 @@ Now we can start modifying some of the org journal variables. Some of the variab
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
       org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      org-journal-file-header "#+TITLE: Daily Journal\n"
-      org-journal-enable-agenda-integration 't))
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."))
+      ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
+      ;; org-journal-enable-agenda-integration 'f))
 #+END_SRC
 
 Lets add some keybindings to make creation of journal entries a little easier. You can go full bore with this and add all org-journal commands you frequently use below.
@@ -455,7 +464,6 @@ Lets add some keybindings to make creation of journal entries a little easier. Y
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 #+END_SRC
-# ** Org-Agenda
 ** org-roam
 org-roam enchances org capture and allows you to quickly and efficiently search and find notes. It also allows linking an finding what a note is linked to much faster.
 
@@ -497,6 +505,9 @@ To make life easier we are going to make some custom templates that will allow u
 Lets setup org-roam-dailies
 #+begin_src emacs-lisp
 (setq org-roam-dailies-directory "journals/")
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 #+end_src
 
 *** Lets setup some keybindings for org-roam that will make life easier.
