@@ -5,6 +5,7 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew upgrade
 brew tap caskroom/cask 2> /dev/null
 brew cask upgrade
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 brew install git
 
@@ -13,15 +14,6 @@ curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~
 brew install node # This will install npm as well
 
 brew install go
-
-go install github.com/x-motemen/gore/cmd/gore@latest
-go install github.com/stamblerre/gocode@latest
-go install golang.org/x/tools/cmd/godoc@latest
-go install golang.org/x/tools/cmd/goimports@latest
-go install golang.org/x/tools/cmd/gorename@latest
-go install golang.org/x/tools/cmd/guru@latest
-go install github.com/cweill/gotests/gotests@latest
-go install github.com/fatih/gomodifytags@latest
 
 brew tap d12frosted/emacs-plus
 # brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
@@ -52,6 +44,17 @@ brew install aspell
 npm install -g marked
 brew install jq
 brew install shellcheck
+
+export PATH="$HOME/go/bin:$PATH"
+
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
 
 export PATH="$HOME/mydoom/bin:$PATH"
 doom install

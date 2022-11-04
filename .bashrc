@@ -76,9 +76,15 @@ xterm*|rxvt*)
     ;;
 esac
 
+#Evaluate brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 # Set colors for bash (pretty!!)
 if [ -f ~/.bash_colors ]; then
@@ -97,7 +103,7 @@ fi
 if [ -f ~/git-prompt.sh ];
 then
   source ~/git-prompt.sh
-  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$";'$PROMPT_COMMAND
+  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$ ";'$PROMPT_COMMAND
 fi
 
 # enable programmable completion features (you don't need to enable

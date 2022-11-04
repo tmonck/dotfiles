@@ -119,6 +119,7 @@ Mac doesn't ship with =homebrew= which I use to install applications and package
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && brew upgrade
 brew tap caskroom/cask 2> /dev/null
 brew cask upgrade
+eval "$(/opt/homebrew/bin/brew shellenv)"
 #+end_src
 *** Ubuntu
 Ubuntu has built in package managers which we can utilize.
@@ -237,21 +238,11 @@ alias python=python3
 #+end_src
 *** GoLang
 **** Mac
+
 #+begin_src sh :tangle setupScripts/mac.sh
 brew install go
 #+end_src
 
-To make doom happy we need to ensure that a few packages are installed. This should install the items in the bin directory of =go=.
-#+begin_src sh :tangle setupScripts/mac.sh
-go install github.com/x-motemen/gore/cmd/gore@latest
-go install github.com/stamblerre/gocode@latest
-go install golang.org/x/tools/cmd/godoc@latest
-go install golang.org/x/tools/cmd/goimports@latest
-go install golang.org/x/tools/cmd/gorename@latest
-go install golang.org/x/tools/cmd/guru@latest
-go install github.com/cweill/gotests/gotests@latest
-go install github.com/fatih/gomodifytags@latest
-#+end_src
 **** Ubuntu
 Installing go is as simple as
 #+begin_src sh :tangle setupScripts/ubuntu.sh
@@ -417,7 +408,9 @@ Used for enforcing code formatting when not using something like Resharper
 ****** Windows
 TODO
 ****** MacOS
-TODO
+#+begin_src sh
+brew install editorconfig
+#+end_src
 ****** Ubuntu
 #+begin_src sh :tangle setupScripts/ubuntu.sh
 apt install editorconfig
@@ -463,6 +456,34 @@ brew install shellcheck
 #+begin_src sh :tangle setupScripts/ubuntu.sh :padline 'no'
 apt install shellcheck
 #+end_src
+***** graphviz
+****** Windows
+****** MacOS
+#+begin_src sh
+brew install graphviz
+#+end_src
+****** Ubuntu
+TODO
+***** golang
+To make doom happy we need to ensure that a few packages are installed. This should install the items in the bin directory of =go=.
+#+begin_src sh :tangle setupScripts/mac.sh
+export PATH="$HOME/go/bin:$PATH"
+
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
+#+end_src
+***** python
+These are the packages =doom doctor= will check for.
+#+begin_src sh
+pip3 install nose pytest isort pipenv
+#+end_src
+
 **** Installation
 Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
 
