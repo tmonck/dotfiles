@@ -56,7 +56,11 @@
 
 (package! org-jira)
 
-(package! org-tree-slide)
+;; (package! org-tree-slide)
+
+;; (package! org-present)
+
+;; (package! visual-fill-column)
 
 (package! org-pandoc-import
   :recipe (:host github

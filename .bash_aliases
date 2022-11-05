@@ -4,6 +4,7 @@
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias emacs-lab='emacs --with-profile=lab --debug-init'
 
 # ls alias
 case $(uname -s) in

@@ -34,6 +34,7 @@
     - [[#docker][Docker]]
     - [[#minikube][Minikube]]
     - [[#podman][Podman]]
+    - [[#buildah][Buildah]]
     - [[#postman][Postman]]
 - [[#browsers][Browsers]]
   - [[#firefox][Firefox]]
@@ -567,6 +568,13 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 *** Podman
 Still working through this and if I can integrate it into my workflow
+**** Ubuntu
+This only works on versions >=20.10 otherwise it's not in the repo
+#+begin_src sh :tangle setupScripts/ubuntu.sh :noweb yes
+sudo apt-get install -y podman
+#+end_src
+*** Buildah
+Not sure if I want this but I might
 *** Postman
 This one is up for debate but it's a helpful GUI for making API calls.
 * Browsers

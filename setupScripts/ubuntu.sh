@@ -67,6 +67,8 @@ sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
+sudo apt-get install -y podman
+
 snap install slack --classic
 
 sudo snap install discord

@@ -18,6 +18,7 @@
   - [[#fonts][Fonts]]
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
+  - [[#opacity][Opacity]]
 - [[#magit][Magit]]
   - [[#forge][Forge]]
 - [[#line-numbers][Line numbers]]
@@ -30,6 +31,7 @@
   - [[#export-to-confluence][Export to confluence]]
   - [[#org-jira][org-jira]]
   - [[#org-tree-mode][org-tree-mode]]
+  - [[#org-present][org-present]]
   - [[#after-org-loads][After org loads]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#debugging][Debugging]]
@@ -44,6 +46,7 @@
   - [[#typescript][Typescript]]
   - [[#javascript][Javascript]]
   - [[#vue][Vue]]
+  - [[#golang][golang]]
 - [[#workspaces-and-projects][Workspaces and Projects]]
 
 * Acknowledgements
@@ -210,7 +213,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
+       (format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
@@ -240,7 +243,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
 
        :tools
        ansible
-       ;; debugger          ; FIXME stepping through code, to help you add bugs
+       debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        editorconfig      ; let someone else argue about tabs vs spaces
@@ -355,7 +358,6 @@ It's nice to know who you are especially for git commits and such. It's recommen
 
 * Customize the look and feel
 ** Fonts
-I am ok with the default fonts for now but may want to adjust later so leaving this here.
 #+NAME: fonts
 #+begin_src emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -370,7 +372,14 @@ I am ok with the default fonts for now but may want to adjust later so leaving t
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+
+(setq doom-font (font-spec :family "JetBrains Mono")
+      doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 #+end_src
+
+#+RESULTS: fonts
+: #<font-spec nil nil JetBrains\ Mono nil nil semi-light nil nil 14 nil nil nil nil>
+
 ** Theme
 Let's make the theme look like we want and we like it dark!
 
@@ -380,7 +389,8 @@ Let's make the theme look like we want and we like it dark!
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
 ;; (setq doom-theme 'doom-one)
-(setq doom-theme 'doom-acario-dark)
+;; (setq doom-theme 'doom-acario-dark)
+(setq doom-theme 'doom-material-dark)
 #+END_SRC
 ** Fullscreen
 I like to have my emacs open to full screen on startup.
@@ -390,6 +400,13 @@ I like to have my emacs open to full screen on startup.
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 #+END_SRC
+** Opacity
+For some reason I like my editor to be somewhat see through so let's adjust the opacity.
+
+#+begin_src emacs-lisp
+(doom/set-frame-opacity 95)
+#+end_src
+
 * Magit
 Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
 
@@ -420,6 +437,32 @@ A couple of UI tweaks to make things a little more friendly in org-mode.
 #+begin_src emacs-lisp
 (after! org
   (setq org-fontify-done-headline nil))
+#+end_src
+
+#+begin_src emacs-lisp
+(require 'org-faces)
+
+(dolist (face '((org-level-1 . 1.2)
+                (org-level-2 . 1.1)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.0)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-8 . 1.1)))
+  (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
+;; Make the document title a bit bigger
+(set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
+
+;; Make sure certain org faces use the fixed-pitch face when variable-pitch-mode is on
+(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 #+end_src
 ** Org-Journal
 Lets start by defining the directory where we want to store our journals
@@ -542,10 +585,16 @@ This seems like it might be useful but need to play around with it some before d
 #+begin_src emacs-lisp :tangle lab/packages.el
 (package! org-jira)
 #+end_src
+
+Let's go ahead and use the package and define the directory we want our jira items stored.
 #+begin_src emacs-lisp
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
-(setq jiralib-url "https://work.dudesoln.com/")
+#+end_src
+
+The jira URL will be different for each place I work
+#+begin_src emacs-lisp
+;;(setq jiralib-url "https://work.dudesoln.com/")
 #+end_src
 
 #+begin_src emacs-lisp
@@ -557,52 +606,142 @@ Due to some issues with the =present.el= in doom emac's configurations we are di
 
 First let's set it up in the =packages.el=
 #+begin_src emacs-lisp :tangle lab/packages.el
-(package! org-tree-slide)
+;; (package! org-tree-slide)
 #+end_src
 
 Now let's setup some default configurations for it. The file that ships with Doom has a function that causes an issue with sub headings and doesn't allow you to go to the next sub heading. This functionality works out of the box with org-tree-macs by default. There is a few things that Doom's setup did have which was kind of nice and we will be replicating that ourselves.
 #+begin_src emacs-lisp
- (defun efs/presentation-setup ()
-   ;; Hide the mode line
-   ;; (hide-mode-line-mode 1)
+ ;; (defun efs/presentation-setup ()
+ ;;   ;; Hide the mode line
+ ;;   ;; (hide-mode-line-mode 1)
 
-   ;; Display images inline
-   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
+ ;;   ;; Display images inline
+ ;;   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
 
-   ;; Scale the text.  The next line is for basic scaling:
-   (setq text-scale-mode-amount 3)
-   (text-scale-mode 1))
- (defun efs/presentation-end ()
-   ;; Show the mode line again
-   ;; (hide-mode-line-mode 0)
+ ;;   ;; Scale the text.  The next line is for basic scaling:
+ ;;   (setq text-scale-mode-amount 3)
+ ;;   (text-scale-mode 1))
+ ;; (defun efs/presentation-end ()
+ ;;   ;; Show the mode line again
+ ;;   ;; (hide-mode-line-mode 0)
 
-   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
-   (text-scale-mode 0))
+ ;;   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
+ ;;   (text-scale-mode 0))
 
-   ;; If you use face-remapping-alist, this clears the scaling:
-   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
- (use-package! org-tree-slide
-   :hook ((org-tree-slide-play . efs/presentation-setup)
-          (org-tree-slide-stop . efs/presentation-end))
-   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
-   :config
-   (when (featurep! :editor evil)
-     (map! :map org-tree-slide-mode-map
-           :n [C-right] #'org-tree-slide-move-next-tree
-           :n [C-left]  #'org-tree-slide-move-previous-tree)
-     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
-   :custom
-   (org-tree-slide-slide-in-effect t)
-   (org-tree-slide-activate-message "Presentation started!")
-   (org-tree-slide-deactivate-message "Presentation finished!")
-   (org-tree-slide-header t)
-   (org-tree-slide-breadcrumbs " > ")
-   (org-image-actual-width nil))
+ ;;   ;; If you use face-remapping-alist, this clears the scaling:
+ ;;   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
+ ;; (use-package! org-tree-slide
+ ;;   :hook ((org-tree-slide-play . efs/presentation-setup)
+ ;;          (org-tree-slide-stop . efs/presentation-end))
+ ;;   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
+ ;;   :config
+ ;;   (when (featurep! :editor evil)
+ ;;     (map! :map org-tree-slide-mode-map
+ ;;           :n [C-right] #'org-tree-slide-move-next-tree
+ ;;           :n [C-left]  #'org-tree-slide-move-previous-tree)
+ ;;     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
+ ;;   :custom
+ ;;   (org-tree-slide-slide-in-effect t)
+ ;;   (org-tree-slide-activate-message "Presentation started!")
+ ;;   (org-tree-slide-deactivate-message "Presentation finished!")
+ ;;   (org-tree-slide-header t)
+ ;;   (org-tree-slide-breadcrumbs " > ")
+ ;;   (org-image-actual-width nil))
 #+end_src
 
-#+RESULTS:
-| efs/presentation-end |
+** org-present
+I really like the presentations from SystemCrafters so this is an exact replication of the configuration he uses.
 
+*** First up is install =org-present=
+#+begin_src emacs-lisp :tangle lab/packages.el
+;; (package! org-present)
+#+end_src
+*** Styling
+Next up to make things centered lets install a helpful package
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+;; (package! visual-fill-column)
+#+end_src
+
+Let's make some quick setting for visual-fill-column
+#+begin_src emacs-lisp
+;; Configure fill width
+;; (setq visual-fill-column-width 110
+;;       visual-fill-column-center-text t)
+#+end_src
+*** functional
+**** SystemCrafters Code
+Here is the code from SystemCrafters as is but we are going to convert this to =use-package=
+#+begin_src emacs-lisp :tangle no
+(defun my/org-present-start ()
+  ;; Center the presentation and wrap lines
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1))
+
+(defun my/org-present-end ()
+  ;; Stop centering the document
+  (visual-fill-column-mode 0)
+  (visual-line-mode 0))
+
+;; Register hooks with org-present
+(add-hook 'org-present-mode-hook 'my/org-present-start)
+(add-hook 'org-present-mode-quit-hook 'my/org-present-end)
+
+#+end_src
+**** My Config
+#+begin_src emacs-lisp
+;; ;; Function to house the modifications for org-present to make it look nice when it starts
+;; (defun my/org-present-start ()
+;;   ;; Tweak font sizes
+;;   (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+;;                                      (header-line (:height 4.0) variable-pitch)
+;;                                      (org-document-title (:height 1.75) org-document-title)
+;;                                      (org-code (:height 1.55) org-code)
+;;                                      (org-verbatim (:height 1.55) org-verbatim)
+;;                                      (org-block (:height 1.25) org-block)
+;;                                      (org-block-begin-line (:height 0.7) org-block)))
+
+;;   ;; Set a blank header line string to create blank space at the top
+;;   (setq header-line-format " ")
+
+;;   ;; Since we are presenting let's hide the emphasis markers to make things a little prettier
+;;   (setq org-hide-emphasis-markers t)
+
+;;   ;; Display inline images automatically
+;;   (org-display-inline-images)
+
+;;   ;; Center the presentation and wrap lines
+;;   (visual-fill-column-mode 1)
+;;   (visual-line-mode 1))
+
+;; ;; Undo the presentation setup when we end the presentation
+;; (defun my/org-present-end ()
+;;   ;; Reset font customizations
+;;   (setq-local face-remapping-alist '((default variable-pitch default)))
+
+;;   ;; Clear the header line string so that it isn't displayed
+;;   (setq header-line-format nil)
+
+;;   ;; Stop displaying inline images
+;;   (org-remove-inline-images)
+;;   ;; Stop centering the document
+;;   (visual-fill-column-mode 0)
+;;   (visual-line-mode 0))
+
+;; ;; Register hooks with org-present
+;; (use-package! org-present
+;;   :commands org-present-mode
+;;   ;; :bind-keymap
+;;   ;; ("SPC" . org-present-mode-keymap)
+;;   :hook ((org-present-mode . my/org-present-start)
+;;          (org-present-mode-quit . my/org-present-end)))
+;; ;; (after! org-present-mode
+;; ;;   (when (featurep! :editor evil)
+;; ;;     (map! :map org-present-mode-keymap
+;; ;;           :n [C-right] #'org-present-next
+;; ;;           :n [C-left]  #'org-present-prev))
+;; ;;   )
+#+end_src
 ** After org loads
 *** Hide the Org mark up indicators
 I like seeing the emphasis markers but if you don't just uncomment this block. This will hide the prefix and suffix characters used when making items bold, italic, etc
@@ -848,6 +987,15 @@ Configure Vue.js
   :config
   (require 'dap-node)
   (dap-node-setup))
+#+end_src
+** golang
+=go= is the most recent tool in my tool belt. I am a noob when it comes to go so this is my configuration trying to get some functionality I want like debugging
+#+begin_src emacs-lisp
+(use-package! go-mode
+  :mode "\\.go\\'"
+  :config
+  (require 'dap-go)
+  (dap-go-setup))
 #+end_src
 * Workspaces and Projects
 Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.
