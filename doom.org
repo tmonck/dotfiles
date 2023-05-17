@@ -18,9 +18,11 @@
   - [[#fonts][Fonts]]
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
+  - [[#opacity][Opacity]]
 - [[#magit][Magit]]
   - [[#forge][Forge]]
 - [[#line-numbers][Line numbers]]
+- [[#ansible][Ansible]]
 - [[#org-mode-configuration][Org Mode Configuration]]
   - [[#default-directory][Default directory]]
   - [[#todo-keywords][todo-keywords]]
@@ -34,6 +36,8 @@
   - [[#pandoc][Pandoc]]
   - [[#after-org-loads][After org loads]]
   - [[#helpful-keybindings][Helpful Keybindings]]
+- [[#grammarly][Grammarly]]
+- [[#jenkinsfile][Jenkinsfile]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#debugging][Debugging]]
   - [[#launching-the-debugger][Launching the debugger]]
@@ -339,7 +343,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       literate
+       ;; literate
        (default +bindings +smartparens))
 #+end_src
 
@@ -380,7 +384,9 @@ I am ok with the default fonts for now but may want to adjust later so leaving t
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;; (setq doom-font (font-spec :family "JetBrains Mono")
+;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 #+end_src
 ** Theme
 Let's make the theme look like we want and we like it dark!
@@ -405,6 +411,15 @@ I like to have my emacs open to full screen on startup.
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 #+END_SRC
+** Opacity
+For some reason I like my editor to be somewhat see through so let's adjust the opacity.
+
+#+begin_src emacs-lisp
+(doom/set-frame-opacity 90)
+#+end_src
+
+#+RESULTS:
+
 * Magit
 Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
 
@@ -420,6 +435,12 @@ Line numbers are helpful and relative line numbers are even better.
 #+BEGIN_SRC emacs-lisp
 (setq display-line-numbers-type `relative)
 #+END_SRC
+* Ansible
+Since I want ansible to use the identities file since I have multiple ansible vault passwords I need to set the ansible-vault-password-file to nil.
+#+begin_src emacs-lisp
+;; (setq ansible-vault-password-file 'nil)
+#+end_src
+
 * Org Mode Configuration
 Let's organize our life. Org mode is wonderful. There are so many great tutorials out there on how to maximize your efficiency with org-mode. I personal use it track my daily work using journals and org-agenda.
 
@@ -433,7 +454,7 @@ We want a default file location for our org files. Let's define that here.
 There are some keywords I want.
 ** Org-Agenda
 #+begin_src emacs-lisp
-(setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
 ;; (setq org-agenda-file-regexp "\\.org$")
 #+end_src
 
@@ -451,9 +472,9 @@ Now we can start modifying some of the org journal variables. Some of the variab
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
       org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."))
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."
       ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
-      ;; org-journal-enable-agenda-integration 'f))
+      org-journal-enable-agenda-integration 't))
 #+END_SRC
 
 Lets add some keybindings to make creation of journal entries a little easier. You can go full bore with this and add all org-journal commands you frequently use below.
@@ -565,10 +586,6 @@ This seems like it might be useful but need to play around with it some before d
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
 (setq jiralib-url "https://bandwidth-jira.atlassian.net")
-(setq jiralib-token
-      (cons "Authorization"
-            (concat "Bearer " (auth-source-pick-first-password
-              :host "bandwidth-jira.atlassian.net"))))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -698,13 +715,39 @@ Adding some handy structure templates to save a few keystrokes when adding code 
 ** Helpful Keybindings
 I can never remember the keybindings so this is a place for me to quickly find them.
 
-| Function             | Description                                                             | Keybinding  |
-| org-clock-in         | Starts the clock on current item.                                       | =SPC m c i= |
-| org-clock-out        | Stops the running clock on current item.                                | =SPC m c o= |
-| org-set-tags-command | Set the tags for the currently visible item.                            | =SPC m q=   |
-| org-tags-view        | Show all headlines for all =org-agenda-files= matching a TAGS criterion | =SPC n m=   |
-| org-insert-link      | Insert a link                                                           | =SPC m l g= |
-|                      | Bring up fast toggle the TODO Status                                    | =C-c C-t=   |
+| Function             | Description                                                              | Keybinding  |
+| org-clock-in         | Starts the clock on current item.                                        | =SPC m c i= |
+| org-clock-out        | Stops the running clock on current item.                                 | =SPC m c o= |
+| org-set-tags-command | Set the tags for the currently visible item.                             | =SPC m q=   |
+| org-tags-view        | Show all headlines for all =org-agenda-files= matching a TAGS criterion. | =SPC n m=   |
+| org-insert-link      | Insert a link.                                                           | =SPC m l g= |
+| org-todo             | Change the TODO state of an item.                                        | =SPC m t=   |
+
+* Grammarly
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! lsp-grammarly)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! lsp-grammarly
+  :hook (text-mode . (lambda()
+                       (require 'lsp-grammarly)
+                       (lsp))))
+#+end_src
+#+begin_src emacs-lisp
+(setq langtool-bin "/opt/homebrew/bin/languagetool")
+#+end_src
+
+#+RESULTS:
+: /opt/homebrew/bin/languagetool
+* Jenkinsfile
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! jenkinsfile-mode :recipe
+  (:host github
+   :repo "john2x/jenkinsfile-mode"
+   :branch "master"))
+#+end_src
 
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings and don't belong any other areas. Most of the keybindings should be defined by their corresponding modes.

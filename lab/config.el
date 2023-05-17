@@ -44,7 +44,9 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;; (setq doom-font (font-spec :family "JetBrains Mono")
+;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -60,14 +62,18 @@
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 
+(doom/set-frame-opacity 90)
+
 ;; Set magit to full screen
 (setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
 
 (setq display-line-numbers-type `relative)
 
+;; (setq ansible-vault-password-file 'nil)
+
 (setq org-directory "~/org/")
 
-(setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
 ;; (setq org-agenda-file-regexp "\\.org$")
 
 (setq org-journal-dir "~/org/journal/")
@@ -76,9 +82,9 @@
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
       org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."))
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."
       ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
-      ;; org-journal-enable-agenda-integration 'f))
+      org-journal-enable-agenda-integration 't))
 
 (after! org
   (map! :leader
@@ -143,50 +149,46 @@
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
 (setq jiralib-url "https://bandwidth-jira.atlassian.net")
-(setq jiralib-token
-      (cons "Authorization"
-            (concat "Bearer " (auth-source-pick-first-password
-              :host "bandwidth-jira.atlassian.net"))))
 
 (after! auth-source
   (setq auth-sources (nreverse auth-sources)))
 
-(defun efs/presentation-setup ()
-  ;; Hide the mode line
-  ;; (hide-mode-line-mode 1)
+ (defun efs/presentation-setup ()
+   ;; Hide the mode line
+   ;; (hide-mode-line-mode 1)
 
-  ;; Display images inline
-  (org-display-inline-images) ;; Can also use org-startup-with-inline-images
+   ;; Display images inline
+   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
 
-  ;; Scale the text.  The next line is for basic scaling:
-  (setq text-scale-mode-amount 3)
-  (text-scale-mode 1))
-(defun efs/presentation-end ()
-  ;; Show the mode line again
-  ;; (hide-mode-line-mode 0)
+   ;; Scale the text.  The next line is for basic scaling:
+   (setq text-scale-mode-amount 3)
+   (text-scale-mode 1))
+ (defun efs/presentation-end ()
+   ;; Show the mode line again
+   ;; (hide-mode-line-mode 0)
 
-  ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
-  (text-scale-mode 0))
+   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
+   (text-scale-mode 0))
 
-  ;; If you use face-remapping-alist, this clears the scaling:
-  ;; (setq-local face-remapping-alist '((default variable-pitch default))))
-(use-package! org-tree-slide
-  :hook ((org-tree-slide-play . efs/presentation-setup)
-         (org-tree-slide-stop . efs/presentation-end))
-  ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
-  :config
-  (when (featurep! :editor evil)
-    (map! :map org-tree-slide-mode-map
-          :n [C-right] #'org-tree-slide-move-next-tree
-          :n [C-left]  #'org-tree-slide-move-previous-tree)
-    (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
-  :custom
-  (org-tree-slide-slide-in-effect t)
-  (org-tree-slide-activate-message "Presentation started!")
-  (org-tree-slide-deactivate-message "Presentation finished!")
-  (org-tree-slide-header t)
-  (org-tree-slide-breadcrumbs " > ")
-  (org-image-actual-width nil))
+   ;; If you use face-remapping-alist, this clears the scaling:
+   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
+ (use-package! org-tree-slide
+   :hook ((org-tree-slide-play . efs/presentation-setup)
+          (org-tree-slide-stop . efs/presentation-end))
+   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
+   :config
+   (when (featurep! :editor evil)
+     (map! :map org-tree-slide-mode-map
+           :n [C-right] #'org-tree-slide-move-next-tree
+           :n [C-left]  #'org-tree-slide-move-previous-tree)
+     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
+   :custom
+   (org-tree-slide-slide-in-effect t)
+   (org-tree-slide-activate-message "Presentation started!")
+   (org-tree-slide-deactivate-message "Presentation finished!")
+   (org-tree-slide-header t)
+   (org-tree-slide-breadcrumbs " > ")
+   (org-image-actual-width nil))
 
 (use-package! org-pandoc-import :after org)
 
@@ -207,6 +209,13 @@
   (add-to-list 'org-structure-template-alist '("js" . "src js"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
+
+(use-package! lsp-grammarly
+  :hook (text-mode . (lambda()
+                       (require 'lsp-grammarly)
+                       (lsp))))
+
+(setq langtool-bin "/opt/homebrew/bin/languagetool")
 
 (use-package! dap-mode)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))

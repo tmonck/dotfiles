@@ -67,21 +67,18 @@
 
 (setq org-directory "~/org/")
 
-(setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
-
-(after! org
-  (setq org-fontify-done-headline nil))
-
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-file-regexp "\\.org$")
 
 (setq org-journal-dir "~/org/journal/")
 
 (after! org
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
-      org-journal-time-format 'nil ;; this is the default entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      ;; org-journal-file-header "#+TITLE: Daily Journal\n"
-      org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."))
-      ;; org-journal-enable-agenda-integration 't))
+      org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."
+      ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
+      org-journal-enable-agenda-integration 't))
 
 (after! org
   (map! :leader
@@ -118,6 +115,9 @@
  ))
 
 (setq org-roam-dailies-directory "journals/")
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 
 (after! org-roam
   (map! :leader
@@ -143,10 +143,6 @@
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
 (setq jiralib-url "https://bandwidth-jira.atlassian.net")
-(setq jiralib-token
-      (cons "Authorization"
-            (concat "Bearer " (auth-source-pick-first-password
-              :host "bandwidth-jira.atlassian.net"))))
 
 (after! auth-source
   (setq auth-sources (nreverse auth-sources)))
@@ -188,11 +184,16 @@
   (org-tree-slide-breadcrumbs " > ")
   (org-image-actual-width nil))
 
+(use-package! org-pandoc-import :after org)
+
+(after! org
+  (setq org-fontify-done-headline nil))
+
 ;; (after! org (setq org-hide-emphasis-markers t))
 
-;; (after! org
-  ;; (setq org-log-done t)
-  ;; (setq org-log-into-drawer t)0
+(after! org
+  (setq org-log-done t)
+  (setq org-log-into-drawer t))
 
 (when (version<= "9.2" (org-version))
     (require 'org-tempo))
@@ -202,8 +203,6 @@
   (add-to-list 'org-structure-template-alist '("js" . "src js"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
-
-(use-package! org-pandoc-import :after org)
 
 (use-package! dap-mode)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))

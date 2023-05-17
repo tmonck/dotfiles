@@ -681,3 +681,4 @@ sudo snap install discord
 #+end_src
 * Items to look at
 - MermaidJs
+- coreutils for macos
