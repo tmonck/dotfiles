@@ -162,33 +162,14 @@ export PATH=$PATH:$DOTNET_ROOT
 export ANSIBLE_VAULT_IDENTITY_LIST=keystone-default@$HOME/.oneid/.keystone-vault-password.txt,keystone-prod@$HOME/.oneid/.keystone-vault-password-prod.txt
 
 # Jenv
-eval export PATH="/Users/tmonck/.jenv/shims:${PATH}"
-export JENV_SHELL=bash
-export JENV_LOADED=1
-unset JAVA_HOME
-source '/opt/homebrew/Cellar/jenv/0.5.4/libexec/libexec/../completions/jenv.bash'
-jenv rehash 2>/dev/null
-jenv refresh-plugins
-jenv() {
-  typeset command
-  command="$1"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
-
-  case "$command" in
-  enable-plugin|rehash|shell|shell-options)
-    eval `jenv "sh-$command" "$@"`;;
-  *)
-    command jenv "$command" "$@";;
-  esac
-}
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
 
 # golang goenv
 eval "$(goenv init -)"
 export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
 export PATH=$PATH:"$GOPATH/bin"
-export PATH="$GOROOT/bin:$PATH"
 
 # python
 export PYENV_ROOT="$HOME/.pyenv"

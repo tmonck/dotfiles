@@ -682,3 +682,5 @@ sudo snap install discord
 * Items to look at
 - MermaidJs
 - coreutils for macos
+  This installs the gnu coreutils for macos
+- bash_completion
