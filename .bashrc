@@ -3,6 +3,7 @@
 # for examples
 
 # If not running interactively, don't do anything
+echo "bashrc file"
 case $- in
     *i*) ;;
       *) return;;
@@ -76,33 +77,28 @@ xterm*|rxvt*)
     ;;
 esac
 
-#Evaluate brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
 fi
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
 # Set colors for bash (pretty!!)
-if [ -f ~/.bash_colors ]; then
-  . ~/.bash_colors
+if [ -f $HOME/.bash_colors ]; then
+  . $HOME/.bash_colors
 fi
 
-if [ -f ~/.trapd00r_colors ]; then
+if [ -f $HOME/.trapd00r_colors ]; then
   if command -v gdircolors &> /dev/null;
   then
-    eval `gdircolors ~/.trapd00r_colors`
-  else
-    eval `dircolors ~/.trapd00r_colors`
+    eval `gdircolors $HOME/.trapd00r_colors`
+  elif command -v dircolors &> /dev/null
+  then
+    eval `dircolors $HOME/.trapd00r_colors`
   fi
 fi
 
-if [ -f ~/git-prompt.sh ];
+if [ -f $HOME/git-prompt.sh ];
 then
-  source ~/git-prompt.sh
+  source $HOME/git-prompt.sh
   PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$ ";'$PROMPT_COMMAND
 fi
 
@@ -116,3 +112,95 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+#Evaluate brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+if type brew &>/dev/null
+then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
+  then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
+    do
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
+  fi
+fi
+
+if command -v kubectl > /dev/null;
+then
+   source <(kubectl completion bash)
+fi
+
+if command -v argocd > /dev/null;
+then
+   source <(argocd completion bash)
+fi
+
+if command -v tkn > /dev/null;
+then
+   source <(tkn completion bash)
+fi
+
+if complete -v oc;
+then
+   source <(oc completion bash)
+fi
+
+if complete -v aws;
+then
+   complete -C '$(brew --prefix)/bin/aws_completer' aws
+fi
+
+
+export GPG_TTY=$(tty)
+export DOTNET_ROOT=$HOME/.dotnet
+export PATH=$PATH:$DOTNET_ROOT
+export ANSIBLE_VAULT_IDENTITY_LIST=keystone-default@$HOME/.oneid/.keystone-vault-password.txt,keystone-prod@$HOME/.oneid/.keystone-vault-password-prod.txt
+
+# Jenv
+eval export PATH="/Users/tmonck/.jenv/shims:${PATH}"
+export JENV_SHELL=bash
+export JENV_LOADED=1
+unset JAVA_HOME
+source '/opt/homebrew/Cellar/jenv/0.5.4/libexec/libexec/../completions/jenv.bash'
+jenv rehash 2>/dev/null
+jenv refresh-plugins
+jenv() {
+  typeset command
+  command="$1"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  enable-plugin|rehash|shell|shell-options)
+    eval `jenv "sh-$command" "$@"`;;
+  *)
+    command jenv "$command" "$@";;
+  esac
+}
+
+# golang goenv
+eval "$(goenv init -)"
+export GOENV_ROOT="$HOME/.goenv"
+export PATH=$PATH:"$GOPATH/bin"
+export PATH="$GOROOT/bin:$PATH"
+
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# nvm/node
+if command -v nvm
+then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
+export PROMPT_COMMAND='history -a;'$PROMPT_COMMAND
