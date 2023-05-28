@@ -148,7 +148,7 @@ I really like how =posh_git.ps1= modifies the terminal to show status, so let's 
 Shout out to the maintainer of the =posh-git-sh= version of =posh_git=
 #+NAME: git-prompt
 #+begin_src sh
-curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/blob/master/git-prompt.sh > ~/git-prompt.sh
 #+end_src
 
 #+RESULTS: git-prompt
@@ -202,8 +202,14 @@ Documentation around JavaScript and TypeScript is readily available with a simpl
 brew install node # This will install npm as well
 #+end_src
 **** Ubuntu
+We are going to install NVM to install node
 #+begin_src sh :tangle setupScripts/ubuntu.sh
-apt install nodejs
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+# Executing this so we don't need a new shell
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+nvm install --lts
 #+end_src
 *** Python
 Python is a fun language with many uses. I mainly use it for developing my home automation setup. If you are ever interested in a fun DIY project I recommend looking into setting up [[https://home-assistant.io][Home Assistant]]. It can run on a RPI and is fun to setup. I personally have set this up and my house and will never look back again.
@@ -345,16 +351,16 @@ There a few challenges documented in the [[https://github.com/hlissner/doom-emac
 Doom requires git 2.28+
 
 #+begin_src sh :tangle setupScripts/ubuntu.sh
-add-apt-repository ppa:git-core/ppa
-apt update
-apt install git
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update
+sudo apt install git
 #+end_src
 ****** Emacs
 This one was handle above when we installed emacs itself.
 ****** Other dependencies
 
 #+begin_src sh :tangle setupScripts/ubuntu.sh
-apt install ripgrep fd-find
+sudo apt install ripgrep fd-find
 #+end_src
 
 **** Clone
@@ -399,7 +405,7 @@ TODO
 TODO
 ****** Ubuntu
 #+begin_src sh :tangle setupScripts/ubuntu.sh
-apt install editorconfig
+sudo apt install editorconfig
 #+end_src
 ***** markdown compiler
 I use the `npm` package `marked` for markdown compiler which enables markdown preview.
@@ -419,6 +425,11 @@ npm install -g marked
 #+begin_src sh :tangle setupScripts/ubuntu.sh :padline 'no' :noweb yes
 <<install_marked>>
 #+end_src
+***** pandoc
+****** Ubuntu
+#+begin_src sh :tangle setupScripts/ubuntu.sh :padline 'no' :noweb yes
+sudo apt install pandoc
+#+end_src
 ***** jq
 ****** Windows
 TODO
@@ -428,7 +439,7 @@ brew install jq
 #+end_src
 ****** Ubuntu
 #+begin_src sh :tangle setupScripts/ubuntu.sh :padline 'no'
-apt install jq
+sudo apt install jq
 #+end_src
 ***** shellcheck
 This is used for shell script linting inside of emacs.
@@ -440,7 +451,7 @@ brew install shellcheck
 #+end_src
 ****** Ubuntu
 #+begin_src sh :tangle setupScripts/ubuntu.sh :padline 'no'
-apt install shellcheck
+sudo apt install shellcheck
 #+end_src
 **** Installation
 Now that we have all of the dependencies installed and doom cloned lets go ahead and setup `doom` command to be runnable from anywhere by adding it to our path.
@@ -590,6 +601,26 @@ brew install firefox
 #+end_src
 **** Ubuntu
 Comes with firefox out the box so don't have to do anything YAY!
+
+Snap version of firefox causes isolation of the temp dirs
+#+begin_src sh
+wget -O ~/FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64"
+sudo tar xjf ~/FirefoxSetup.tar.bz2 -C /opt/
+sudo mv /usr/lib/firefox/firefox /usr/lib/firefox/firefox_backup
+sudo ln -s /opt/firefox/firefox /usr/lib/firefox/firefox
+#+end_src
+
+Updating
+#+begin_src sh
+wget -O ~/FirefoxSetup.tar.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64"
+sudo tar xjf ~/FirefoxSetup.tar.bz2 -C /opt/
+#+end_src
+
+Removal
+#+begin_src sh
+sudo rm -fr /opt/firefox
+sudo mv /usr/lib/firefox/firefox_backup /usr/lib/firefox/firefox
+#+end_src
 ** Chrome
 Another modern web browser which is Chromium based. Their site is [[https://google.com/chrome][here]]. I use this specifically for ensuring functionality works across the different browsers.
 **** Windows
@@ -630,7 +661,7 @@ brew install slack
 #+end_src
 *** Ubuntu
 #+begin_src sh :tangle setupScripts/ubuntu.sh
-snap install slack --classic
+sudo snap install slack --classic
 #+end_src
 ** Discord
 *** Windows

@@ -48,7 +48,7 @@ add-apt-repository ppa:git-core/ppa
 apt update
 apt install git
 
-apt install ripgrep fd-find
+sudo apt install ripgrep fd-find
 
 git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
 
