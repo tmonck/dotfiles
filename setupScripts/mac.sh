@@ -8,7 +8,7 @@ brew cask upgrade
 
 brew install git
 
-curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/blob/master/git-prompt.sh > ~/git-prompt.sh
 
 brew install node # This will install npm as well
 

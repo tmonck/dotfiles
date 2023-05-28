@@ -4,7 +4,7 @@
 
 sudo apt install git
 
-curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/blob/master/git-prompt.sh > ~/git-prompt.sh
 
 wget https://dot.net/v1/dotnet-install.sh -P ./bin
 export PATH=$PATH:$PWD/bin
@@ -19,7 +19,12 @@ dotnet-install.sh -c 6.0
 
 # sudo apt install mono-complete
 
-apt install nodejs
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+# Executing this so we don't need a new shell
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+nvm install --lts
 
 alias python=python3
 
@@ -44,18 +49,19 @@ fi
 
 git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
 
-add-apt-repository ppa:git-core/ppa
-apt update
-apt install git
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update
+sudo apt install git
 
 sudo apt install ripgrep fd-find
 
 git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
 
-apt install editorconfig
+sudo apt install editorconfig
 npm install -g marked
-apt install jq
-apt install shellcheck
+sudo apt install pandoc
+sudo apt install jq
+sudo apt install shellcheck
 
 export PATH="$HOME/mydoom/bin:$PATH"
 doom install
@@ -69,6 +75,6 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 sudo apt-get install -y podman
 
-snap install slack --classic
+sudo snap install slack --classic
 
 sudo snap install discord
