@@ -1,14 +1,11 @@
 # ~/.bashrc: executed by bash(1) for nn-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-echo "bashrc"
-export DOTNET_ROOT=/usr/share/dotnet
-export PATH=$PATH:$DOTNET_ROOT
-# If not running interactively, don't do anything
 echo "bashrc file"
+# If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+  *i*) ;;
+  *) return ;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -35,12 +32,12 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+  debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+  xterm-color | *-256color) color_prompt=yes ;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -49,38 +46,37 @@ esac
 Force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
+  else
+    color_prompt=
+  fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]|$(date +%H:%M)$(parse_git_branch)\[\033[00m\]\$ '
+  #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]|$(date +%H:%M)$(parse_git_branch)\[\033[00m\]\$ '
 
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]|$(date +%H:%M)$(parse_git_branch)\[\033[00m\]\$ '
+  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+  #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]|$(date +%H:%M)$(parse_git_branch)\[\033[00m\]\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
+  xterm* | rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-*)
-    ;;
+  *) ;;
 esac
 
 if [ -f $HOME/.bash_aliases ]; then
-    . $HOME/.bash_aliases
+  . $HOME/.bash_aliases
 fi
 
 # Set colors for bash (pretty!!)
@@ -89,17 +85,14 @@ if [ -f $HOME/.bash_colors ]; then
 fi
 
 if [ -f $HOME/.trapd00r_colors ]; then
-  if command -v gdircolors &> /dev/null;
-  then
-    eval `gdircolors $HOME/.trapd00r_colors`
-  elif command -v dircolors &> /dev/null
-  then
-    eval `dircolors $HOME/.trapd00r_colors`
+  if command -v gdircolors &>/dev/null; then
+    eval $(gdircolors $HOME/.trapd00r_colors)
+  elif command -v dircolors &>/dev/null; then
+    eval $(dircolors $HOME/.trapd00r_colors)
   fi
 fi
 
-if [ -f $HOME/git-prompt.sh ];
-then
+if [ -f $HOME/git-prompt.sh ]; then
   source $HOME/git-prompt.sh
   PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$ ";'$PROMPT_COMMAND
 fi
@@ -116,47 +109,40 @@ if ! shopt -oq posix; then
 fi
 
 #Evaluate brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ "$(uname -s)" == "Darwin" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 
-if type brew &>/dev/null
-then
-  HOMEBREW_PREFIX="$(brew --prefix)"
-  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
-  then
-    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-  else
-    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
-    do
-      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
-    done
+  if type brew &>/dev/null; then
+    HOMEBREW_PREFIX="$(brew --prefix)"
+    if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+      source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+    else
+      for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+        [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+      done
+    fi
   fi
 fi
 
-if command -v kubectl > /dev/null;
-then
-   source <(kubectl completion bash)
+if command -v kubectl >/dev/null; then
+  source <(kubectl completion bash)
 fi
 
-if command -v argocd > /dev/null;
-then
-   source <(argocd completion bash)
+if command -v argocd >/dev/null; then
+  source <(argocd completion bash)
 fi
 
-if command -v tkn > /dev/null;
-then
-   source <(tkn completion bash)
+if command -v tkn >/dev/null; then
+  source <(tkn completion bash)
 fi
 
-if complete -v oc;
-then
-   source <(oc completion bash)
+if command -v oc; then
+  source <(oc completion bash)
 fi
 
-if complete -v aws;
-then
-   complete -C '$(brew --prefix)/bin/aws_completer' aws
+if command -v aws; then
+  complete -C '$(brew --prefix)/bin/aws_completer' aws
 fi
-
 
 export GPG_TTY=$(tty)
 export DOTNET_ROOT=$HOME/.dotnet
@@ -166,27 +152,33 @@ export ANSIBLE_VAULT_IDENTITY_LIST=keystone-default@$HOME/.oneid/.keystone-vault
 # Add JBang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
+
 # Jenv
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+if command -v jenv >/dev/null; then
+  export PATH="$HOME/.jenv/bin:$PATH"
+  eval "$(jenv init -)"
+fi
 
 # golang goenv
-eval "$(goenv init -)"
-export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-export PATH=$PATH:"$GOPATH/bin"
+if command -v goenv >/dev/null; then
+  eval "$(goenv init -)"
+  export GOENV_ROOT="$HOME/.goenv"
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  export PATH=$PATH:"$GOPATH/bin"
+fi
 
 # python
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+if command -v pyenv >/dev/null; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
 
 # nvm/node
-if command -v nvm
-then
+if command -v nvm; then
   export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 fi
 
 export PROMPT_COMMAND='history -a;'$PROMPT_COMMAND
