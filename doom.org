@@ -54,6 +54,7 @@
   - [[#golang][golang]]
   - [[#vue][Vue]]
   - [[#golang-1][golang]]
+  - [[#shell][shell]]
 - [[#workspaces-and-projects][Workspaces and Projects]]
 
 * Acknowledgements
@@ -1108,6 +1109,11 @@ Configure Vue.js
   :config
   (require 'dap-go)
   (dap-go-setup))
+#+end_src
+** shell
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
 #+end_src
 * Workspaces and Projects
 Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.
