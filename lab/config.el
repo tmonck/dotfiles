@@ -43,8 +43,8 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-(setq doom-font (font-spec :family "JetBrains Mono")
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
+;; (setq doom-font (font-spec :family "JetBrains Mono")
+;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -52,6 +52,15 @@
 ;; (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-acario-dark)
 (setq doom-theme 'doom-material-dark)
+
+(use-package! treemacs-all-the-icons )
+(setq doom-themes-treemacs-theme "Default")
+
+(use-package! treemacs-icons-dired)
+
+(after! dired
+  (treemacs-icons-dired-enable-once)
+  )
 
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
     (toggle-frame-maximized)
@@ -115,11 +124,13 @@
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
+(let ((roamdir '"~/dsmonckcrazy/toms_files/roamNotes"))
 (use-package! org-roam
   :init
-  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-directory roamdir)
   (setq org-roam-v2-ack 't)
   )
+)
 
 (setq org-roam-capture-templates
 '(("d" "default" plain

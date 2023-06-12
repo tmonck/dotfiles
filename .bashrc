@@ -1,7 +1,9 @@
 # ~/.bashrc: executed by bash(1) for nn-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-
+echo "bashrc"
+export DOTNET_ROOT=/usr/share/dotnet
+export PATH=$PATH:$DOTNET_ROOT
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -76,21 +78,21 @@ xterm*|rxvt*)
     ;;
 esac
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
 fi
 
 # Set colors for bash (pretty!!)
-if [ -f ~/.bash_colors ]; then
-  . ~/.bash_colors
+if [ -f $HOME/.bash_colors ]; then
+  . $HOME/.bash_colors
 fi
 
-if [ -f ~/.trapd00r_colors ]; then
+if [ -f $HOME/.trapd00r_colors ]; then
   if command -v gdircolors &> /dev/null;
   then
-    eval `gdircolors ~/.trapd00r_colors`
+    eval `gdircolors $HOME/.trapd00r_colors`
   else
-    eval `dircolors ~/.trapd00r_colors`
+    eval `dircolors $HOME/.trapd00r_colors`
   fi
 fi
 
@@ -104,3 +106,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+alias docker=podman
+# Add JBang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

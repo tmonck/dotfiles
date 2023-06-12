@@ -1,4 +1,11 @@
-[[ "$(uname -s)" == "Darwin" && -s ~/.bashrc ]] && source ~/.bashrc
+echo "bash_profile"
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+	. "$HOME/.bashrc"
+    fi
+fi
 
 infiniteCurl() {
     while true; do curl $1; done
@@ -36,5 +43,6 @@ then
    source <(tkn completion bash)
 fi
 
-export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$DOTNET_ROOT
+export GOPATH="${HOME}/go"
+export DOTNET_ROOT=/usr/share/dotnet
+export PATH=$PATH:$DOTNET_ROOT:$GOPATH/bin

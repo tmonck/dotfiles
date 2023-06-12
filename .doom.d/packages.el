@@ -50,6 +50,8 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
+(package! treemacs-all-the-icons)
+
 (package! org-roam)
 
 (package! org-auto-tangle)
