@@ -30,6 +30,8 @@ alias python=python3
 
 sudo snap install go --classic
 
+export PATH="$HOME/go/bin:$PATH"
+
 go install github.com/x-motemen/gore/cmd/gore@latest
 go install github.com/stamblerre/gocode@latest
 go install golang.org/x/tools/cmd/godoc@latest
@@ -38,6 +40,8 @@ go install golang.org/x/tools/cmd/gorename@latest
 go install golang.org/x/tools/cmd/guru@latest
 go install github.com/cweill/gotests/gotests@latest
 go install github.com/fatih/gomodifytags@latest
+go install golang.org/x/tools/gopls@latest
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 snap install emacs --classic
 
@@ -56,12 +60,12 @@ sudo apt install git
 sudo apt install ripgrep fd-find
 
 git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
-
 sudo apt install editorconfig
 npm install -g marked
 sudo apt install pandoc
 sudo apt install jq
 sudo apt install shellcheck
+sudo apt install graphviz
 
 export PATH="$HOME/mydoom/bin:$PATH"
 doom install

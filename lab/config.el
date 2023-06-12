@@ -20,6 +20,9 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; Or set it to `:none' to disable formatting
+(setq-hook! 'nxml-mode-hook +format-with :none)
+
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
@@ -41,8 +44,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-
+;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
@@ -50,8 +52,11 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
 ;; (setq doom-theme 'doom-one)
-;; (setq doom-theme 'doom-acario-dark)
-(setq doom-theme 'doom-material-dark)
+;;(setq doom-theme 'doom-acario-dark)
+ (setq doom-theme 'doom-material-dark)
+;; (setq doom-theme 'doom-ir-black)
+;; (setq doom-theme 'doom-moonlight)
+;; (setq doom-theme 'doom-challenger-deep)
 
 (use-package! treemacs-all-the-icons )
 (setq doom-themes-treemacs-theme "Default")
@@ -66,17 +71,19 @@
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 
-(doom/set-frame-opacity 95)
+(doom/set-frame-opacity 90)
 
 ;; Set magit to full screen
 (setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
 
 (setq display-line-numbers-type `relative)
 
+;; (setq ansible-vault-password-file 'nil)
+
 (setq org-directory "~/org/")
 
-(after! org
-  (setq org-fontify-done-headline nil))
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-file-regexp "\\.org$")
 
 (require 'org-faces)
 
@@ -108,7 +115,8 @@
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
       org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      org-journal-file-header "#+TITLE: Daily Journal\n"
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."
+      ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
       org-journal-enable-agenda-integration 't))
 
 (after! org
@@ -148,6 +156,9 @@
  ))
 
 (setq org-roam-dailies-directory "journals/")
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 
 (after! org-roam
   (map! :leader
@@ -173,7 +184,7 @@
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
 
-;;(setq jiralib-url "https://work.dudesoln.com/")
+;;(setq jiralib-url "https://bandwidth-jira.atlassian.net")
 
 (after! auth-source
   (setq auth-sources (nreverse auth-sources)))
@@ -271,11 +282,16 @@
 ;; ;;           :n [C-left]  #'org-present-prev))
 ;; ;;   )
 
+(use-package! org-pandoc-import :after org)
+
+(after! org
+  (setq org-fontify-done-headline nil))
+
 ;; (after! org (setq org-hide-emphasis-markers t))
 
-;; (after! org
-  ;; (setq org-log-done t)
-  ;; (setq org-log-into-drawer t)0
+(after! org
+  (setq org-log-done t)
+  (setq org-log-into-drawer t))
 
 (when (version<= "9.2" (org-version))
     (require 'org-tempo))
@@ -286,7 +302,12 @@
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
-(use-package! org-pandoc-import :after org)
+(use-package! lsp-grammarly
+  :hook (text-mode . (lambda()
+                       (require 'lsp-grammarly)
+                       (lsp))))
+
+(setq langtool-bin "/opt/homebrew/bin/languagetool")
 
 (use-package! dap-mode)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
@@ -353,6 +374,20 @@
   :config
   (require 'dap-node)
   (dap-node-setup))
+
+;; Add a hook?
+(use-package! go-mode
+  :mode "\\.go\\'"
+  ;; :hook (go-mode . #'lsp-deferred)
+  :config
+  (require 'dap-go)
+  (dap-go-setup))
+
+;; (defun lsp-go-install-save-hooks ()
+;;   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+;; (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(setq lsp-go-build-flags '["-tags=integration"])
 
 (use-package! vue-mode
   :mode "\\.vue\\'"

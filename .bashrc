@@ -5,6 +5,7 @@ echo "bashrc"
 export DOTNET_ROOT=/usr/share/dotnet
 export PATH=$PATH:$DOTNET_ROOT
 # If not running interactively, don't do anything
+echo "bashrc file"
 case $- in
     *i*) ;;
       *) return;;
@@ -91,9 +92,16 @@ if [ -f $HOME/.trapd00r_colors ]; then
   if command -v gdircolors &> /dev/null;
   then
     eval `gdircolors $HOME/.trapd00r_colors`
-  else
+  elif command -v dircolors &> /dev/null
+  then
     eval `dircolors $HOME/.trapd00r_colors`
   fi
+fi
+
+if [ -f $HOME/git-prompt.sh ];
+then
+  source $HOME/git-prompt.sh
+  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$ ";'$PROMPT_COMMAND
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -107,12 +115,78 @@ if ! shopt -oq posix; then
   fi
 fi
 
-alias docker=podman
+#Evaluate brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+if type brew &>/dev/null
+then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
+  then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
+    do
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
+  fi
+fi
+
+if command -v kubectl > /dev/null;
+then
+   source <(kubectl completion bash)
+fi
+
+if command -v argocd > /dev/null;
+then
+   source <(argocd completion bash)
+fi
+
+if command -v tkn > /dev/null;
+then
+   source <(tkn completion bash)
+fi
+
+if complete -v oc;
+then
+   source <(oc completion bash)
+fi
+
+if complete -v aws;
+then
+   complete -C '$(brew --prefix)/bin/aws_completer' aws
+fi
+
+
+export GPG_TTY=$(tty)
+export DOTNET_ROOT=$HOME/.dotnet
+export PATH=$PATH:$DOTNET_ROOT
+export ANSIBLE_VAULT_IDENTITY_LIST=keystone-default@$HOME/.oneid/.keystone-vault-password.txt,keystone-prod@$HOME/.oneid/.keystone-vault-password-prod.txt
+
 # Add JBang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
+# Jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
 
+# golang goenv
+eval "$(goenv init -)"
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+export PATH=$PATH:"$GOPATH/bin"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# nvm/node
+if command -v nvm
+then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
+export PROMPT_COMMAND='history -a;'$PROMPT_COMMAND

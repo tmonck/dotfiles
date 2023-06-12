@@ -71,6 +71,13 @@
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
 
+(package! lsp-grammarly)
+
+(package! jenkinsfile-mode :recipe
+  (:host github
+   :repo "john2x/jenkinsfile-mode"
+   :branch "master"))
+
 (package! dap-mode)
 
 (package! vue-mode)

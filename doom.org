@@ -22,9 +22,11 @@
 - [[#magit][Magit]]
   - [[#forge][Forge]]
 - [[#line-numbers][Line numbers]]
+- [[#ansible][Ansible]]
 - [[#org-mode-configuration][Org Mode Configuration]]
   - [[#default-directory][Default directory]]
-  - [[#org-mode-styling][Org mode styling]]
+  - [[#todo-keywords][todo-keywords]]
+  - [[#org-agenda][Org-Agenda]]
   - [[#org-journal][Org-Journal]]
   - [[#org-roam][org-roam]]
   - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
@@ -32,7 +34,11 @@
   - [[#org-jira][org-jira]]
   - [[#org-tree-mode][org-tree-mode]]
   - [[#org-present][org-present]]
+  - [[#pandoc][Pandoc]]
   - [[#after-org-loads][After org loads]]
+  - [[#helpful-keybindings][Helpful Keybindings]]
+- [[#grammarly][Grammarly]]
+- [[#jenkinsfile][Jenkinsfile]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#debugging][Debugging]]
   - [[#launching-the-debugger][Launching the debugger]]
@@ -45,8 +51,9 @@
   - [[#lsp-ui][lsp-ui]]
   - [[#typescript][Typescript]]
   - [[#javascript][Javascript]]
-  - [[#vue][Vue]]
   - [[#golang][golang]]
+  - [[#vue][Vue]]
+  - [[#golang-1][golang]]
 - [[#workspaces-and-projects][Workspaces and Projects]]
 
 * Acknowledgements
@@ -341,6 +348,19 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;literate
        (default +bindings +smartparens))
 #+end_src
+
+*** libgccjit error
+#+begin_src emacs-lisp :tangle lab/init.el
+(setq native-comp-deferred-compilation nil)
+(after! (doom-packages straight)
+  (setq straight--native-comp-available t))
+#+end_src
+*** Formater
+I don't want to format things in the `nxml-mode`
+#+begin_src emacs-lisp
+;; Or set it to `:none' to disable formatting
+(setq-hook! 'nxml-mode-hook +format-with :none)
+#+end_src
 * Me
 It's nice to know who you are especially for git commits and such. It's recommended to fill out this section
 
@@ -371,8 +391,7 @@ It's nice to know who you are especially for git commits and such. It's recommen
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-
+;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 #+end_src
@@ -386,8 +405,11 @@ Let's make the theme look like we want and we like it dark!
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
 ;; (setq doom-theme 'doom-one)
-;; (setq doom-theme 'doom-acario-dark)
-(setq doom-theme 'doom-material-dark)
+;;(setq doom-theme 'doom-acario-dark)
+ (setq doom-theme 'doom-material-dark)
+;; (setq doom-theme 'doom-ir-black)
+;; (setq doom-theme 'doom-moonlight)
+;; (setq doom-theme 'doom-challenger-deep)
 #+END_SRC
 *** treemacs
 Since we use treemacs lets add some icon flare here
@@ -424,9 +446,8 @@ I like to have my emacs open to full screen on startup.
 For some reason I like my editor to be somewhat see through so let's adjust the opacity.
 
 #+begin_src emacs-lisp
-(doom/set-frame-opacity 95)
+(doom/set-frame-opacity 90)
 #+end_src
-
 * Magit
 Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
 
@@ -442,6 +463,12 @@ Line numbers are helpful and relative line numbers are even better.
 #+BEGIN_SRC emacs-lisp
 (setq display-line-numbers-type `relative)
 #+END_SRC
+* Ansible
+Since I want ansible to use the identities file since I have multiple ansible vault passwords I need to set the ansible-vault-password-file to nil.
+#+begin_src emacs-lisp
+;; (setq ansible-vault-password-file 'nil)
+#+end_src
+
 * Org Mode Configuration
 Let's organize our life. Org mode is wonderful. There are so many great tutorials out there on how to maximize your efficiency with org-mode. I personal use it track my daily work using journals and org-agenda.
 
@@ -451,12 +478,12 @@ We want a default file location for our org files. Let's define that here.
 #+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/")
 #+END_SRC
-** Org mode styling
-A couple of UI tweaks to make things a little more friendly in org-mode.
-
+** todo-keywords
+There are some keywords I want.
+** Org-Agenda
 #+begin_src emacs-lisp
-(after! org
-  (setq org-fontify-done-headline nil))
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-file-regexp "\\.org$")
 #+end_src
 
 #+begin_src emacs-lisp
@@ -498,7 +525,8 @@ Now we can start modifying some of the org journal variables. Some of the variab
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
       org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      org-journal-file-header "#+TITLE: Daily Journal\n"
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."
+      ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
       org-journal-enable-agenda-integration 't))
 #+END_SRC
 
@@ -518,7 +546,6 @@ Lets add some keybindings to make creation of journal entries a little easier. Y
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 #+END_SRC
-# ** Org-Agenda
 ** org-roam
 org-roam enchances org capture and allows you to quickly and efficiently search and find notes. It also allows linking an finding what a note is linked to much faster.
 
@@ -560,6 +587,9 @@ To make life easier we are going to make some custom templates that will allow u
 Lets setup org-roam-dailies
 #+begin_src emacs-lisp
 (setq org-roam-dailies-directory "journals/")
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 #+end_src
 
 *** Lets setup some keybindings for org-roam that will make life easier.
@@ -614,7 +644,7 @@ Let's go ahead and use the package and define the directory we want our jira ite
 
 The jira URL will be different for each place I work
 #+begin_src emacs-lisp
-;;(setq jiralib-url "https://work.dudesoln.com/")
+;;(setq jiralib-url "https://bandwidth-jira.atlassian.net")
 #+end_src
 
 #+begin_src emacs-lisp
@@ -762,7 +792,33 @@ Here is the code from SystemCrafters as is but we are going to convert this to =
 ;; ;;           :n [C-left]  #'org-present-prev))
 ;; ;;   )
 #+end_src
+** Pandoc
+=org-pandoc-import= has a dependency of =pandoc=. This is available via =brew= and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! org-pandoc-import :after org)
+#+end_src
+
+Some helpful functions to know
+
+# TODO: Need to add keybindings in a future commit
+- org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
+- org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
 ** After org loads
+*** Org mode styling
+A couple of UI tweaks to make things a little more friendly in org-mode.
+
+#+begin_src emacs-lisp
+(after! org
+  (setq org-fontify-done-headline nil))
+#+end_src
 *** Hide the Org mark up indicators
 I like seeing the emphasis markers but if you don't just uncomment this block. This will hide the prefix and suffix characters used when making items bold, italic, etc
 
@@ -772,9 +828,9 @@ I like seeing the emphasis markers but if you don't just uncomment this block. T
 *** Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
 
 #+BEGIN_SRC emacs-lisp
-;; (after! org
-  ;; (setq org-log-done t)
-  ;; (setq org-log-into-drawer t)0
+(after! org
+  (setq org-log-done t)
+  (setq org-log-into-drawer t))
 #+END_SRC
 
 *** Custom structure templates
@@ -805,25 +861,42 @@ Adding some handy structure templates to save a few keystrokes when adding code 
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 #+end_src
 
-*** Pandoc
-`org-pandoc-import` has a dependency of `pandoc`. This is available via `brew` and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
+** Helpful Keybindings
+I can never remember the keybindings so this is a place for me to quickly find them.
+
+| Function             | Description                                                              | Keybinding  |
+| org-clock-in         | Starts the clock on current item.                                        | =SPC m c i= |
+| org-clock-out        | Stops the running clock on current item.                                 | =SPC m c o= |
+| org-set-tags-command | Set the tags for the currently visible item.                             | =SPC m q=   |
+| org-tags-view        | Show all headlines for all =org-agenda-files= matching a TAGS criterion. | =SPC n m=   |
+| org-insert-link      | Insert a link.                                                           | =SPC m l g= |
+| org-todo             | Change the TODO state of an item.                                        | =SPC m t=   |
+
+* Grammarly
 
 #+begin_src emacs-lisp :tangle lab/packages.el
-(package! org-pandoc-import
-  :recipe (:host github
-           :repo "tecosaur/org-pandoc-import"
-           :files ("*.el" "filters" "preprocessors")))
+(package! lsp-grammarly)
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package! org-pandoc-import :after org)
+(use-package! lsp-grammarly
+  :hook (text-mode . (lambda()
+                       (require 'lsp-grammarly)
+                       (lsp))))
+#+end_src
+#+begin_src emacs-lisp
+(setq langtool-bin "/opt/homebrew/bin/languagetool")
 #+end_src
 
-Some helpful functions to know
-
-# TODO: Need to add keybindings in a future commit
-- org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
-- org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
+#+RESULTS:
+: /opt/homebrew/bin/languagetool
+* Jenkinsfile
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! jenkinsfile-mode :recipe
+  (:host github
+   :repo "john2x/jenkinsfile-mode"
+   :branch "master"))
+#+end_src
 
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings and don't belong any other areas. Most of the keybindings should be defined by their corresponding modes.
@@ -992,6 +1065,25 @@ Configure javascript and enable debugging for it.
   :config
   (require 'dap-node)
   (dap-node-setup))
+#+end_src
+** golang
+#+begin_src emacs-lisp
+;; Add a hook?
+(use-package! go-mode
+  :mode "\\.go\\'"
+  ;; :hook (go-mode . #'lsp-deferred)
+  :config
+  (require 'dap-go)
+  (dap-go-setup))
+#+end_src
+Lets setup the lsp-mode for golang based upon their recommendations
+
+#+begin_src emacs-lisp
+;; (defun lsp-go-install-save-hooks ()
+;;   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+;; (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(setq lsp-go-build-flags '["-tags=integration"])
 #+end_src
 
 ** Vue

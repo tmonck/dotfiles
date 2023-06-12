@@ -1,10 +1,10 @@
 #alias dir='dir --color=auto'
 #alias vdir='vdir --color=auto'
-
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias emacs-lab='emacs --with-profile=lab --debug-init'
+alias emacs-backup='emacs --with-profile=backup --debug-init'
 
 # ls alias
 case $(uname -s) in
@@ -15,10 +15,10 @@ case $(uname -s) in
     alias l='ls -CF'
     ;;
   Darwin)
-    alias ls='/usr/local/opt/coreutils/libexec/gnubin/ls --color=auto'
-    alias ll='/usr/local/opt/coreutils/libexec/gnubin/ls -alF'
-    alias la='/usr/local/opt/coreutils/libexec/gnubin/ls -A'
-    alias l='/usr/local/opt/coreutils/libexec/gnubin/ls -CF'
+    alias ls='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto'
+    alias ll='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto -alF'
+    alias la='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto -A'
+    alias l='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls -- color=auto -CF'
     ;;
 esac
 
@@ -28,11 +28,19 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 alias code='cd ~/code'
 
-alias emacsb='emacs --with-profile backup'
-
 if [ "$HOSTNAME" == "moncktower" ];
 then
     alias code="cd ~/secondary/code"
     alias shell_scripts="cd ~/secondary/code/shell_scripts/"
     alias nas="cd ~/dsmonckcrazy/"
 fi
+
+alias docker=podman
+
+#### Work Specific
+alias aws_lab='AWS_PROFILE=lab-us-east-1'
+alias aws_sbx_use1='AWS_PROFILE=sandbox-us-east-1'
+alias aws_sbx_euc1='AWS_PROFILE=sandbox-eu-central-1'
+alias aws_stage='AWS_PROFILE=stage-us-east-1'
+alias aws_prod='AWS_PROFILE=prod-us-east-1'
+alias python='python3'
