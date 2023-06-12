@@ -269,7 +269,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
 
        :lang
        ;;agda              ; types of types of types of types...
-       cc                ; C/C++/Obj-C madness
+       ;;cc                ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
@@ -338,7 +338,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       literate
+       ;;literate
        (default +bindings +smartparens))
 #+end_src
 * Me
@@ -373,12 +373,9 @@ It's nice to know who you are especially for git commits and such. It's recommen
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-(setq doom-font (font-spec :family "JetBrains Mono")
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
+;; (setq doom-font (font-spec :family "JetBrains Mono")
+;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 #+end_src
-
-#+RESULTS: fonts
-: #<font-spec nil nil JetBrains\ Mono nil nil semi-light nil nil 14 nil nil nil nil>
 
 ** Theme
 Let's make the theme look like we want and we like it dark!
@@ -392,6 +389,32 @@ Let's make the theme look like we want and we like it dark!
 ;; (setq doom-theme 'doom-acario-dark)
 (setq doom-theme 'doom-material-dark)
 #+END_SRC
+*** treemacs
+Since we use treemacs lets add some icon flare here
+#+begin_src emacs-lisp :tangle lab/packages.el
+;; (package! treemacs-all-the-icons)
+#+end_src
+
+#+begin_src emacs-lisp
+;; (use-package! treemacs-all-the-icons )
+(setq doom-themes-treemacs-theme "Default")
+#+end_src
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! treemacs-icons-dired)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! treemacs-icons-dired)
+
+(after! dired
+  (treemacs-icons-dired-enable-once)
+  )
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Fullscreen
 I like to have my emacs open to full screen on startup.
 
@@ -509,11 +532,11 @@ First thing to do is to set this in our =packages.el=
 (package! org-roam)
 #+end_src
 
-Now lets setup the org-roam directory.
-#+begin_src emacs-lisp
+Now lets setup the org-roam directory. On my home system I want to store my notes on different default directory
+#+begin_src emacs-lisp :var roamdir=(if (equal system-name "monckcrazytower") "~/dsmonckcrazy/toms_files/roamNotes" "~/org/roamNotes")
 (use-package! org-roam
   :init
-  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-directory roamdir)
   (setq org-roam-v2-ack 't)
   )
 #+end_src
@@ -611,42 +634,42 @@ First let's set it up in the =packages.el=
 
 Now let's setup some default configurations for it. The file that ships with Doom has a function that causes an issue with sub headings and doesn't allow you to go to the next sub heading. This functionality works out of the box with org-tree-macs by default. There is a few things that Doom's setup did have which was kind of nice and we will be replicating that ourselves.
 #+begin_src emacs-lisp
- ;; (defun efs/presentation-setup ()
- ;;   ;; Hide the mode line
- ;;   ;; (hide-mode-line-mode 1)
+;; (defun efs/presentation-setup ()
+;;   ;; Hide the mode line
+;;   ;; (hide-mode-line-mode 1)
 
- ;;   ;; Display images inline
- ;;   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
+;;   ;; Display images inline
+;;   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
 
- ;;   ;; Scale the text.  The next line is for basic scaling:
- ;;   (setq text-scale-mode-amount 3)
- ;;   (text-scale-mode 1))
- ;; (defun efs/presentation-end ()
- ;;   ;; Show the mode line again
- ;;   ;; (hide-mode-line-mode 0)
+;;   ;; Scale the text.  The next line is for basic scaling:
+;;   (setq text-scale-mode-amount 3)
+;;   (text-scale-mode 1))
+;; (defun efs/presentation-end ()
+;;   ;; Show the mode line again
+;;   ;; (hide-mode-line-mode 0)
 
- ;;   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
- ;;   (text-scale-mode 0))
+;;   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
+;;   (text-scale-mode 0))
 
- ;;   ;; If you use face-remapping-alist, this clears the scaling:
- ;;   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
- ;; (use-package! org-tree-slide
- ;;   :hook ((org-tree-slide-play . efs/presentation-setup)
- ;;          (org-tree-slide-stop . efs/presentation-end))
- ;;   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
- ;;   :config
- ;;   (when (featurep! :editor evil)
- ;;     (map! :map org-tree-slide-mode-map
- ;;           :n [C-right] #'org-tree-slide-move-next-tree
- ;;           :n [C-left]  #'org-tree-slide-move-previous-tree)
- ;;     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
- ;;   :custom
- ;;   (org-tree-slide-slide-in-effect t)
- ;;   (org-tree-slide-activate-message "Presentation started!")
- ;;   (org-tree-slide-deactivate-message "Presentation finished!")
- ;;   (org-tree-slide-header t)
- ;;   (org-tree-slide-breadcrumbs " > ")
- ;;   (org-image-actual-width nil))
+;;   ;; If you use face-remapping-alist, this clears the scaling:
+;;   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
+;; (use-package! org-tree-slide
+;;   :hook ((org-tree-slide-play . efs/presentation-setup)
+;;          (org-tree-slide-stop . efs/presentation-end))
+;;   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
+;;   :config
+;;   (when (featurep! :editor evil)
+;;     (map! :map org-tree-slide-mode-map
+;;           :n [C-right] #'org-tree-slide-move-next-tree
+;;           :n [C-left]  #'org-tree-slide-move-previous-tree)
+;;     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
+;;   :custom
+;;   (org-tree-slide-slide-in-effect t)
+;;   (org-tree-slide-activate-message "Presentation started!")
+;;   (org-tree-slide-deactivate-message "Presentation finished!")
+;;   (org-tree-slide-header t)
+;;   (org-tree-slide-breadcrumbs " > ")
+;;   (org-image-actual-width nil))
 #+end_src
 
 ** org-present
