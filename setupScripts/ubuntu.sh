@@ -4,7 +4,7 @@
 
 sudo apt install git
 
-curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/blob/master/git-prompt.sh > ~/git-prompt.sh
 
 wget https://dot.net/v1/dotnet-install.sh -P ./bin
 export PATH=$PATH:$PWD/bin
@@ -19,11 +19,18 @@ dotnet-install.sh -c 6.0
 
 # sudo apt install mono-complete
 
-apt install nodejs
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+# Executing this so we don't need a new shell
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+nvm install --lts
 
 alias python=python3
 
 sudo snap install go --classic
+
+export PATH="$HOME/go/bin:$PATH"
 
 go install github.com/x-motemen/gore/cmd/gore@latest
 go install github.com/stamblerre/gocode@latest
@@ -33,6 +40,8 @@ go install golang.org/x/tools/cmd/gorename@latest
 go install golang.org/x/tools/cmd/guru@latest
 go install github.com/cweill/gotests/gotests@latest
 go install github.com/fatih/gomodifytags@latest
+go install golang.org/x/tools/gopls@latest
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 snap install emacs --classic
 
@@ -44,18 +53,19 @@ fi
 
 git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 
-add-apt-repository ppa:git-core/ppa
-apt update
-apt install git
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update
+sudo apt install git
 
-apt install ripgrep fd-find
+sudo apt install ripgrep fd-find
 
 git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
-
-apt install editorconfig
+sudo apt install editorconfig
 npm install -g marked
-apt install jq
-apt install shellcheck
+sudo apt install pandoc
+sudo apt install jq
+sudo apt install shellcheck
+sudo apt install graphviz
 
 export PATH="$HOME/mydoom/bin:$PATH"
 doom install
@@ -69,6 +79,8 @@ curl https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/maste
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-snap install slack --classic
+sudo apt-get install -y podman
+
+sudo snap install slack --classic
 
 sudo snap install discord

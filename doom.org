@@ -18,19 +18,27 @@
   - [[#fonts][Fonts]]
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
+  - [[#opacity][Opacity]]
 - [[#magit][Magit]]
   - [[#forge][Forge]]
 - [[#line-numbers][Line numbers]]
+- [[#ansible][Ansible]]
 - [[#org-mode-configuration][Org Mode Configuration]]
   - [[#default-directory][Default directory]]
-  - [[#org-mode-styling][Org mode styling]]
+  - [[#todo-keywords][todo-keywords]]
+  - [[#org-agenda][Org-Agenda]]
   - [[#org-journal][Org-Journal]]
   - [[#org-roam][org-roam]]
   - [[#auto-tangle-org-mode-files][Auto tangle org mode files]]
   - [[#export-to-confluence][Export to confluence]]
   - [[#org-jira][org-jira]]
   - [[#org-tree-mode][org-tree-mode]]
+  - [[#org-present][org-present]]
+  - [[#pandoc][Pandoc]]
   - [[#after-org-loads][After org loads]]
+  - [[#helpful-keybindings][Helpful Keybindings]]
+- [[#grammarly][Grammarly]]
+- [[#jenkinsfile][Jenkinsfile]]
 - [[#custom-keybindings][Custom keybindings]]
 - [[#debugging][Debugging]]
   - [[#launching-the-debugger][Launching the debugger]]
@@ -43,7 +51,9 @@
   - [[#lsp-ui][lsp-ui]]
   - [[#typescript][Typescript]]
   - [[#javascript][Javascript]]
+  - [[#golang][golang]]
   - [[#vue][Vue]]
+  - [[#golang-1][golang]]
 - [[#workspaces-and-projects][Workspaces and Projects]]
 
 * Acknowledgements
@@ -210,7 +220,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
+       (format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
@@ -240,7 +250,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
 
        :tools
        ansible
-       ;; debugger          ; FIXME stepping through code, to help you add bugs
+       debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        editorconfig      ; let someone else argue about tabs vs spaces
@@ -335,8 +345,21 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       literate
+       ;;literate
        (default +bindings +smartparens))
+#+end_src
+
+*** libgccjit error
+#+begin_src emacs-lisp :tangle lab/init.el
+(setq native-comp-deferred-compilation nil)
+(after! (doom-packages straight)
+  (setq straight--native-comp-available t))
+#+end_src
+*** Formater
+I don't want to format things in the `nxml-mode`
+#+begin_src emacs-lisp
+;; Or set it to `:none' to disable formatting
+(setq-hook! 'nxml-mode-hook +format-with :none)
 #+end_src
 * Me
 It's nice to know who you are especially for git commits and such. It's recommended to fill out this section
@@ -355,7 +378,6 @@ It's nice to know who you are especially for git commits and such. It's recommen
 
 * Customize the look and feel
 ** Fonts
-I am ok with the default fonts for now but may want to adjust later so leaving this here.
 #+NAME: fonts
 #+begin_src emacs-lisp
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
@@ -369,8 +391,11 @@ I am ok with the default fonts for now but may want to adjust later so leaving t
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;; (setq doom-font (font-spec :family "JetBrains Mono")
+;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 #+end_src
+
 ** Theme
 Let's make the theme look like we want and we like it dark!
 
@@ -380,8 +405,35 @@ Let's make the theme look like we want and we like it dark!
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
 ;; (setq doom-theme 'doom-one)
-(setq doom-theme 'doom-acario-dark)
+;;(setq doom-theme 'doom-acario-dark)
+ (setq doom-theme 'doom-material-dark)
+;; (setq doom-theme 'doom-ir-black)
+;; (setq doom-theme 'doom-moonlight)
+;; (setq doom-theme 'doom-challenger-deep)
 #+END_SRC
+*** treemacs
+Since we use treemacs lets add some icon flare here
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! treemacs-all-the-icons)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! treemacs-all-the-icons )
+(setq doom-themes-treemacs-theme "Default")
+#+end_src
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! treemacs-icons-dired)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! treemacs-icons-dired)
+
+(after! dired
+  (treemacs-icons-dired-enable-once)
+  )
+#+end_src
+
 ** Fullscreen
 I like to have my emacs open to full screen on startup.
 
@@ -390,6 +442,12 @@ I like to have my emacs open to full screen on startup.
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
 #+END_SRC
+** Opacity
+For some reason I like my editor to be somewhat see through so let's adjust the opacity.
+
+#+begin_src emacs-lisp
+(doom/set-frame-opacity 90)
+#+end_src
 * Magit
 Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
 
@@ -405,6 +463,12 @@ Line numbers are helpful and relative line numbers are even better.
 #+BEGIN_SRC emacs-lisp
 (setq display-line-numbers-type `relative)
 #+END_SRC
+* Ansible
+Since I want ansible to use the identities file since I have multiple ansible vault passwords I need to set the ansible-vault-password-file to nil.
+#+begin_src emacs-lisp
+;; (setq ansible-vault-password-file 'nil)
+#+end_src
+
 * Org Mode Configuration
 Let's organize our life. Org mode is wonderful. There are so many great tutorials out there on how to maximize your efficiency with org-mode. I personal use it track my daily work using journals and org-agenda.
 
@@ -414,12 +478,38 @@ We want a default file location for our org files. Let's define that here.
 #+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/")
 #+END_SRC
-** Org mode styling
-A couple of UI tweaks to make things a little more friendly in org-mode.
+** todo-keywords
+There are some keywords I want.
+** Org-Agenda
+#+begin_src emacs-lisp
+;; (setq org-agenda-files (directory-files-recursively "~/org" "\\`\\\(\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'"))
+;; (setq org-agenda-file-regexp "\\.org$")
+#+end_src
 
 #+begin_src emacs-lisp
-(after! org
-  (setq org-fontify-done-headline nil))
+(require 'org-faces)
+
+(dolist (face '((org-level-1 . 1.2)
+                (org-level-2 . 1.1)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.0)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-8 . 1.1)))
+  (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
+;; Make the document title a bit bigger
+(set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
+
+;; Make sure certain org faces use the fixed-pitch face when variable-pitch-mode is on
+(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 #+end_src
 ** Org-Journal
 Lets start by defining the directory where we want to store our journals
@@ -435,7 +525,8 @@ Now we can start modifying some of the org journal variables. Some of the variab
   (setq org-journal-file-format "%Y%m%d"
       org-journal-date-format "%A, %d %B %Y"
       org-journal-time-format 'nil ;; this is the defau;t entry. I set it to nil since I like to have one file for the whole day and don't use timestamps in my entry
-      org-journal-file-header "#+TITLE: Daily Journal\n"
+      org-journal-file-header "#+TITLE: %A, %d %B %Y Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan."
+      ;; org-journal-file-header "#+TITLE: Daily Journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"
       org-journal-enable-agenda-integration 't))
 #+END_SRC
 
@@ -455,7 +546,6 @@ Lets add some keybindings to make creation of journal entries a little easier. Y
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 #+END_SRC
-# ** Org-Agenda
 ** org-roam
 org-roam enchances org capture and allows you to quickly and efficiently search and find notes. It also allows linking an finding what a note is linked to much faster.
 
@@ -466,11 +556,11 @@ First thing to do is to set this in our =packages.el=
 (package! org-roam)
 #+end_src
 
-Now lets setup the org-roam directory.
-#+begin_src emacs-lisp
+Now lets setup the org-roam directory. On my home system I want to store my notes on different default directory
+#+begin_src emacs-lisp :var roamdir=(if (equal system-name "monckcrazytower") "~/dsmonckcrazy/toms_files/roamNotes" "~/org/roamNotes")
 (use-package! org-roam
   :init
-  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-directory roamdir)
   (setq org-roam-v2-ack 't)
   )
 #+end_src
@@ -497,6 +587,9 @@ To make life easier we are going to make some custom templates that will allow u
 Lets setup org-roam-dailies
 #+begin_src emacs-lisp
 (setq org-roam-dailies-directory "journals/")
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 #+end_src
 
 *** Lets setup some keybindings for org-roam that will make life easier.
@@ -542,10 +635,16 @@ This seems like it might be useful but need to play around with it some before d
 #+begin_src emacs-lisp :tangle lab/packages.el
 (package! org-jira)
 #+end_src
+
+Let's go ahead and use the package and define the directory we want our jira items stored.
 #+begin_src emacs-lisp
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
-(setq jiralib-url "https://work.dudesoln.com/")
+#+end_src
+
+The jira URL will be different for each place I work
+#+begin_src emacs-lisp
+;;(setq jiralib-url "https://bandwidth-jira.atlassian.net")
 #+end_src
 
 #+begin_src emacs-lisp
@@ -557,53 +656,169 @@ Due to some issues with the =present.el= in doom emac's configurations we are di
 
 First let's set it up in the =packages.el=
 #+begin_src emacs-lisp :tangle lab/packages.el
-(package! org-tree-slide)
+;; (package! org-tree-slide)
 #+end_src
 
 Now let's setup some default configurations for it. The file that ships with Doom has a function that causes an issue with sub headings and doesn't allow you to go to the next sub heading. This functionality works out of the box with org-tree-macs by default. There is a few things that Doom's setup did have which was kind of nice and we will be replicating that ourselves.
 #+begin_src emacs-lisp
- (defun efs/presentation-setup ()
-   ;; Hide the mode line
-   ;; (hide-mode-line-mode 1)
+;; (defun efs/presentation-setup ()
+;;   ;; Hide the mode line
+;;   ;; (hide-mode-line-mode 1)
 
-   ;; Display images inline
-   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
+;;   ;; Display images inline
+;;   (org-display-inline-images) ;; Can also use org-startup-with-inline-images
 
-   ;; Scale the text.  The next line is for basic scaling:
-   (setq text-scale-mode-amount 3)
-   (text-scale-mode 1))
- (defun efs/presentation-end ()
-   ;; Show the mode line again
-   ;; (hide-mode-line-mode 0)
+;;   ;; Scale the text.  The next line is for basic scaling:
+;;   (setq text-scale-mode-amount 3)
+;;   (text-scale-mode 1))
+;; (defun efs/presentation-end ()
+;;   ;; Show the mode line again
+;;   ;; (hide-mode-line-mode 0)
 
-   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
-   (text-scale-mode 0))
+;;   ;; Turn off text scale mode (or use the next line if you didn't use text-scale-mode)
+;;   (text-scale-mode 0))
 
-   ;; If you use face-remapping-alist, this clears the scaling:
-   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
- (use-package! org-tree-slide
-   :hook ((org-tree-slide-play . efs/presentation-setup)
-          (org-tree-slide-stop . efs/presentation-end))
-   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
-   :config
-   (when (featurep! :editor evil)
-     (map! :map org-tree-slide-mode-map
-           :n [C-right] #'org-tree-slide-move-next-tree
-           :n [C-left]  #'org-tree-slide-move-previous-tree)
-     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
-   :custom
-   (org-tree-slide-slide-in-effect t)
-   (org-tree-slide-activate-message "Presentation started!")
-   (org-tree-slide-deactivate-message "Presentation finished!")
-   (org-tree-slide-header t)
-   (org-tree-slide-breadcrumbs " > ")
-   (org-image-actual-width nil))
+;;   ;; If you use face-remapping-alist, this clears the scaling:
+;;   ;; (setq-local face-remapping-alist '((default variable-pitch default))))
+;; (use-package! org-tree-slide
+;;   :hook ((org-tree-slide-play . efs/presentation-setup)
+;;          (org-tree-slide-stop . efs/presentation-end))
+;;   ;; (add-hook 'org-tree-slide-play-hook #'+org-present-hide-blocks-h)
+;;   :config
+;;   (when (featurep! :editor evil)
+;;     (map! :map org-tree-slide-mode-map
+;;           :n [C-right] #'org-tree-slide-move-next-tree
+;;           :n [C-left]  #'org-tree-slide-move-previous-tree)
+;;     (add-hook 'org-tree-slide-mode-hook #'evil-normalize-keymaps))
+;;   :custom
+;;   (org-tree-slide-slide-in-effect t)
+;;   (org-tree-slide-activate-message "Presentation started!")
+;;   (org-tree-slide-deactivate-message "Presentation finished!")
+;;   (org-tree-slide-header t)
+;;   (org-tree-slide-breadcrumbs " > ")
+;;   (org-image-actual-width nil))
 #+end_src
 
-#+RESULTS:
-| efs/presentation-end |
+** org-present
+I really like the presentations from SystemCrafters so this is an exact replication of the configuration he uses.
 
+*** First up is install =org-present=
+#+begin_src emacs-lisp :tangle lab/packages.el
+;; (package! org-present)
+#+end_src
+*** Styling
+Next up to make things centered lets install a helpful package
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+;; (package! visual-fill-column)
+#+end_src
+
+Let's make some quick setting for visual-fill-column
+#+begin_src emacs-lisp
+;; Configure fill width
+;; (setq visual-fill-column-width 110
+;;       visual-fill-column-center-text t)
+#+end_src
+*** functional
+**** SystemCrafters Code
+Here is the code from SystemCrafters as is but we are going to convert this to =use-package=
+#+begin_src emacs-lisp :tangle no
+(defun my/org-present-start ()
+  ;; Center the presentation and wrap lines
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1))
+
+(defun my/org-present-end ()
+  ;; Stop centering the document
+  (visual-fill-column-mode 0)
+  (visual-line-mode 0))
+
+;; Register hooks with org-present
+(add-hook 'org-present-mode-hook 'my/org-present-start)
+(add-hook 'org-present-mode-quit-hook 'my/org-present-end)
+
+#+end_src
+**** My Config
+#+begin_src emacs-lisp
+;; ;; Function to house the modifications for org-present to make it look nice when it starts
+;; (defun my/org-present-start ()
+;;   ;; Tweak font sizes
+;;   (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+;;                                      (header-line (:height 4.0) variable-pitch)
+;;                                      (org-document-title (:height 1.75) org-document-title)
+;;                                      (org-code (:height 1.55) org-code)
+;;                                      (org-verbatim (:height 1.55) org-verbatim)
+;;                                      (org-block (:height 1.25) org-block)
+;;                                      (org-block-begin-line (:height 0.7) org-block)))
+
+;;   ;; Set a blank header line string to create blank space at the top
+;;   (setq header-line-format " ")
+
+;;   ;; Since we are presenting let's hide the emphasis markers to make things a little prettier
+;;   (setq org-hide-emphasis-markers t)
+
+;;   ;; Display inline images automatically
+;;   (org-display-inline-images)
+
+;;   ;; Center the presentation and wrap lines
+;;   (visual-fill-column-mode 1)
+;;   (visual-line-mode 1))
+
+;; ;; Undo the presentation setup when we end the presentation
+;; (defun my/org-present-end ()
+;;   ;; Reset font customizations
+;;   (setq-local face-remapping-alist '((default variable-pitch default)))
+
+;;   ;; Clear the header line string so that it isn't displayed
+;;   (setq header-line-format nil)
+
+;;   ;; Stop displaying inline images
+;;   (org-remove-inline-images)
+;;   ;; Stop centering the document
+;;   (visual-fill-column-mode 0)
+;;   (visual-line-mode 0))
+
+;; ;; Register hooks with org-present
+;; (use-package! org-present
+;;   :commands org-present-mode
+;;   ;; :bind-keymap
+;;   ;; ("SPC" . org-present-mode-keymap)
+;;   :hook ((org-present-mode . my/org-present-start)
+;;          (org-present-mode-quit . my/org-present-end)))
+;; ;; (after! org-present-mode
+;; ;;   (when (featurep! :editor evil)
+;; ;;     (map! :map org-present-mode-keymap
+;; ;;           :n [C-right] #'org-present-next
+;; ;;           :n [C-left]  #'org-present-prev))
+;; ;;   )
+#+end_src
+** Pandoc
+=org-pandoc-import= has a dependency of =pandoc=. This is available via =brew= and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! org-pandoc-import :after org)
+#+end_src
+
+Some helpful functions to know
+
+# TODO: Need to add keybindings in a future commit
+- org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
+- org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
 ** After org loads
+*** Org mode styling
+A couple of UI tweaks to make things a little more friendly in org-mode.
+
+#+begin_src emacs-lisp
+(after! org
+  (setq org-fontify-done-headline nil))
+#+end_src
 *** Hide the Org mark up indicators
 I like seeing the emphasis markers but if you don't just uncomment this block. This will hide the prefix and suffix characters used when making items bold, italic, etc
 
@@ -613,9 +828,9 @@ I like seeing the emphasis markers but if you don't just uncomment this block. T
 *** Enable logging of done tasks, and log stuff into the LOGBOOK drawer by default
 
 #+BEGIN_SRC emacs-lisp
-;; (after! org
-  ;; (setq org-log-done t)
-  ;; (setq org-log-into-drawer t)0
+(after! org
+  (setq org-log-done t)
+  (setq org-log-into-drawer t))
 #+END_SRC
 
 *** Custom structure templates
@@ -646,25 +861,42 @@ Adding some handy structure templates to save a few keystrokes when adding code 
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 #+end_src
 
-*** Pandoc
-`org-pandoc-import` has a dependency of `pandoc`. This is available via `brew` and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
+** Helpful Keybindings
+I can never remember the keybindings so this is a place for me to quickly find them.
+
+| Function             | Description                                                              | Keybinding  |
+| org-clock-in         | Starts the clock on current item.                                        | =SPC m c i= |
+| org-clock-out        | Stops the running clock on current item.                                 | =SPC m c o= |
+| org-set-tags-command | Set the tags for the currently visible item.                             | =SPC m q=   |
+| org-tags-view        | Show all headlines for all =org-agenda-files= matching a TAGS criterion. | =SPC n m=   |
+| org-insert-link      | Insert a link.                                                           | =SPC m l g= |
+| org-todo             | Change the TODO state of an item.                                        | =SPC m t=   |
+
+* Grammarly
 
 #+begin_src emacs-lisp :tangle lab/packages.el
-(package! org-pandoc-import
-  :recipe (:host github
-           :repo "tecosaur/org-pandoc-import"
-           :files ("*.el" "filters" "preprocessors")))
+(package! lsp-grammarly)
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package! org-pandoc-import :after org)
+(use-package! lsp-grammarly
+  :hook (text-mode . (lambda()
+                       (require 'lsp-grammarly)
+                       (lsp))))
+#+end_src
+#+begin_src emacs-lisp
+(setq langtool-bin "/opt/homebrew/bin/languagetool")
 #+end_src
 
-Some helpful functions to know
-
-# TODO: Need to add keybindings in a future commit
-- org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
-- org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
+#+RESULTS:
+: /opt/homebrew/bin/languagetool
+* Jenkinsfile
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! jenkinsfile-mode :recipe
+  (:host github
+   :repo "john2x/jenkinsfile-mode"
+   :branch "master"))
+#+end_src
 
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings and don't belong any other areas. Most of the keybindings should be defined by their corresponding modes.
@@ -834,6 +1066,25 @@ Configure javascript and enable debugging for it.
   (require 'dap-node)
   (dap-node-setup))
 #+end_src
+** golang
+#+begin_src emacs-lisp
+;; Add a hook?
+(use-package! go-mode
+  :mode "\\.go\\'"
+  ;; :hook (go-mode . #'lsp-deferred)
+  :config
+  (require 'dap-go)
+  (dap-go-setup))
+#+end_src
+Lets setup the lsp-mode for golang based upon their recommendations
+
+#+begin_src emacs-lisp
+;; (defun lsp-go-install-save-hooks ()
+;;   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+;; (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(setq lsp-go-build-flags '["-tags=integration"])
+#+end_src
 
 ** Vue
 Configure Vue.js
@@ -848,6 +1099,15 @@ Configure Vue.js
   :config
   (require 'dap-node)
   (dap-node-setup))
+#+end_src
+** golang
+=go= is the most recent tool in my tool belt. I am a noob when it comes to go so this is my configuration trying to get some functionality I want like debugging
+#+begin_src emacs-lisp
+(use-package! go-mode
+  :mode "\\.go\\'"
+  :config
+  (require 'dap-go)
+  (dap-go-setup))
 #+end_src
 * Workspaces and Projects
 Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.

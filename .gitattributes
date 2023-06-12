@@ -1,0 +1,4 @@
+.bash* text eol=lf
+bin/promote-doom-lab text eol=lf
+bin/sync-dotfiles text eol=lf
+*.sh text eol=lf

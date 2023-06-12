@@ -1,7 +1,14 @@
-[[ "$(uname -s)" == "Darwin" && -s ~/.bashrc ]] && source ~/.bashrc
+echo "bash_profile"
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+  # include .bashrc if it exists
+  if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
+  fi
+fi
 
 infiniteCurl() {
-    while true; do curl $1; done
+  while true; do curl $1; done
 }
 
 removeBinAndObj() {
@@ -15,26 +22,3 @@ setTabTitle() {
 minidocker() {
   eval $(minikube docker-env)
 }
-
-if [ -f ~/git-prompt.sh ];
-then
-  source ~/git-prompt.sh
-  PROMPT_COMMAND='__posh_git_ps1 "\[\033[0;35m\]\u \[\033[0m\]on host \[\033[0;35m\]\h: \[\033[0;95m\]\w" "\n\[\033[0m\]$";'$PROMPT_COMMAND
-fi
-
-if command -v kubectl > /dev/null;
-then
-   source <(kubectl completion bash)
-fi
-
-if command -v argocd > /dev/null;
-then
-   source <(argocd completion bash)
-fi
-if command -v tkn > /dev/null;
-then
-   source <(tkn completion bash)
-fi
-
-export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$DOTNET_ROOT

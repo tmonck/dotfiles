@@ -50,18 +50,33 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
+(package! treemacs-all-the-icons)
+
+(package! treemacs-icons-dired)
+
 (package! org-roam)
 
 (package! org-auto-tangle)
 
 (package! org-jira)
 
-(package! org-tree-slide)
+;; (package! org-tree-slide)
+
+;; (package! org-present)
+
+;; (package! visual-fill-column)
 
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
            :files ("*.el" "filters" "preprocessors")))
+
+(package! lsp-grammarly)
+
+(package! jenkinsfile-mode :recipe
+  (:host github
+   :repo "john2x/jenkinsfile-mode"
+   :branch "master"))
 
 (package! dap-mode)
 
