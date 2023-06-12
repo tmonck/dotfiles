@@ -47,7 +47,7 @@ if [ -d "$HOME/.emacs.d" ]
        mv "$HOME/.emacs.d" "$HOME/.emacs.d.bak"
 fi
 
-git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt update
@@ -55,7 +55,7 @@ sudo apt install git
 
 sudo apt install ripgrep fd-find
 
-git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
 
 sudo apt install editorconfig
 npm install -g marked
@@ -68,7 +68,9 @@ doom install
 
 cp -a $HOME/mydoom $HOME/backupdoom
 
-sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
+curl https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/master/jetbrains-toolbox.sh > jetbrains-toolbox.sh
+
+./jetbrains-toolbox.sh
 
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube

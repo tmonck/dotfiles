@@ -306,7 +306,7 @@ For more information regarding configuration and usage see the [[https://github.
 
 #+name: clone_chemacs2
 #+begin_src sh
-git clone git@github.com:plexus/chemacs2.git ~/.emacs.d
+git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 #+end_src
 
 **** Windows
@@ -368,7 +368,7 @@ Clone the doom configuration to my own custom directory. This allows me provide 
 
 #+name: clone_doom
 #+begin_src sh
-git clone git@github.com:hlissner/doom-emacs.git ~/mydoom
+git clone https://github.com/hlissner/doom-emacs.git ~/mydoom
 #+end_src
 
 #+begin_src sh :tangle setupScripts/windows.ps1 :noweb yes
@@ -527,9 +527,13 @@ Microsoft's .NET IDE. More information is [[https://visualstudio.microsoft.com][
 Another .NET specific IDE. This IDE is cross-platform and has some of the helpful plugins for Visual Studio built in. For more information about Rider go [[https://jetbrains.com/rider][here]].
 
 It's recommended to install things from the toolbox from JetBrains so let's install that.
+
 #+begin_src sh :tangle setupScripts/ubuntu.sh
-sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
+curl https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/master/jetbrains-toolbox.sh > jetbrains-toolbox.sh
+
+./jetbrains-toolbox.sh
 #+end_src
+
 **** Resharper
 A tool for enforcing coding standards, assists with finding code smells, and some helpful editing features. For more information about Resharper go [[https://jetbrains.com/resharper][here]]. I use this when I have Visual Studio installed.
 **** DotCover
