@@ -412,9 +412,6 @@ Since we use treemacs lets add some icon flare here
   )
 #+end_src
 
-#+RESULTS:
-: t
-
 ** Fullscreen
 I like to have my emacs open to full screen on startup.
 
