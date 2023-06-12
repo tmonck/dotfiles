@@ -402,4 +402,7 @@
   (require 'dap-go)
   (dap-go-setup))
 
+(add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
+
 (setq workspaces-on-switch-project-behavior 't)
