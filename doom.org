@@ -392,11 +392,11 @@ Let's make the theme look like we want and we like it dark!
 *** treemacs
 Since we use treemacs lets add some icon flare here
 #+begin_src emacs-lisp :tangle lab/packages.el
-;; (package! treemacs-all-the-icons)
+(package! treemacs-all-the-icons)
 #+end_src
 
 #+begin_src emacs-lisp
-;; (use-package! treemacs-all-the-icons )
+(use-package! treemacs-all-the-icons )
 (setq doom-themes-treemacs-theme "Default")
 #+end_src
 
