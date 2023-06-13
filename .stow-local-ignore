@@ -1,6 +1,14 @@
 \.git
 LICENSE
 ^/.*\.org
-bin/*
+^/.*\.txt
+^/bin/.*
 ^/.*\.sh
 ^/.*\.ps1
+
+\.git*
+^/\.gitattributes
+^/ansible
+^/setupScripts
+^/\.profile
+^/mini.*
