@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 # cp -a ./.doom.d/. ./testingThings
-cp -a ./.doom.d/. $HOME/testingThings
-cp -a ./lab/. ./.doom.d
+cp -a $HOME/.doom.d/. $HOME/testingThings
+cp -a $HOME/lab/. $HOME/.doom.d

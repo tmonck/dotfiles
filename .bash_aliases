@@ -8,18 +8,18 @@ alias emacs-backup='emacs --with-profile=backup --debug-init'
 
 # ls alias
 case $(uname -s) in
-  Linux)
-    alias ls='ls --color=auto'
-    alias ll='ls -alF'
-    alias la='ls -A'
-    alias l='ls -CF'
-    ;;
-  Darwin)
-    alias ls='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto'
-    alias ll='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto -alF'
-    alias la='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto -A'
-    alias l='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls -- color=auto -CF'
-    ;;
+    Linux)
+        alias ls='ls --color=auto'
+        alias ll='ls -alF'
+        alias la='ls -A'
+        alias l='ls -CF'
+        ;;
+    Darwin)
+        alias ls='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto'
+        alias ll='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto -alF'
+        alias la='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls --color=auto -A'
+        alias l='$(brew --prefix)/opt/coreutils/libexec/gnubin/ls -- color=auto -CF'
+        ;;
 esac
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -28,14 +28,19 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 alias code='cd ~/code'
 
-if [ "$HOSTNAME" == "moncktower" ];
-then
+if [ "$HOSTNAME" == "monckcrazytower" ]; then
     alias code="cd ~/secondary/code"
     alias shell_scripts="cd ~/secondary/code/shell_scripts/"
     alias nas="cd ~/dsmonckcrazy/"
 fi
 
-alias docker=podman
+if command -v minikube >/dev/null; then
+    alias kubectl='minikube kubectl'
+fi
+
+if command -v podman >/dev/null; then
+    alias docker=podman
+fi
 
 #### Work Specific
 alias aws_lab='AWS_PROFILE=lab-us-east-1'

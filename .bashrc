@@ -154,31 +154,30 @@ alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
 
 # Jenv
-if command -v jenv >/dev/null; then
-  export PATH="$HOME/.jenv/bin:$PATH"
+export JENV_ROOT="$HOME/.jenv"
+if [ -d $JENV_ROOT ]; then
+  command -v jenv >/dev/null || export PATH="$JENV_ROOT/bin:$PATH"
   eval "$(jenv init -)"
 fi
 
 # golang goenv
-if command -v goenv >/dev/null; then
+export GOENV_ROOT="$HOME/.goenv"
+if [ -d $GOENV_ROOT ]; then
+  command -v goenv >/dev/null || export PATH="$GOENV_ROOT/bin:$PATH"
   eval "$(goenv init -)"
-  export GOENV_ROOT="$HOME/.goenv"
-  export PATH="$GOENV_ROOT/bin:$PATH"
   export PATH=$PATH:"$GOPATH/bin"
 fi
 
 # python
-if command -v pyenv >/dev/null; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+if [ -d $PYENV_ROOT ]; then
+  command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
 fi
 
 # nvm/node
-if command -v nvm; then
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 export PROMPT_COMMAND='history -a;'$PROMPT_COMMAND

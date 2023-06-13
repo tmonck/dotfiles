@@ -22,3 +22,7 @@ setTabTitle() {
 minidocker() {
   eval $(minikube docker-env)
 }
+
+minipodman() {
+  eval $(minikube podman-env)
+}
