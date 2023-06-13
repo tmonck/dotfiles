@@ -52,6 +52,8 @@
 
 (package! treemacs-all-the-icons)
 
+(package! treemacs-icons-dired)
+
 (package! org-roam)
 
 (package! org-auto-tangle)

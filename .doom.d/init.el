@@ -183,5 +183,9 @@
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       ;; literate
+       ;;literate
        (default +bindings +smartparens))
+
+(setq native-comp-deferred-compilation nil)
+(after! (doom-packages straight)
+  (setq straight--native-comp-available t))
