@@ -28,7 +28,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 alias code='cd ~/code'
 
-if [ "$HOSTNAME" == "moncktower" ]; then
+if [ "$HOSTNAME" == "monckcrazytower" ]; then
     alias code="cd ~/secondary/code"
     alias shell_scripts="cd ~/secondary/code/shell_scripts/"
     alias nas="cd ~/dsmonckcrazy/"
