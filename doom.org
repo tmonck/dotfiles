@@ -16,6 +16,7 @@
 - [[#me][Me]]
 - [[#customize-the-look-and-feel][Customize the look and feel]]
   - [[#fonts][Fonts]]
+  - [[#icons][Icons]]
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
   - [[#opacity][Opacity]]
@@ -48,14 +49,17 @@
   - [[#customizing-debug-template][Customizing debug template]]
 - [[#languages][Languages]]
   - [[#lsp-mode][lsp-mode]]
+  - [[#gha][gha]]
   - [[#lsp-ui][lsp-ui]]
+  - [[#python][Python]]
   - [[#typescript][Typescript]]
   - [[#javascript][Javascript]]
   - [[#golang][golang]]
   - [[#vue][Vue]]
-  - [[#golang-1][golang]]
   - [[#shell][shell]]
+  - [[#yaml][yaml]]
 - [[#workspaces-and-projects][Workspaces and Projects]]
+- [[#github-copilot][Github Copilot]]
 
 * Acknowledgements
 As the dwarfs can see further on the shoulders of giants. I am where I am because of those who came before me. There is some pieces borrowed and other inspired from many sources. Here is a few of them, this is by no means a comprehensive list.
@@ -186,7 +190,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       company           ; the ultimate code completion backend
+       (company +childframe)          ; the ultimate code completion backend
        helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ivy               ; a search engine for love and life
@@ -221,7 +225,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       (format +onsave)  ; automated prettiness
+       ;; (format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
@@ -300,7 +304,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;idris             ; a language you can depend on
        json              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -316,7 +320,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       python            ; beautiful is better than ugly
+       (python +lsp)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -326,7 +330,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;scheme            ; a fully conniving family of lisps
-       (sh +powershell)                ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +powershell +lsp)                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
@@ -395,6 +399,17 @@ It's nice to know who you are especially for git commits and such. It's recommen
 ;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
+
+(use-package! nerd-icons)
+(use-package! treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
+(setq doom-themes-treemacs-theme "nerd-icons")
+(setq doom-themes-treemacs-theme "Default")
+#+end_src
+** Icons
+#+begin_src emacs-lisp
+
 #+end_src
 
 ** Theme
@@ -571,7 +586,7 @@ To make life easier we are going to make some custom templates that will allow u
 (setq org-roam-capture-templates
 '(("d" "default" plain
    "%?"
-   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}")
   :unnarrowed t)
  ("l" "programing languages" plain
    "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n*Reference:\n\n"
@@ -579,7 +594,7 @@ To make life easier we are going to make some custom templates that will allow u
   :unnarrowed t)
  ("p" "project" plain
   "* Goals\n\n%?\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates"
-  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
   :unnarrowed t)
  ))
 #+end_src
@@ -590,7 +605,7 @@ Lets setup org-roam-dailies
 (setq org-roam-dailies-directory "journals/")
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
-         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\n#+filetags: journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 #+end_src
 
 *** Lets setup some keybindings for org-roam that will make life easier.
@@ -1032,6 +1047,23 @@ The which-key integration adds helpful descriptions of the various keys so you s
   :config
   (lsp-enable-which-key-integration t))
 #+end_src
+** gha
+#+begin_src emacs-lisp
+;; Use shopify-cli / theme-check-language-server for Shopify's liquid syntax
+;; (with-eval-after-load 'lsp-mode
+;;   (add-to-list 'lsp-language-id-configuration
+;;     '(shopify-mode . "shopify"))
+
+  ;; (lsp-register-client
+  ;;   (make-lsp-client :new-connection (lsp-stdio-connection "actions-languageserver")
+  ;;                    :activation-fn (lsp-activate-on "yaml")
+  ;;                    :server-id 'actions-languageserver))
+
+#+end_src
+
+#+begin_src emacs-lisp
+;;(lsp-generate-settings "/Users/tmonck/code/languageservices/package.json" 'lsp-gha)
+#+end_src
 ** lsp-ui
 Is this something we want? More than likely the answer is yes. This is adds some ui compliments on top of lsp-mode
 
@@ -1042,6 +1074,12 @@ Is this something we want? More than likely the answer is yes. This is adds some
   (lsp-ui-doc-position 'bottom))
 #+end_src
 
+** Python
+#+begin_src emacs-lisp
+(use-package! python-mode
+  :mode "\\.py\\'"
+  :hook (python-mode . lsp-deferred))
+#+end_src
 ** Typescript
 Configure typescript mode to make things better
 
@@ -1101,23 +1139,34 @@ Configure Vue.js
   (require 'dap-node)
   (dap-node-setup))
 #+end_src
-** golang
-=go= is the most recent tool in my tool belt. I am a noob when it comes to go so this is my configuration trying to get some functionality I want like debugging
-#+begin_src emacs-lisp
-(use-package! go-mode
-  :mode "\\.go\\'"
-  :config
-  (require 'dap-go)
-  (dap-go-setup))
-#+end_src
 ** shell
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
+** yaml
+I want to disable the autoformat on save.
+#+begin_src emacs-lisp
+;; (add-to-list '+format-on-save-enabled-modes (not ("yaml-mode")))
 #+end_src
 
 * Workspaces and Projects
 Workspaces are nice for isolating work and projects are extremely helpful for debugging purposes. I like having my projects in their own workspaces.
 #+begin_src emacs-lisp
 (setq workspaces-on-switch-project-behavior 't)
+#+end_src
+* Github Copilot
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("M-]" . 'copilot-next-completion)
+              ("<t  ab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src

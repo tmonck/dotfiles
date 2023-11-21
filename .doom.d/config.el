@@ -57,8 +57,12 @@
 ;; (setq doom-theme 'doom-ir-black)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-challenger-deep)
+;;
 
 (use-package! treemacs-all-the-icons )
+;;(with-eval-after-load 'doom-themes
+;;  (doom-themes-treemacs-config)
+;;  (doom-themes-treemacs-theme "doom-colors"))
 (setq doom-themes-treemacs-theme "Default")
 
 (use-package! treemacs-icons-dired)
@@ -66,7 +70,16 @@
 (after! dired
   (treemacs-icons-dired-enable-once)
   )
-
+;; (use-package! treemacs-nerd-icons
+;;   :config
+;;   (treemacs-load-theme "nerd-icons"))
+;; (setq doom-themes-treemacs-theme "all-the-icons")
+;; ;; (setq doom-themes-treemacs-theme "Default")
+;; (use-package! nerd-icons)
+;; (use-package nerd-icons-dired
+;;   :hook
+;;   (dired-mode . nerd-icons-dired-mode))
+;; ;; (setq treemacs-load-theme "nerd-icons")
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))

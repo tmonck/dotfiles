@@ -53,6 +53,7 @@
 (package! treemacs-all-the-icons)
 
 (package! treemacs-icons-dired)
+(package! lsp-grammarly)
 
 (package! org-roam)
 

@@ -1,7 +1,6 @@
 # ~/.bashrc: executed by bash(1) for nn-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-echo "bashrc file"
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
@@ -109,8 +108,7 @@ if ! shopt -oq posix; then
 fi
 
 #Evaluate brew
-if [ "$(uname -s)" == "Darwin" ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -s /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
   if type brew &>/dev/null; then
     HOMEBREW_PREFIX="$(brew --prefix)"
@@ -144,9 +142,26 @@ if command -v aws; then
   complete -C '$(brew --prefix)/bin/aws_completer' aws
 fi
 
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# nvm/node
+# if command -v nvm
+# then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# fi
 export GPG_TTY=$(tty)
-export DOTNET_ROOT=$HOME/.dotnet
-export PATH=$PATH:$DOTNET_ROOT
+
+# Dotnet
+# TODO: Do this only if dotnet is installed and this is the right path
+# export DOTNET_ROOT=$HOME/.dotnet
+# export PATH=$PATH:$DOTNET_ROOT
+
+#### Work Specific
 export ANSIBLE_VAULT_IDENTITY_LIST=keystone-default@$HOME/.oneid/.keystone-vault-password.txt,keystone-prod@$HOME/.oneid/.keystone-vault-password-prod.txt
 
 # Add JBang to environment
@@ -167,17 +182,5 @@ if [ -d $GOENV_ROOT ]; then
   eval "$(goenv init -)"
   export PATH=$PATH:"$GOPATH/bin"
 fi
-
-# python
-export PYENV_ROOT="$HOME/.pyenv"
-if [ -d $PYENV_ROOT ]; then
-  command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
-fi
-
-# nvm/node
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 export PROMPT_COMMAND='history -a;'$PROMPT_COMMAND

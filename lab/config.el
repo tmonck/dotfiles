@@ -48,6 +48,15 @@
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
+(use-package! nerd-icons)
+(use-package! treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
+(setq doom-themes-treemacs-theme "nerd-icons")
+(setq doom-themes-treemacs-theme "Default")
+
+
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
@@ -143,7 +152,7 @@
 (setq org-roam-capture-templates
 '(("d" "default" plain
    "%?"
-   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}")
   :unnarrowed t)
  ("l" "programing languages" plain
    "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n*Reference:\n\n"
@@ -151,14 +160,14 @@
   :unnarrowed t)
  ("p" "project" plain
   "* Goals\n\n%?\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates"
-  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
   :unnarrowed t)
  ))
 
 (setq org-roam-dailies-directory "journals/")
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
-         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\n#+filetags: journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 
 (after! org-roam
   (map! :leader
@@ -354,10 +363,26 @@
   :config
   (lsp-enable-which-key-integration t))
 
+;; Use shopify-cli / theme-check-language-server for Shopify's liquid syntax
+;; (with-eval-after-load 'lsp-mode
+;;   (add-to-list 'lsp-language-id-configuration
+;;     '(shopify-mode . "shopify"))
+
+  ;; (lsp-register-client
+  ;;   (make-lsp-client :new-connection (lsp-stdio-connection "actions-languageserver")
+  ;;                    :activation-fn (lsp-activate-on "yaml")
+  ;;                    :server-id 'actions-languageserver))
+
+;;(lsp-generate-settings "/Users/tmonck/code/languageservices/package.json" 'lsp-gha)
+
 (use-package! lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-position 'bottom))
+
+(use-package! python-mode
+  :mode "\\.py\\'"
+  :hook (python-mode . lsp-deferred))
 
 (use-package! typescript-mode
   :mode "\\.ts\\'"
@@ -404,5 +429,15 @@
 
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
+;; (add-to-list '+format-on-save-enabled-modes (not ("yaml-mode")))
 
 (setq workspaces-on-switch-project-behavior 't)
+
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("M-]" . 'copilot-next-completion)
+              ("<t  ab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))

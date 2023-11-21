@@ -81,3 +81,6 @@
 (package! dap-mode)
 
 (package! vue-mode)
+
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
