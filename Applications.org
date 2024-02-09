@@ -170,7 +170,7 @@ I like how =posh_git.ps1= modifies the terminal to show status, so let's put tha
 Shout out to the maintainer of the =posh-git-sh= version of =posh_git=
 #+NAME: git-prompt
 #+begin_src sh
-curl https://raw.githubusercontent.com/lyze/posh-git-sh/blob/master/git-prompt.sh > ~/git-prompt.sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
 #+end_src
 
 #+RESULTS: git-prompt
