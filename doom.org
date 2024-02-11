@@ -404,15 +404,16 @@ It's nice to know who you are especially for git commits and such. It's recommen
 ;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
+(use-package! nerd-icons)
 
-; (use-package! nerd-icons)
-;; (use-package! treemacs-nerd-icons
-;;   :config
-;;   (treemacs-load-theme "nerd-icons"))
-;; (setq doom-themes-treemacs-theme "nerd-icons")
-;; (setq doom-themes-treemacs-theme "Default")
 #+end_src
 
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! nerd-icons)
+(package! nerd-icons-dired)
+(package! treemacs-nerd-icons)
+(package! treemacs-icons-dired)
+#+end_src
 ** Theme
 Let's make the theme look like we want and we like it dark!
 
@@ -421,35 +422,33 @@ Let's make the theme look like we want and we like it dark!
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
-;; (setq doom-theme 'doom-one)
-;;(setq doom-theme 'doom-acario-dark)
- (setq doom-theme 'doom-material-dark)
+(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-acario-dark)
+;; (setq doom-theme 'doom-material-dark)
 ;; (setq doom-theme 'doom-ir-black)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-challenger-deep)
+;; (setq doom-theme 'doom-dracula)
+;; (setq doom-theme 'doom-oksolar-dark)
+;; (setq doom-theme 'doom-badger)
+;; (setq doom-theme 'doom-Iosvkem)
 #+END_SRC
 *** treemacs
-# Since we use treemacs lets add some icon flare here
-# #+begin_src emacs-lisp :tangle lab/packages.el
-# (package! treemacs-all-the-icons)
-# #+end_src
+Since we use treemacs lets add some icon flare here
+#+begin_src emacs-lisp :tangle lab/packages.el
+;; (package! treemacs-all-the-icons)
+#+end_src
 
-# #+begin_src emacs-lisp
-# (use-package! treemacs-all-the-icons )
-# (setq doom-themes-treemacs-theme "Default")
-# #+end_src
+#+begin_src emacs-lisp
+;; Treemacs
+(use-package! lsp-treemacs :after treemacs) ;; this needs to be setup before treemacs-nerd-icons other wise it messes up the icons
 
-# #+begin_src emacs-lisp :tangle lab/packages.el
-# (package! treemacs-icons-dired)
-# #+end_src
+(use-package! treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
-# #+begin_src emacs-lisp
-# (use-package! treemacs-icons-dired)
-
-# (after! dired
-#   (treemacs-icons-dired-enable-once)
-#   )
-# #+end_src
+(setq treemacs-width 43)
+#+end_src
 
 ** Fullscreen
 I like to have my emacs open to full screen on startup.
@@ -457,7 +456,8 @@ I like to have my emacs open to full screen on startup.
 #+BEGIN_SRC emacs-lisp
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
     (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
+  (toggle-frame-maximized)
+  )
 #+END_SRC
 ** Opacity
 For some reason I like my editor to be somewhat see through so let's adjust the opacity.

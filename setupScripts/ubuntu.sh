@@ -4,7 +4,7 @@
 
 sudo apt install git
 
-curl https://raw.githubusercontent.com/lyze/posh-git-sh/blob/master/git-prompt.sh > ~/git-prompt.sh
+curl https://raw.githubusercontent.com/lyze/posh-git-sh/master/git-prompt.sh > ~/git-prompt.sh
 
 wget https://dot.net/v1/dotnet-install.sh -P ./bin
 export PATH=$PATH:$PWD/bin
@@ -76,10 +76,10 @@ curl https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/maste
 
 ./jetbrains-toolbox.sh
 
+sudo apt-get install -y podman
+
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
-
-sudo apt-get install -y podman
 
 sudo snap install slack --classic
 
