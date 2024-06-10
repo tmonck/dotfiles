@@ -17,10 +17,10 @@
 - [[#me][Me]]
 - [[#customize-the-look-and-feel][Customize the look and feel]]
   - [[#fonts][Fonts]]
+  - [[#icons][Icons]]
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
   - [[#opacity][Opacity]]
-  - [[#treemacs-width][treemacs width]]
 - [[#magit][Magit]]
   - [[#forge][Forge]]
 - [[#line-numbers][Line numbers]]
@@ -42,6 +42,7 @@
 - [[#grammarly][Grammarly]]
 - [[#jenkinsfile][Jenkinsfile]]
 - [[#custom-keybindings][Custom keybindings]]
+  - [[#flycheck][Flycheck]]
 - [[#debugging][Debugging]]
   - [[#launching-the-debugger][Launching the debugger]]
   - [[#adding-breakpoints][Adding breakpoints]]
@@ -236,7 +237,7 @@ Doom ships with a lot of modules out of the box and these are configured in the 
        ;;multiple-cursors  ; editing in many places at once
        ;;objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
-       ;;rotate-text       ; cycle region at the point between text candidates
+       ;;rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
        word-wrap         ; soft wrapping with language-aware indent
 
@@ -465,11 +466,6 @@ For some reason I like my editor to be somewhat see through so let's adjust the 
 #+begin_src emacs-lisp
 (doom/set-frame-opacity 90)
 #+end_src
-** treemacs width
-
-#+begin_src emacs-lisp
-(setq treemacs-width 43)
-#+end_src
 * Magit
 Let's do some magit. I prefer it to be in fullscreen to make things easier to read.
 
@@ -511,27 +507,27 @@ There are some keywords I want.
 #+begin_src emacs-lisp
 (require 'org-faces)
 
-(dolist (face '((org-level-1 . 1.2)
-                (org-level-2 . 1.1)
-                (org-level-3 . 1.05)
-                (org-level-4 . 1.0)
-                (org-level-5 . 1.1)
-                (org-level-6 . 1.1)
-                (org-level-7 . 1.1)
-                (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
+;; (dolist (face '((org-level-1 . 1.2)
+;;                 (org-level-2 . 1.1)
+;;                 (org-level-3 . 1.05)
+;;                 (org-level-4 . 1.0)
+;;                 (org-level-5 . 1.1)
+;;                 (org-level-6 . 1.1)
+;;                 (org-level-7 . 1.1)
+;;                 (org-level-8 . 1.1)))
+  ;; (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
 ;; Make the document title a bit bigger
-(set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
+;; (set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
 
 ;; Make sure certain org faces use the fixed-pitch face when variable-pitch-mode is on
-(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+;; (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+;; (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+;; (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+;; (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 #+end_src
 ** Org-Journal
 Lets start by defining the directory where we want to store our journals
@@ -920,6 +916,14 @@ I can never remember the keybindings so this is a place for me to quickly find t
 
 * Custom keybindings
 Just in case I need some short cuts to a actions that don't already have bindings and don't belong any other areas. Most of the keybindings should be defined by their corresponding modes.
+** Flycheck
+#+begin_src emacs-lisp
+(map! :leader
+        (:prefix-map ("e" . "errors")
+        :desc "flycheck list errors" "l" #'flycheck-list-errors
+        :desc "flycheck list errors" "n" #'flycheck-next-error
+        :desc "flycheck list errors" "p" #'flycheck-previous-error))
+#+end_src
 # * Calendar
 # # TODO: This is something i want to make work with outlook work calendar
 * Debugging

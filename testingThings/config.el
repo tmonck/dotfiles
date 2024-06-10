@@ -48,23 +48,37 @@
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
-;;(setq doom-font (font-spec :family "JetBrains Mono")
-;;      doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
-
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
 ;; (setq doom-theme 'doom-one)
-;; (setq doom-theme 'doom-acario-dark)
-(setq doom-theme 'doom-material-dark)
+;;(setq doom-theme 'doom-acario-dark)
+ (setq doom-theme 'doom-material-dark)
 ;; (setq doom-theme 'doom-ir-black)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-challenger-deep)
+;;
 
-(use-package! treemacs-all-the-icons )
+;; (use-package! treemacs-all-the-icons )
+;; (setq doom-themes-treemacs-theme "Default")
+
+(use-package! treemacs-icons-dired)
+
+(after! dired
+  (treemacs-icons-dired-enable-once)
+  )
+(use-package! treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
+
+(use-package! lsp-treemacs :after treemacs)
 ;; (setq doom-themes-treemacs-theme "all-the-icons")
-(setq doom-themes-treemacs-theme "Default")
-
+;; ;; (setq doom-themes-treemacs-theme "Default")
+;; (use-package! nerd-icons)
+;; (use-package nerd-icons-dired
+;;   :hook
+;;   (dired-mode . nerd-icons-dired-mode))
+;; ;; (setq treemacs-load-theme "nerd-icons")
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
     (toggle-frame-maximized)
   (toggle-frame-fullscreen))
@@ -85,17 +99,17 @@
 
 (require 'org-faces)
 
-(dolist (face '((org-level-1 . 1.2)
-                (org-level-2 . 1.1)
-                (org-level-3 . 1.05)
-                (org-level-4 . 1.0)
-                (org-level-5 . 1.1)
-                (org-level-6 . 1.1)
-                (org-level-7 . 1.1)
-                (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
-;; Make the document title a bit bigger
-(set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
+;; (dolist (face '((org-level-1 . 1.2)
+;;                 (org-level-2 . 1.1)
+;;                 (org-level-3 . 1.05)
+;;                 (org-level-4 . 1.0)
+;;                 (org-level-5 . 1.1)
+;;                 (org-level-6 . 1.1)
+;;                 (org-level-7 . 1.1)
+;;                 (org-level-8 . 1.1)))
+;;   (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
+;; ;; Make the document title a bit bigger
+;; (set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
 
 ;; Make sure certain org faces use the fixed-pitch face when variable-pitch-mode is on
 (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -130,11 +144,13 @@
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
+(let ((roamdir '"~/org/roamNotes"))
 (use-package! org-roam
   :init
-  (setq org-roam-directory "~/org/roamNotes")
+  (setq org-roam-directory roamdir)
   (setq org-roam-v2-ack 't)
   )
+)
 
 (setq org-roam-capture-templates
 '(("d" "default" plain
@@ -179,7 +195,8 @@
 
 (use-package! org-jira)
 (setq org-jira-working-dir "~/org/jira")
-;; (setq jiralib-url "https://bandwidth-jira.atlassian.net")
+
+;;(setq jiralib-url "https://bandwidth-jira.atlassian.net")
 
 (after! auth-source
   (setq auth-sources (nreverse auth-sources)))
@@ -396,5 +413,8 @@
   :config
   (require 'dap-go)
   (dap-go-setup))
+
+(add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
 
 (setq workspaces-on-switch-project-behavior 't)

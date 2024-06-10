@@ -52,6 +52,10 @@
 
 (package! treemacs-all-the-icons)
 
+(package! treemacs-icons-dired)
+(package! treemacs-nerd-icons)
+(package! lsp-grammarly)
+
 (package! org-roam)
 
 (package! org-auto-tangle)

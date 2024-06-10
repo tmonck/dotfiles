@@ -2,6 +2,7 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 # If not running interactively, don't do anything
+timeStart=$(date +%s)
 case $- in
   *i*) ;;
   *) return ;;
@@ -110,15 +111,14 @@ fi
 #Evaluate brew
 [ -s /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  if type brew &>/dev/null; then
-    HOMEBREW_PREFIX="$(brew --prefix)"
-    if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-      source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-    else
-      for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
-        [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
-      done
-    fi
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
   fi
 fi
 
@@ -134,11 +134,11 @@ if command -v tkn >/dev/null; then
   source <(tkn completion bash)
 fi
 
-if command -v oc; then
+if command -v oc >/dev/null; then
   source <(oc completion bash)
 fi
 
-if command -v aws; then
+if command -v aws >/dev/null; then
   complete -C '$(brew --prefix)/bin/aws_completer' aws
 fi
 
@@ -148,12 +148,12 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 # nvm/node
-# if command -v nvm
-# then
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# fi
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ] && [ -s "$NVM_DIR/bash_completion" ]; then
+  source "$NVM_DIR/nvm.sh"  # This loads nvm
+  source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
 export GPG_TTY=$(tty)
 
 # Dotnet
@@ -183,4 +183,9 @@ if [ -d $GOENV_ROOT ]; then
   export PATH=$PATH:"$GOPATH/bin"
 fi
 
+#set -o vi
 export PROMPT_COMMAND='history -a;'$PROMPT_COMMAND
+
+timeEnd=$(date +%s)
+sec=$(((timeStart-timeEnd)%60))
+printf '.bashrc loaded in: %ss\n' "$sec"

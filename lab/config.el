@@ -49,38 +49,35 @@
 ;;  doom-variable-pitch-font (font-spec :family "sans" :size 13))
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
-
 (use-package! nerd-icons)
-(use-package! treemacs-nerd-icons
-  :config
-  (treemacs-load-theme "nerd-icons"))
-(setq doom-themes-treemacs-theme "nerd-icons")
-(setq doom-themes-treemacs-theme "Default")
-
-
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
-;; (setq doom-theme 'doom-one)
-;;(setq doom-theme 'doom-acario-dark)
- (setq doom-theme 'doom-material-dark)
+(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-acario-dark)
+;; (setq doom-theme 'doom-material-dark)
 ;; (setq doom-theme 'doom-ir-black)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-challenger-deep)
+;; (setq doom-theme 'doom-dracula)
+;; (setq doom-theme 'doom-oksolar-dark)
+;; (setq doom-theme 'doom-badger)
+;; (setq doom-theme 'doom-Iosvkem)
 
-(use-package! treemacs-all-the-icons )
-(setq doom-themes-treemacs-theme "Default")
+;; Treemacs
+(use-package! lsp-treemacs :after treemacs) ;; this needs to be setup before treemacs-nerd-icons other wise it messes up the icons
 
-(use-package! treemacs-icons-dired)
+(use-package! treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
-(after! dired
-  (treemacs-icons-dired-enable-once)
-  )
+(setq treemacs-width 43)
 
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
     (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
+  (toggle-frame-maximized)
+  )
 
 (doom/set-frame-opacity 90)
 
@@ -98,27 +95,27 @@
 
 (require 'org-faces)
 
-(dolist (face '((org-level-1 . 1.2)
-                (org-level-2 . 1.1)
-                (org-level-3 . 1.05)
-                (org-level-4 . 1.0)
-                (org-level-5 . 1.1)
-                (org-level-6 . 1.1)
-                (org-level-7 . 1.1)
-                (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
+;; (dolist (face '((org-level-1 . 1.2)
+;;                 (org-level-2 . 1.1)
+;;                 (org-level-3 . 1.05)
+;;                 (org-level-4 . 1.0)
+;;                 (org-level-5 . 1.1)
+;;                 (org-level-6 . 1.1)
+;;                 (org-level-7 . 1.1)
+;;                 (org-level-8 . 1.1)))
+  ;; (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
 ;; Make the document title a bit bigger
-(set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
+;; (set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
 
 ;; Make sure certain org faces use the fixed-pitch face when variable-pitch-mode is on
-(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+;; (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+;; (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+;; (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+;; (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+;; (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
 (setq org-journal-dir "~/org/journal/")
 
@@ -143,7 +140,7 @@
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
-(let ((roamdir '"~/dsmonckcrazy/toms_files/roamNotes"))
+(let ((roamdir '"~/org/roamNotes"))
 (use-package! org-roam
   :init
   (setq org-roam-directory roamdir)
@@ -320,6 +317,12 @@
 
 (setq langtool-bin "/opt/homebrew/bin/languagetool")
 
+(map! :leader
+        (:prefix-map ("e" . "errors")
+        :desc "flycheck list errors" "l" #'flycheck-list-errors
+        :desc "flycheck list errors" "n" #'flycheck-next-error
+        :desc "flycheck list errors" "p" #'flycheck-previous-error))
+
 (use-package! dap-mode)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 
@@ -423,14 +426,6 @@
   (require 'dap-node)
   (dap-node-setup))
 
-(use-package! go-mode
-  :mode "\\.go\\'"
-  :config
-  (require 'dap-go)
-  (dap-go-setup))
-
-(add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
 ;; (add-to-list '+format-on-save-enabled-modes (not ("yaml-mode")))
 
 (setq workspaces-on-switch-project-behavior 't)

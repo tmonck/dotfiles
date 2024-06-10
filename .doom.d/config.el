@@ -48,44 +48,66 @@
 ;; (setq doom-font (font-spec :family "JetBrains Mono")
 ;;       doom-variable-pitch-font (font-spec :family "DejaVu Sans"))
 
+;; (use-package! nerd-icons)
+;; (use-package! treemacs-nerd-icons
+;;   :config
+;;   (treemacs-load-theme "nerd-icons"))
+;; (setq doom-themes-treemacs-theme "nerd-icons")
+;; (setq doom-themes-treemacs-theme "Default")
+
+(use-package! lsp-treemacs :after treemacs)
+
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
 ;; (setq doom-theme 'doom-one)
-;;(setq doom-theme 'doom-acario-dark)
- (setq doom-theme 'doom-material-dark)
+;; (setq doom-theme 'doom-acario-dark)
+;; (setq doom-theme 'doom-material-dark)
 ;; (setq doom-theme 'doom-ir-black)
 ;; (setq doom-theme 'doom-moonlight)
 ;; (setq doom-theme 'doom-challenger-deep)
+;; (setq doom-theme 'doom-dracula)
+;; (setq doom-theme 'doom-oksolar-dark)
+;; (setq doom-theme 'doom-badger)
+(setq doom-theme 'doom-Iosvkem)
 ;;
+;; Potentially remove this codr
+;; (setq treemacs-no-png-images t)
+;; (setq lsp-treemacs-theme "Iconless")
+;; (use-package! nerd-icons
+;;   ;; :custom
+;;   ;; The Nerd Font you want to use in GUI
+;;   ;; "Symbols Nerd Font Mono" is the default and is recommended
+;;   ;; but you can use any other Nerd Font if you want
+;;   ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+;;   )
+;; (use-package! treemacs-nerd-icons)
 
-(use-package! treemacs-all-the-icons )
-;;(with-eval-after-load 'doom-themes
-;;  (doom-themes-treemacs-config)
-;;  (doom-themes-treemacs-theme "doom-colors"))
-(setq doom-themes-treemacs-theme "Default")
+;; (use-package! treemacs-all-the-icons )
+(use-package! treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
+;; (setq doom-themes-treemacs-theme "Default")
+;; (setq doom-themes-treemacs-theme "doom-colors")
 
 (use-package! treemacs-icons-dired)
 
 (after! dired
   (treemacs-icons-dired-enable-once)
   )
-;; (use-package! treemacs-nerd-icons
-;;   :config
-;;   (treemacs-load-theme "nerd-icons"))
-;; (setq doom-themes-treemacs-theme "all-the-icons")
-;; ;; (setq doom-themes-treemacs-theme "Default")
-;; (use-package! nerd-icons)
+
 ;; (use-package nerd-icons-dired
 ;;   :hook
 ;;   (dired-mode . nerd-icons-dired-mode))
-;; ;; (setq treemacs-load-theme "nerd-icons")
 (if (eq initial-window-system 'x)                 ; if started by emacs command or desktop file
     (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
+  (toggle-frame-maximized)
+  )
 
 (doom/set-frame-opacity 90)
 
+(setq treemacs-width 43)
 ;; Set magit to full screen
 (setq magit-display-buffer-function `magit-display-buffer-fullframe-status-v1)
 
@@ -156,7 +178,7 @@
 (setq org-roam-capture-templates
 '(("d" "default" plain
    "%?"
-   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}")
   :unnarrowed t)
  ("l" "programing languages" plain
    "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n*Reference:\n\n"
@@ -164,14 +186,14 @@
   :unnarrowed t)
  ("p" "project" plain
   "* Goals\n\n%?\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates"
-  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+  :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: Project")
   :unnarrowed t)
  ))
 
 (setq org-roam-dailies-directory "journals/")
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
-         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+TITLE: %<%A, %d %B %Y>\n#+filetags: journal\nTreat yourself better today\n* Daily Questions\n1. On a scale of 1-10 how positive am I feeling?\n2. What is today's Goal?\n** Thinks to remember\nYou don't have to do something you get to.\nYou don't need todo something you want to.\nEnsure you understand the What and the Why, then have a generalized plan.\n* [/] TODOs\n** TODO\n* Meetings"))))
 
 (after! org-roam
   (map! :leader
@@ -320,6 +342,12 @@
                        (require 'lsp-grammarly)
                        (lsp))))
 
+(map! :leader
+        (:prefix-map ("e" . "errors")
+        :desc "flycheck list errors" "l" #'flycheck-list-errors
+        :desc "flycheck list errors" "n" #'flycheck-next-error
+        :desc "flycheck list errors" "p" #'flycheck-previous-error))
+
 (setq langtool-bin "/opt/homebrew/bin/languagetool")
 
 (use-package! dap-mode)
@@ -367,26 +395,43 @@
   :config
   (lsp-enable-which-key-integration t))
 
+;; Use shopify-cli / theme-check-language-server for Shopify's liquid syntax
+;; (with-eval-after-load 'lsp-mode
+;;   (add-to-list 'lsp-language-id-configuration
+;;     '(shopify-mode . "shopify"))
+
+  ;; (lsp-register-client
+  ;;   (make-lsp-client :new-connection (lsp-stdio-connection "actions-languageserver")
+  ;;                    :activation-fn (lsp-activate-on "yaml")
+  ;;                    :server-id 'actions-languageserver))
+
+;;(lsp-generate-settings "/Users/tmonck/code/languageservices/package.json" 'lsp-gha)
+
 (use-package! lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-position 'bottom))
+
+(use-package! python-mode
+  :mode "\\.py\\'"
+  :hook (python-mode . lsp-deferred))
 
 (use-package! typescript-mode
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2)
-  (require 'dap-node)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+  ;; (require 'dap-node)
+  ;; (dap-node-setup) ;; Automatically installs Node debug adapter if needed
 )
 
 (use-package! js2-mode
   :mode "\\.js\\'"
   :hook (js2-mode . lsp-deferred)
   :config
-  (require 'dap-node)
-  (dap-node-setup))
+  ;; (require 'dap-node)
+  ;; (dap-node-setup)
+  )
 
 ;; Add a hook?
 (use-package! go-mode
@@ -406,8 +451,9 @@
   :mode "\\.vue\\'"
   :hook (vue-mode . lsp-deferred)
   :config
-  (require 'dap-node)
-  (dap-node-setup))
+  ;; (require 'dap-node)
+  ;; (dap-node-setup)
+  )
 
 (use-package! go-mode
   :mode "\\.go\\'"
@@ -417,5 +463,18 @@
 
 (add-to-list 'auto-mode-alist '("\\.bash_aliases\\'" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.bash_colors\\'" . sh-mode))
+;; (add-to-list '+format-on-save-enabled-modes (not ("yaml-mode")))
 
 (setq workspaces-on-switch-project-behavior 't)
+
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("M-]" . 'copilot-next-completion)
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+(after! copilot
+        (add-to-list 'copilot-indentation-alist '(go-mode 4)))

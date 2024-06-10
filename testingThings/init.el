@@ -16,7 +16,6 @@
 ;;
 ;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;      directory (for easy access to its source code).
-
 (doom! :input
        ;;chinese
        ;;japanese
@@ -58,7 +57,8 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       (format +onsave)  ; automated prettiness
+       ;;:w
+       ;; (format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
@@ -183,5 +183,9 @@
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
-       ;; literate
+       ;;literate
        (default +bindings +smartparens))
+
+;;(setq native-comp-deferred-compilation nil)
+;;(after! (doom-packages straight)
+;;  (setq straight--native-comp-available t))
