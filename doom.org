@@ -17,7 +17,6 @@
 - [[#me][Me]]
 - [[#customize-the-look-and-feel][Customize the look and feel]]
   - [[#fonts][Fonts]]
-  - [[#icons][Icons]]
   - [[#theme][Theme]]
   - [[#fullscreen][Fullscreen]]
   - [[#opacity][Opacity]]
@@ -62,6 +61,8 @@
   - [[#yaml][yaml]]
 - [[#workspaces-and-projects][Workspaces and Projects]]
 - [[#github-copilot][Github Copilot]]
+  - [[#copilot-completion][Copilot Completion]]
+  - [[#copilot-chat][Copilot Chat]]
 
 * Acknowledgements
 As the dwarfs can see further on the shoulders of giants. I am where I am because of those who came before me. There is some pieces borrowed and other inspired from many sources. Here are a few of them, this is by no means a comprehensive list.
@@ -1164,6 +1165,7 @@ Workspaces are nice for isolating work and projects are extremely helpful for de
 (setq workspaces-on-switch-project-behavior 't)
 #+end_src
 * Github Copilot
+** Copilot Completion
 #+begin_src emacs-lisp :tangle lab/packages.el
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
@@ -1174,8 +1176,18 @@ Workspaces are nice for isolating work and projects are extremely helpful for de
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("M-]" . 'copilot-next-completion)
-              ("<t  ab>" . 'copilot-accept-completion)
+              ("<tab>" . 'copilot-accept-completion)
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
+#+end_src
+** Copilot Chat
+
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! copilot
+  :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package! copilot-chat)
 #+end_src

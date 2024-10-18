@@ -42,6 +42,21 @@ if command -v podman >/dev/null; then
     alias docker=podman
 fi
 
+alias setup_go_tools='
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/guru@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
+go install golang.org/x/tools/gopls@latest
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
+go install github.com/jjuliano/godef@latest
+'
+
 #### Work Specific
 alias aws_lab='AWS_PROFILE=lab-us-east-1'
 alias aws_sbx_use1='AWS_PROFILE=sandbox-us-east-1'

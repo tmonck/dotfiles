@@ -130,9 +130,9 @@
                 (org-level-6 . 1.1)
                 (org-level-7 . 1.1)
                 (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "DejaVu Sans" :weight 'medium :height (cdr face)))
+  (set-face-attribute (car face) nil :weight 'medium :height (cdr face)))
 ;; Make the document title a bit bigger
-(set-face-attribute 'org-document-title nil :font "DejaVu Sans" :weight 'bold :height 1.3)
+(set-face-attribute 'org-document-title nil :weight 'bold :height 1.3)
 
 ;; Make sure certain org faces use the fixed-pitch face when variable-pitch-mode is on
 (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -167,7 +167,7 @@
           :desc "Next journal entry" "n" #'org-journal-open-next-entry)
          :desc "Search journal entry" "s" #'org-journal-search-entry)))
 
-(let ((roamdir '"~/dsmonckcrazy/toms_files/roamNotes"))
+(let ((roamdir '"~/org/roamNotes"))
 (use-package! org-roam
   :init
   (setq org-roam-directory roamdir)
