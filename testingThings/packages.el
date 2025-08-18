@@ -50,11 +50,11 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
-(package! treemacs-all-the-icons)
-
-(package! treemacs-icons-dired)
+(package! nerd-icons)
+(package! nerd-icons-dired)
 (package! treemacs-nerd-icons)
-(package! lsp-grammarly)
+(package! treemacs-all-the-icons)
+(package! treemacs-icons-dired)
 
 (package! org-roam)
 
@@ -83,3 +83,11 @@
 (package! dap-mode)
 
 (package! vue-mode)
+
+;(package! copilot
+;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
+
+(package! flycheck-golangci-lint
+  :recipe (:host github
+           :repo "tmonck/flycheck-golangci-lint"
+           :branch "master"))
