@@ -26,7 +26,9 @@ brew tap d12frosted/emacs-plus
 # brew install emacs-plus # install the latest version of Emacs (as of writing Emacs 27)
 # brew install emacs-plus@26 [options] # install Emacs 26
 # brew install emacs-plus@27 [options] # install Emacs 27
-brew install emacs-plus@28 # install Emacs 28
+# brew install emacs-plus@28 # install Emacs 28
+brew install emacs-plus@30 # install Emacs 30
+# brew install emacs-plus@31 # install Emacs 30
 
 ln -s /usr/local/opt/emacs-plus/Emacs.app /Applications/Emacs.app
 

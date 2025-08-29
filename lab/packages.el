@@ -69,6 +69,8 @@
 
 ;; (package! visual-fill-column)
 
+(package! ob-mermaid)
+
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"
@@ -85,8 +87,8 @@
 
 (package! vue-mode)
 
-(package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+;(package! copilot
+;  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
-(package! copilot
-  :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
+;(package! copilot
+;  :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))

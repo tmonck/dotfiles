@@ -316,6 +316,11 @@
 ;; ;;           :n [C-right] #'org-present-next
 ;; ;;           :n [C-left]  #'org-present-prev))
 ;; ;;   )
+;; (use-package! ob-mermaid :after org)
+(setq ob-mermaid-cli-path "/Users/tom.monck/.nvm/versions/node/v22.18.0/bin/mmdc")
+(org-babel-do-load-languages
+    'org-babel-load-languages
+    '((mermaid . t)))
 
 (use-package! org-pandoc-import :after org)
 
@@ -466,15 +471,3 @@
 ;; (add-to-list '+format-on-save-enabled-modes (not ("yaml-mode")))
 
 (setq workspaces-on-switch-project-behavior 't)
-
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("M-]" . 'copilot-next-completion)
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
-
-(after! copilot
-        (add-to-list 'copilot-indentation-alist '(go-mode 4)))

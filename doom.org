@@ -35,6 +35,7 @@
   - [[#org-jira][org-jira]]
   - [[#org-tree-mode][org-tree-mode]]
   - [[#org-present][org-present]]
+  - [[#mermaid-js][mermaid-js]]
   - [[#pandoc][Pandoc]]
   - [[#after-org-loads][After org loads]]
   - [[#helpful-keybindings][Helpful Keybindings]]
@@ -424,7 +425,7 @@ Let's make the theme look like we want and we like it dark!
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-acario-dark)
 ;; (setq doom-theme 'doom-material-dark)
 ;; (setq doom-theme 'doom-ir-black)
@@ -433,7 +434,7 @@ Let's make the theme look like we want and we like it dark!
 ;; (setq doom-theme 'doom-dracula)
 ;; (setq doom-theme 'doom-oksolar-dark)
 ;; (setq doom-theme 'doom-badger)
-;; (setq doom-theme 'doom-Iosvkem)
+(setq doom-theme 'doom-Iosvkem)
 #+END_SRC
 *** treemacs
 Since we use treemacs lets add some icon flare here
@@ -811,6 +812,20 @@ Here is the code from SystemCrafters as is but we are going to convert this to =
 ;; ;;           :n [C-left]  #'org-present-prev))
 ;; ;;   )
 #+end_src
+** mermaid-js
+In order for this to work you need to have installed mermaid-js locally
+#+begin_src emacs-lisp :tangle lab/packages.el
+(package! ob-mermaid)
+#+end_src
+
+This will be machine specific run =which mmdc= to find the path
+#+begin_src emacs-lisp
+(setq ob-mermaid-cli-path "/Users/tom.monck/.nvm/versions/node/v22.18.0/bin/mmdc")
+(org-babel-do-load-languages
+    'org-babel-load-languages
+    '((mermaid . t)))
+
+#+end_src
 ** Pandoc
 =org-pandoc-import= has a dependency of =pandoc=. This is available via =brew= and most package managers. You can find installation information in the [[https://pandoc.org/installing.html][Pandoc install documentation]].
 
@@ -830,6 +845,7 @@ Some helpful functions to know
 # TODO: Need to add keybindings in a future commit
 - org-pandoc-import-to-org: Parses the file to an `org-mode` file and opens.
 - org-pandoc-import-as-org: Parses the file to an `org-mode` file and opens ina new buffer.
+  -
 ** After org loads
 *** Org mode styling
 A couple of UI tweaks to make things a little more friendly in org-mode.
@@ -1167,27 +1183,27 @@ Workspaces are nice for isolating work and projects are extremely helpful for de
 * Github Copilot
 ** Copilot Completion
 #+begin_src emacs-lisp :tangle lab/packages.el
-(package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+;(package! copilot
+;  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("M-]" . 'copilot-next-completion)
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+;(use-package! copilot
+;  :hook (prog-mode . copilot-mode)
+;  :bind (:map copilot-completion-map
+;              ("M-]" . 'copilot-next-completion)
+;              ("<tab>" . 'copilot-accept-completion)
+;              ("TAB" . 'copilot-accept-completion)
+;              ("C-TAB" . 'copilot-accept-completion-by-word)
+;              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
 ** Copilot Chat
 
 #+begin_src emacs-lisp :tangle lab/packages.el
-(package! copilot
-  :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
+;(package! copilot
+;  :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
 #+end_src
 
 #+begin_src emacs-lisp
-(use-package! copilot-chat)
+;(use-package! copilot-chat)
 #+end_src

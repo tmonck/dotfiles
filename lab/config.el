@@ -54,7 +54,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. The is the default: doom-one
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-acario-dark)
 ;; (setq doom-theme 'doom-material-dark)
 ;; (setq doom-theme 'doom-ir-black)
@@ -63,7 +63,7 @@
 ;; (setq doom-theme 'doom-dracula)
 ;; (setq doom-theme 'doom-oksolar-dark)
 ;; (setq doom-theme 'doom-badger)
-;; (setq doom-theme 'doom-Iosvkem)
+(setq doom-theme 'doom-Iosvkem)
 
 ;; Treemacs
 (use-package! lsp-treemacs :after treemacs) ;; this needs to be setup before treemacs-nerd-icons other wise it messes up the icons
@@ -290,6 +290,11 @@
 ;; ;;           :n [C-left]  #'org-present-prev))
 ;; ;;   )
 
+(setq ob-mermaid-cli-path "/Users/tom.monck/.nvm/versions/node/v22.18.0/bin/mmdc")
+(org-babel-do-load-languages
+    'org-babel-load-languages
+    '((mermaid . t)))
+
 (use-package! org-pandoc-import :after org)
 
 (after! org
@@ -430,13 +435,13 @@
 
 (setq workspaces-on-switch-project-behavior 't)
 
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("M-]" . 'copilot-next-completion)
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+;(use-package! copilot
+;  :hook (prog-mode . copilot-mode)
+;  :bind (:map copilot-completion-map
+;              ("M-]" . 'copilot-next-completion)
+;              ("<tab>" . 'copilot-accept-completion)
+;              ("TAB" . 'copilot-accept-completion)
+;              ("C-TAB" . 'copilot-accept-completion-by-word)
+;              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
-(use-package! copilot-chat)
+;(use-package! copilot-chat)

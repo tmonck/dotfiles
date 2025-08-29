@@ -67,6 +67,7 @@
 ;; (package! org-present)
 
 ;; (package! visual-fill-column)
+(package! ob-mermaid)
 
 (package! org-pandoc-import
   :recipe (:host github
@@ -84,8 +85,8 @@
 
 (package! vue-mode)
 
-(package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
+;(package! copilot
+;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
 
 (package! flycheck-golangci-lint
   :recipe (:host github
